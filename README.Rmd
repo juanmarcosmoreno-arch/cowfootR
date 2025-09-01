@@ -1,0 +1,82 @@
+---
+output: github_document
+---
+# cowfootR <img src="man/figures/logo.png" align="right" width="120" />
+
+Tools to estimate the carbon footprint of dairy farms.  
+Implements methods based on IDF (International Dairy Federation)  
+and IPCC guidelines for greenhouse gas accounting.
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/cowfootR)](https://CRAN.R-project.org/package=cowfootR)
+<!-- badges: end -->
+
+
+## Installation
+
+You can install the development version of cowfootR like so:
+
+```{r intallation, eval=FALSE}
+# Install development version from GitHub
+# install.packages("devtools")
+devtools::install_github("juanmarcosmoreno/cowfootR")
+```
+
+## Example
+
+This is a basic example of how to calculate the carbon footprint of a single farm:
+
+```{r example, eval=FALSE}
+library(cowfootR)
+
+# Define system boundaries
+b <- set_system_boundaries("farm_gate")
+
+# Calculate emissions by source
+e1 <- calc_emissions_entero(100, boundaries = b)
+e2 <- calc_emissions_manure(100, boundaries = b)
+e3 <- calc_emissions_soil(n_fert = 1500, n_excreta = 5000, boundaries = b)
+e4 <- calc_emissions_energy(diesel_l = 2000, electricity_kwh = 5000, boundaries = b)
+e5 <- calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 500, plastic_kg = 100, boundaries = b)
+
+# Aggregate total emissions
+tot <- calc_total_emissions(e1, e2, e3, e4, e5)
+
+# Emission intensity per litre of FPCM
+lit <- calc_intensity_litre(tot$total_co2eq, milk_litres = 750000)
+lit
+
+# Emission intensity per hectare
+are <- calc_intensity_area(tot$total_co2eq, 120)
+
+# Generate report tables
+rep <- report_hdc(tot, lit, are)
+rep$breakdown_table   # breakdown by source
+rep$summary_table     # summary indicators
+
+# Visualization: bar chart
+plot_hdc_breakdown(tot, type = "bar")
+
+# Visualization: pie chart
+plot_hdc_breakdown(tot, type = "pie")
+
+```
+
+## Batch workflow
+For multiple farms, you can use the Excel template:
+```{r batch, eval=FALSE}
+
+# Save blank template
+download_template("my_farms.xlsx")
+
+# Fill the file with your data, then run:
+results <- calc_emissions_batch("my_farms.xlsx")
+
+# Export results to Excel
+export_hdc_report(results, "HdC_results.xlsx")
+```
+
+## License
+
+MIT License © 2025 Juan Moreno
