@@ -2,33 +2,50 @@
 % Please edit documentation in R/calc_intensity_litre.R
 \name{calc_intensity_litre}
 \alias{calc_intensity_litre}
-\title{Calculate carbon footprint intensity per litre of milk}
+\title{Calculate carbon footprint intensity per kg of milk}
 \usage{
-calc_intensity_litre(total_emissions, milk_litres, fat = 4, protein = 3.3)
+calc_intensity_litre(
+  total_emissions,
+  milk_litres,
+  fat = 4,
+  protein = 3.3,
+  milk_density = 1.03
+)
 }
 \arguments{
-\item{total_emissions}{Numeric. Total emissions in kg CO2eq (from \code{calc_total_emissions()}).}
+\item{total_emissions}{Numeric or cf_total object. Total emissions in kg CO2eq
+(from \code{calc_total_emissions()}) or the object itself.}
 
-\item{milk_litres}{Numeric. Milk produced in litres per year.}
+\item{milk_litres}{Numeric. Annual milk production in litres.}
 
-\item{fat}{Numeric. Average fat percentage of milk. Default = 4.}
+\item{fat}{Numeric. Average fat percentage of milk (0-100). Default = 4.}
 
-\item{protein}{Numeric. Average protein percentage of milk. Default = 3.3.}
+\item{protein}{Numeric. Average protein percentage of milk (0-100). Default = 3.3.}
+
+\item{milk_density}{Numeric. Milk density in kg/L. Default = 1.03.}
 }
 \value{
-Numeric. Emissions intensity (kg CO2eq/kg FPCM).
+A list of class "cf_intensity" with intensity (kg CO2eq/kg FPCM),
+FPCM production, and calculation details.
 }
 \description{
-Computes emissions intensity as kg CO2eq per kg of fat- and protein-corrected milk (FPCM/LCGP).
+Computes emissions intensity as kg CO2eq per kg of fat- and protein-corrected milk (FPCM).
 }
 \details{
 The correction to FPCM (fat- and protein-corrected milk) follows the IDF formula:
-\deqn{FPCM = milk_litres * (0.1226 * fat + 0.0776 * protein + 0.2534)}
+\deqn{FPCM = milk_kg * (0.1226 * fat_pct + 0.0776 * protein_pct + 0.2534)}
+
+Where milk_kg = milk_litres * milk_density
 }
 \examples{
 b <- set_system_boundaries("farm_gate")
-e1 <- calc_emissions_entero(100, boundaries = b)
+e1 <- calc_emissions_enteric(100, boundaries = b)
 e2 <- calc_emissions_manure(100, boundaries = b)
 tot <- calc_total_emissions(e1, e2)
+
+# Using cf_total object directly
+calc_intensity_litre(tot, milk_litres = 750000)
+
+# Using numeric value
 calc_intensity_litre(tot$total_co2eq, milk_litres = 750000)
 }

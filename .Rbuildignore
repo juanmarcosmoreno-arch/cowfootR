@@ -1,28 +1,10 @@
-# RStudio project files
+^doc$
+^Meta$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-
-# README R Markdown source (only keep README.md in the build)
+^\.github$
 ^README\.Rmd$
-
-# Vignette build artifacts
-^vignettes/.*\.html$
-^vignettes/.*\.R$
-
-# pkgdown site (if you build a website later)
-^_pkgdown\.yml$
-^docs$
-
-# Local test files (Excel, etc.)
-^my_farms\.xlsx$
-^.*\.xlsx$
-
-# Temporary/system files
-^\.DS_Store$
-^\.Rhistory$
-^\.RData$
-^\.httr-oauth$
-^\.env$
-
-# devtools/revdep checks
-^revdep$
+^README\.html$
+^ejemplo_uso\.R$
+^uso\.R$
+^uso_single\.R$

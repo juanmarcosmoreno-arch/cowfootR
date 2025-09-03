@@ -2,39 +2,90 @@
 % Please edit documentation in R/calc_emissions_soil.R
 \name{calc_emissions_soil}
 \alias{calc_emissions_soil}
-\title{Calculate soil emissions (N2O)}
+\title{Calculate soil N2O emissions}
 \usage{
 calc_emissions_soil(
-  n_fert,
-  n_excreta = 5000,
-  ef_n2o = 0.01,
-  gwp_n2o = 265,
+  n_fertilizer_synthetic = 0,
+  n_fertilizer_organic = 0,
+  n_excreta_pasture = 0,
+  n_crop_residues = 0,
+  area_ha = NULL,
+  soil_type = "well_drained",
+  climate = "temperate",
+  ef_direct = NULL,
+  include_indirect = TRUE,
+  gwp_n2o = 273,
   boundaries = NULL
 )
 }
 \arguments{
-\item{n_fert}{Numeric. Nitrogen applied as fertilizer (kg N/year).}
+\item{n_fertilizer_synthetic}{Numeric. Synthetic nitrogen fertilizer applied (kg N/year).
+Default = 0.}
 
-\item{n_excreta}{Numeric. Nitrogen excreted on pasture (kg N/year).
-Default = 5000 (rough estimate for dairy herds).}
+\item{n_fertilizer_organic}{Numeric. Organic nitrogen fertilizer applied (kg N/year).
+Default = 0.}
 
-\item{ef_n2o}{Numeric. Emission factor for N2O-N (kg N2O-N/kg N input).
-Default = 0.01 (IPCC Tier 1).}
+\item{n_excreta_pasture}{Numeric. Nitrogen excreted directly on pasture (kg N/year).
+Default = 0.}
 
-\item{gwp_n2o}{Numeric. Global Warming Potential of N2O.
-Default = 265 (100-year horizon).}
+\item{n_crop_residues}{Numeric. Nitrogen in crop residues returned to soil (kg N/year).
+Default = 0.}
+
+\item{area_ha}{Numeric. Total farm area (hectares). Used for calculating per-hectare metrics.}
+
+\item{soil_type}{Character. Soil drainage characteristics. Options: "well_drained",
+"poorly_drained". Default = "well_drained". Affects emission factors.}
+
+\item{climate}{Character. Climate classification. Options: "temperate", "tropical".
+Default = "temperate". Affects emission factors.}
+
+\item{ef_direct}{Numeric. Direct emission factor for N2O-N (kg N2O-N/kg N input).
+If NULL, uses IPCC 2019 values adjusted by soil type and climate.}
+
+\item{include_indirect}{Logical. Include indirect N2O emissions from volatilization
+and leaching? Default = TRUE.}
+
+\item{gwp_n2o}{Numeric. Global Warming Potential of N2O. Default = 273 (IPCC AR6).}
 
 \item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
 If "soil" is not included, returns 0.}
 }
 \value{
-A list with N2O emissions (kg), CO2eq (kg), and metadata.
+A list with detailed N2O emissions by source, direct/indirect components,
+and metadata following IDF methodology.
 }
 \description{
-Estimates direct N2O emissions from soils due to
-fertilization and excreta deposition, using IPCC Tier 1 methodology.
+Estimates direct and indirect N2O emissions from soils due to
+fertilization, excreta deposition, and crop residues using IPCC methodology.
 }
 \examples{
+# Basic calculation with synthetic fertilizer
+calc_emissions_soil(n_fertilizer_synthetic = 1500, area_ha = 100)
+
+# Mixed system with fertilizer and grazing
+calc_emissions_soil(
+  n_fertilizer_synthetic = 800,
+  n_fertilizer_organic = 200,
+  n_excreta_pasture = 3000,
+  area_ha = 150
+)
+
+# Tropical poorly-drained conditions
+calc_emissions_soil(
+  n_fertilizer_synthetic = 1200,
+  soil_type = "poorly_drained",
+  climate = "tropical",
+  area_ha = 80
+)
+
+# Without indirect emissions
+calc_emissions_soil(
+  n_fertilizer_synthetic = 1000,
+  include_indirect = FALSE,
+  area_ha = 120
+)
+
+# With system boundaries
 b <- set_system_boundaries("farm_gate")
-calc_emissions_soil(1500, 5000, boundaries = b)
+calc_emissions_soil(n_fertilizer_synthetic = 1500, boundaries = b, area_ha = 100)
 }

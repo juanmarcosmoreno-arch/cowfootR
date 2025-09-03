@@ -7,42 +7,61 @@
 calc_emissions_energy(
   diesel_l = 0,
   petrol_l = 0,
+  lpg_kg = 0,
+  natural_gas_m3 = 0,
   electricity_kwh = 0,
-  ef_diesel = 2.68,
+  country = "UY",
+  ef_diesel = 2.67,
   ef_petrol = 2.31,
-  ef_elec = 0.05,
+  ef_lpg = 3,
+  ef_natural_gas = 2,
+  ef_electricity = NULL,
+  include_upstream = FALSE,
+  energy_breakdown = NULL,
   boundaries = NULL
 )
 }
 \arguments{
-\item{diesel_l}{Numeric. Diesel consumption (liters/year).
-Default = 0.}
+\item{diesel_l}{Numeric. Diesel consumption (liters/year). Default = 0.}
 
-\item{petrol_l}{Numeric. Petrol/gasoline consumption (liters/year).
-Default = 0.}
+\item{petrol_l}{Numeric. Petrol/gasoline consumption (liters/year). Default = 0.}
 
-\item{electricity_kwh}{Numeric. Electricity consumption (kWh/year).
-Default = 0.}
+\item{lpg_kg}{Numeric. LPG/propane consumption (kg/year). Default = 0.}
+
+\item{natural_gas_m3}{Numeric. Natural gas consumption (m³/year). Default = 0.}
+
+\item{electricity_kwh}{Numeric. Electricity consumption (kWh/year). Default = 0.}
+
+\item{country}{Character. Country code for electricity grid factors.
+Default = "UY" (Uruguay). Options include "UY", "AR", "BR", "NZ", "US", etc.}
 
 \item{ef_diesel}{Numeric. Emission factor for diesel (kg CO2/liter).
-Default = 2.68 (IPCC).}
+Default = 2.67 (IPCC 2019, includes combustion only).}
 
 \item{ef_petrol}{Numeric. Emission factor for petrol (kg CO2/liter).
-Default = 2.31 (IPCC).}
+Default = 2.31 (IPCC 2019).}
 
-\item{ef_elec}{Numeric. Emission factor for electricity (kg CO2/kWh).
-Default = 0.05 (Uruguay average, adjust for context).}
+\item{ef_lpg}{Numeric. Emission factor for LPG (kg CO2/kg).
+Default = 3.0 (IPCC 2019).}
+
+\item{ef_natural_gas}{Numeric. Emission factor for natural gas (kg CO2/m³).
+Default = 2.0 (IPCC 2019).}
+
+\item{ef_electricity}{Numeric. Emission factor for electricity (kg CO2/kWh).
+If NULL, uses country-specific grid factors.}
+
+\item{include_upstream}{Logical. Include upstream emissions from fuel production?
+Default = FALSE (combustion only).}
+
+\item{energy_breakdown}{List. Optional detailed breakdown by equipment/use.}
 
 \item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
 If "energy" is not included, returns 0.}
 }
 \value{
-A list with emissions (kg CO2eq) by source and total.
+A list with detailed emissions by fuel type, end use, and metadata.
 }
 \description{
-Estimates CO2 emissions from fossil fuel use and electricity consumption.
-}
-\examples{
-b <- set_system_boundaries("farm_gate")
-calc_emissions_energy(diesel_l = 2000, electricity_kwh = 5000, boundaries = b)
+Estimates CO2 emissions from fossil fuel use and electricity consumption
+on dairy farms following IDF methodology.
 }

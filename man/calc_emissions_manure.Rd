@@ -2,45 +2,69 @@
 % Please edit documentation in R/calc_emissions_manure.R
 \name{calc_emissions_manure}
 \alias{calc_emissions_manure}
-\title{Calculate manure management emissions}
+\title{Calculate manure management emissions with Tier 1 and Tier 2 options}
 \usage{
 calc_emissions_manure(
   n_cows,
-  ef_ch4 = 2,
+  manure_system = "pasture",
+  tier = 1,
+  ef_ch4 = NULL,
   n_excreted = 100,
-  ef_n2o = 0.01,
-  gwp_ch4 = 28,
-  gwp_n2o = 265,
+  ef_n2o_direct = 0.02,
+  include_indirect = FALSE,
+  climate = "temperate",
+  avg_body_weight = 600,
+  diet_digestibility = 0.65,
+  protein_intake_kg = NULL,
+  retention_days = NULL,
+  system_temperature = NULL,
+  gwp_ch4 = 27.2,
+  gwp_n2o = 273,
   boundaries = NULL
 )
 }
 \arguments{
 \item{n_cows}{Numeric. Number of dairy cows.}
 
+\item{manure_system}{Character. Type of manure management system.
+Options: "pasture", "solid_storage", "liquid_storage", "anaerobic_digester". Default = "pasture".}
+
+\item{tier}{Numeric. IPCC methodology tier (1 or 2). Default = 1.}
+
 \item{ef_ch4}{Numeric. Emission factor for CH4 (kg CH4 per cow per year).
-Default = 2 (IPCC Tier 1, dairy cattle in pasture-based systems).}
+If NULL, uses system-specific defaults. Only used for Tier 1.}
 
 \item{n_excreted}{Numeric. Nitrogen excreted per cow per year (kg N).
-Default = 100 (approximate, can be refined by diet).}
+Default = 100. For Tier 2, calculated from diet data if available.}
 
-\item{ef_n2o}{Numeric. Emission factor for N2O-N (kg N2O-N/kg N excreted).
-Default = 0.01 (IPCC Tier 1).}
+\item{ef_n2o_direct}{Numeric. Emission factor for direct N2O-N (kg N2O-N/kg N excreted).
+Default = 0.02 (IPCC 2019 refinement).}
 
-\item{gwp_ch4}{Numeric. Global Warming Potential of CH4. Default = 28.}
+\item{include_indirect}{Logical. Include indirect N2O emissions
+from volatilization and leaching? Default = FALSE.}
 
-\item{gwp_n2o}{Numeric. Global Warming Potential of N2O. Default = 265.}
+\item{climate}{Character. Climate region for Tier 2. Options: "cold", "temperate", "warm". Default = "temperate".}
 
-\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
-If "manure" is not included, returns 0.}
+\item{avg_body_weight}{Numeric. Average live weight (kg). Default = 600. Required for Tier 2.}
+
+\item{diet_digestibility}{Numeric. Apparent digestibility of diet (0-1). Default = 0.65. Required for Tier 2.}
+
+\item{protein_intake_kg}{Numeric. Daily protein intake (kg/day). Used for refined N2O calculation in Tier 2.}
+
+\item{retention_days}{Numeric. Days manure stays in system. Default varies by system. Used in Tier 2.}
+
+\item{system_temperature}{Numeric. Average temperature of manure system (°C). Used in Tier 2.}
+
+\item{gwp_ch4}{Numeric. Global Warming Potential of CH4. Default = 27.2 (IPCC AR6).}
+
+\item{gwp_n2o}{Numeric. Global Warming Potential of N2O. Default = 273 (IPCC AR6).}
+
+\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.}
 }
 \value{
-A list with CH4 (kg), N2O (kg), CO2eq (kg), and metadata.
+A list with CH4 (kg), N2O (kg), CO2eq (kg), and detailed metadata.
 }
 \description{
 Estimates CH4 and N2O emissions from manure management
-using IPCC Tier 1 methodology.
-}
-\examples{
-b <- set_system_boundaries("farm_gate")
-calc_emissions_manure(100, boundaries = b)
+using IPCC Tier 1 or Tier 2 methodology with IDF-specific factors.
 }

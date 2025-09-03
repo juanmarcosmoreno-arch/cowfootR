@@ -4,23 +4,77 @@
 \alias{calc_intensity_area}
 \title{Calculate carbon footprint intensity per hectare}
 \usage{
-calc_intensity_area(total_emissions, area_ha)
+calc_intensity_area(
+  total_emissions,
+  area_total_ha,
+  area_productive_ha = NULL,
+  area_breakdown = NULL,
+  validate_area_sum = TRUE
+)
 }
 \arguments{
-\item{total_emissions}{Numeric. Total emissions in kg CO2eq (from \code{calc_total_emissions()}).}
+\item{total_emissions}{Numeric or cf_total object. Total emissions in kg CO2eq
+(from \code{calc_total_emissions()}) or the object itself.}
 
-\item{area_ha}{Numeric. Total land area in hectares used by the dairy farm.}
+\item{area_total_ha}{Numeric. Total farm area in hectares.}
+
+\item{area_productive_ha}{Numeric. Productive/utilized area in hectares.
+If NULL, uses total area. Default = NULL.}
+
+\item{area_breakdown}{Named list. Optional detailed area breakdown by land use type.
+Names should be descriptive (e.g., "pasture_permanent", "crops_feed").}
+
+\item{validate_area_sum}{Logical. Check if area breakdown sums to total? Default = TRUE.}
 }
 \value{
-Numeric. Emissions intensity (kg CO2eq/ha).
+A list of class "cf_area_intensity" with intensity metrics and area analysis.
 }
 \description{
-Computes emissions intensity as kg CO2eq per hectare of utilized land.
+Computes emissions intensity per unit of land area for dairy farm analysis.
+}
+\details{
+The area_breakdown parameter allows detailed tracking by land use:
+\preformatted{
+area_breakdown = list(
+  pasture_permanent = 80,
+  pasture_temporary = 20,
+  crops_feed = 15,
+  crops_cash = 5,
+  infrastructure = 2,
+  woodland = 8
+)
+}
 }
 \examples{
+# Basic calculation
+calc_intensity_area(total_emissions = 85000, area_total_ha = 120)
+
+# With productive area distinction
+calc_intensity_area(
+  total_emissions = 95000,
+  area_total_ha = 150,
+  area_productive_ha = 135
+)
+
+# With area breakdown
+area_detail <- list(
+  pasture_permanent = 80,
+  pasture_temporary = 25,
+  crops_feed = 20,
+  infrastructure = 3,
+  woodland = 7
+)
+
+calc_intensity_area(
+  total_emissions = 88000,
+  area_total_ha = 135,
+  area_breakdown = area_detail
+)
+
+# Using with calc_total_emissions output
 b <- set_system_boundaries("farm_gate")
-e1 <- calc_emissions_entero(100, boundaries = b)
+e1 <- calc_emissions_enteric(100, boundaries = b)
 e2 <- calc_emissions_manure(100, boundaries = b)
 tot <- calc_total_emissions(e1, e2)
-calc_intensity_area(tot$total_co2eq, area_ha = 120)
+calc_intensity_area(tot, area_total_ha = 120)
 }

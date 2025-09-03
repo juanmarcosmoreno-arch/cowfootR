@@ -4,17 +4,16 @@
 \alias{download_template}
 \title{Download cowfootR Excel template}
 \usage{
-download_template(file = "cowfootR_template.xlsx")
+download_template(file = "cowfootR_template.xlsx", include_examples = FALSE)
 }
 \arguments{
 \item{file}{Path where the template will be saved. Default = "cowfootR_template.xlsx".}
+
+\item{include_examples}{Logical. If TRUE, includes example rows.}
 }
 \value{
 Invisibly returns the file path.
 }
 \description{
 Saves a blank Excel template with required columns for batch carbon footprint calculations.
-}
-\examples{
-download_template("my_farms.xlsx")
 }

@@ -2,23 +2,23 @@
 % Please edit documentation in R/set_system_boundaries.R
 \name{set_system_boundaries}
 \alias{set_system_boundaries}
-\title{Set system boundaries for carbon footprint calculation}
+\title{Define system boundaries for carbon footprint calculation}
 \usage{
-set_system_boundaries(scope = "farm_gate", factors = "IPCC2019")
+set_system_boundaries(scope = "farm_gate", include = NULL)
 }
 \arguments{
-\item{scope}{Character. Predefined scope ("farm_gate", "processing", "full_cycle")
-or custom vector of sources (e.g., c("entero", "manure", "soil", "energy")).}
+\item{scope}{Character. Options:
+\itemize{
+\item "farm_gate" (default): includes enteric, manure, soil, energy, inputs
+\item "cradle_to_farm_gate": includes feed production + farm emissions
+\item "partial": user-specified
+}}
 
-\item{factors}{Character. Version of emission factors ("IPCC2006", "IPCC2019").}
+\item{include}{Character vector of processes to include (optional).}
 }
 \value{
-A list of class "cf_boundaries" with included and excluded sources.
+A list with $scope and $include
 }
 \description{
-Define the scope of the carbon footprint assessment.
-Options: "farm_gate", "processing", "full_cycle", or custom vector.
-}
-\examples{
-set_system_boundaries("farm_gate")
+Define system boundaries for carbon footprint calculation
 }

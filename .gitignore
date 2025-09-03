@@ -1,6 +1,38 @@
-.Rproj.user
+# R session files
 .Rhistory
+.RData
+.Ruserdata
+
+# RStudio project files
+.Rproj.user/
+*.Rproj
+
+# System files
+.DS_Store
+
+# Package build artifacts
+*.tar.gz
+*.Rcheck/
+
+# Documentation artifacts
+docs/
+inst/doc/
+
+# Excel and other local data files (never push to GitHub)
+*.xlsx
+*.xls
+*.csv
+
+# pkgdown site (if you generate one later)
+_pkgdown.yml
+
+# Temporary files
+*.tmp
+*.log
+inst/doc
+/doc/
+/Meta/
+.Rproj.user
 .Rdata
 .httr-oauth
-.DS_Store
 .quarto

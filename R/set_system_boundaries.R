@@ -1,42 +1,31 @@
-#' Set system boundaries for carbon footprint calculation
+#' Define system boundaries for carbon footprint calculation
 #'
-#' Define the scope of the carbon footprint assessment.
-#' Options: "farm_gate", "processing", "full_cycle", or custom vector.
+#' @param scope Character. Options:
+#'   - "farm_gate" (default): includes enteric, manure, soil, energy, inputs
+#'   - "cradle_to_farm_gate": includes feed production + farm emissions
+#'   - "partial": user-specified
+#' @param include Character vector of processes to include (optional).
 #'
-#' @param scope Character. Predefined scope ("farm_gate", "processing", "full_cycle")
-#'   or custom vector of sources (e.g., c("entero", "manure", "soil", "energy")).
-#' @param factors Character. Version of emission factors ("IPCC2006", "IPCC2019").
-#'
-#' @return A list of class "cf_boundaries" with included and excluded sources.
+#' @return A list with $scope and $include
 #' @export
-#'
-#' @examples
-#' set_system_boundaries("farm_gate")
-set_system_boundaries <- function(scope = "farm_gate",
-                                  factors = "IPCC2019") {
+set_system_boundaries <- function(scope = "farm_gate", include = NULL) {
 
-  sources <- list(
-    farm_gate   = c("entero", "manure", "soil", "energy", "inputs"),
-    processing  = c("entero", "manure", "soil", "energy", "inputs",
-                    "transport", "processing"),
-    full_cycle  = c("entero", "manure", "soil", "energy", "inputs",
-                    "transport", "processing", "packaging", "consumer")
-  )
+  scope <- match.arg(scope, c("farm_gate", "cradle_to_farm_gate", "partial"))
 
-  if (length(scope) == 1 && scope %in% names(sources)) {
-    include <- sources[[scope]]
-  } else {
-    include <- scope
+  if (scope == "farm_gate") {
+    defaults <- c("enteric", "manure", "soil", "energy", "inputs")
+  } else if (scope == "cradle_to_farm_gate") {
+    defaults <- c("feed", "enteric", "manure", "soil", "energy", "inputs")
+  } else if (scope == "partial") {
+    defaults <- if (is.null(include)) character(0) else include
   }
 
-  structure(
-    list(
-      scope   = scope,
-      include = include,
-      exclude = setdiff(unlist(sources$full_cycle), include),
-      factors = factors,
-      date    = Sys.Date()
-    ),
-    class = "cf_boundaries"
+  # Si el usuario pasa include, sobrescribe; si no, usa defaults
+  include <- if (is.null(include)) defaults else include
+
+  list(
+    scope = scope,
+    include = include
   )
 }
+

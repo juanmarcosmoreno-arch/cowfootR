@@ -2,24 +2,17 @@
 % Please edit documentation in R/calc_total_emissions.R
 \name{calc_total_emissions}
 \alias{calc_total_emissions}
-\title{Calculate total emissions}
+\title{Calculate total emissions (robust and retro-compatible)}
 \usage{
 calc_total_emissions(...)
 }
 \arguments{
-\item{...}{Results from functions like \code{calc_emissions_entero()},
-\code{calc_emissions_manure()}, etc. (as lists).}
+\item{...}{Results from \code{calc_emissions_*()} functions (lists).}
 }
 \value{
-A list with breakdown (kg CO2eq by source) and total (kg CO2eq).
+Object "cf_total" with breakdown (kg CO2eq by source) and total.
 }
 \description{
-Aggregates results from different emission source functions
-into a single summary with totals and breakdown.
-}
-\examples{
-b <- set_system_boundaries("farm_gate")
-e1 <- calc_emissions_entero(100, boundaries = b)
-e2 <- calc_emissions_manure(100, boundaries = b)
-calc_total_emissions(e1, e2)
+Aggregates results from different sources (enteric, manure, soil, energy, inputs)
+even if they don't use exactly the same field name for the total.
 }

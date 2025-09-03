@@ -8,42 +8,99 @@ calc_emissions_inputs(
   conc_kg = 0,
   fert_n_kg = 0,
   plastic_kg = 0,
-  ef_conc = 0.7,
-  ef_fert = 6.6,
-  ef_plastic = 2.5,
+  feed_grain_dry_kg = 0,
+  feed_grain_wet_kg = 0,
+  feed_ration_kg = 0,
+  feed_byproducts_kg = 0,
+  feed_proteins_kg = 0,
+  feed_corn_kg = 0,
+  feed_soy_kg = 0,
+  feed_wheat_kg = 0,
+  region = "global",
+  fert_type = "mixed",
+  plastic_type = "mixed",
+  include_uncertainty = FALSE,
+  transport_km = NULL,
+  ef_conc = NULL,
+  ef_fert = NULL,
+  ef_plastic = NULL,
   boundaries = NULL
 )
 }
 \arguments{
-\item{conc_kg}{Numeric. Purchased concentrate feed (kg/year).
-Default = 0.}
+\item{conc_kg}{Numeric. Purchased concentrate feed (kg/year). Default = 0.}
 
-\item{fert_n_kg}{Numeric. Purchased nitrogen fertilizer (kg N/year).
-Default = 0.}
+\item{fert_n_kg}{Numeric. Purchased nitrogen fertilizer (kg N/year). Default = 0.}
 
-\item{plastic_kg}{Numeric. Agricultural plastics used (kg/year).
-Default = 0.}
+\item{plastic_kg}{Numeric. Agricultural plastics used (kg/year). Default = 0.}
 
-\item{ef_conc}{Numeric. Emission factor for concentrate feed (kg CO2eq/kg).
-Default = 0.7.}
+\item{feed_grain_dry_kg}{Numeric. Grain dry (kg/year, DM). Default = 0.}
 
-\item{ef_fert}{Numeric. Emission factor for nitrogen fertilizer production (kg CO2eq/kg N).
-Default = 6.6.}
+\item{feed_grain_wet_kg}{Numeric. Grain wet (kg/year, DM). Default = 0.}
 
-\item{ef_plastic}{Numeric. Emission factor for plastic (kg CO2eq/kg).
-Default = 2.5.}
+\item{feed_ration_kg}{Numeric. Ration + lex (kg/year, DM). Default = 0.}
 
-\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
-If "inputs" is not included, returns 0.}
+\item{feed_byproducts_kg}{Numeric. Byproducts (kg/year, DM). Default = 0.}
+
+\item{feed_proteins_kg}{Numeric. Proteins (kg/year, DM). Default = 0.}
+
+\item{feed_corn_kg}{Numeric. Corn grain specific (kg/year, DM). Default = 0.}
+
+\item{feed_soy_kg}{Numeric. Soybean meal specific (kg/year, DM). Default = 0.}
+
+\item{feed_wheat_kg}{Numeric. Wheat grain specific (kg/year, DM). Default = 0.}
+
+\item{region}{Character. Geographic region for emission factors.
+Options: "EU", "US", "Brazil", "Argentina", "Australia", "global". Default = "global".}
+
+\item{fert_type}{Character. Fertilizer type. Options: "urea", "ammonium_nitrate",
+"mixed", "organic". Default = "mixed".}
+
+\item{plastic_type}{Character. Plastic type. Options: "LDPE", "HDPE", "PP", "mixed".
+Default = "mixed".}
+
+\item{include_uncertainty}{Logical. Include uncertainty ranges in output? Default = FALSE.}
+
+\item{transport_km}{Numeric. Average transport distance for feeds (km). Default = NULL.}
+
+\item{ef_conc}{Numeric. Override EF for concentrate feed (kg CO2eq/kg). Default = NULL.}
+
+\item{ef_fert}{Numeric. Override EF for N fertilizer (kg CO2eq/kg N). Default = NULL.}
+
+\item{ef_plastic}{Numeric. Override EF for plastic (kg CO2eq/kg). Default = NULL.}
+
+\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.}
 }
 \value{
-A list with emissions (kg CO2eq) by input and total.
+A list with emissions (kg CO2eq) by input, uncertainties, and metadata.
 }
 \description{
-Estimates CO2eq emissions from purchased inputs such as
-concentrates, fertilizers, and plastics.
+Estimates CO2eq emissions from purchased inputs such as feeds, concentrates,
+fertilizers, and plastics with regional factors and uncertainty analysis.
 }
 \examples{
-b <- set_system_boundaries("farm_gate")
-calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 500, boundaries = b)
+# Basic usage with regional factors
+calc_emissions_inputs(
+  conc_kg = 1000,
+  feed_soy_kg = 500,
+  fert_n_kg = 200,
+  region = "EU"
+)
+
+# With uncertainty analysis
+calc_emissions_inputs(
+  conc_kg = 1000,
+  feed_corn_kg = 2000,
+  region = "US",
+  include_uncertainty = TRUE
+)
+
+# Specific fertilizer and plastic types
+calc_emissions_inputs(
+  fert_n_kg = 300,
+  plastic_kg = 50,
+  fert_type = "urea",
+  plastic_type = "LDPE",
+  region = "Brazil"
+)
 }
