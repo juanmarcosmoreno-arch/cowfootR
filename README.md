@@ -250,3 +250,6 @@ suggest improvements on
 ## License
 
 MIT License © 2025 Juan Moreno
+
+[![pkgdown
+site](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://juanmarcosmoreno-arch.github.io/cowfootR/)
