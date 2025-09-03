@@ -1,7 +1,7 @@
 Package: cowfootR
 Type: Package
 Title: Tools to Estimate the Carbon Footprint of Dairy Farms
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: 
     person("Juan", "Moreno", email = "juan@example.com", 
            role = c("aut", "cre"))
