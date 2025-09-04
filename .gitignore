@@ -12,14 +12,12 @@
 *.tar.gz
 *.Rcheck/
 # Documentation artifacts
-docs/
 inst/doc/
 # Excel and other local data files (never push to GitHub)
 *.xlsx
 *.xls
 *.csv
 # pkgdown site (if you generate one later)
-_pkgdown.yml
 # Temporary files
 *.tmp
 *.log
@@ -31,5 +29,4 @@ inst/doc
 .httr-oauth
 .quarto
 .Rcheck/
-docs
 doc/
