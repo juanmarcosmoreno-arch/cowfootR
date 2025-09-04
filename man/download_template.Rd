@@ -17,3 +17,8 @@ Invisibly returns the file path.
 \description{
 Saves a blank Excel template with required columns for batch carbon footprint calculations.
 }
+\examples{
+tf <- tempfile(fileext = ".xlsx")
+on.exit(unlink(tf, force = TRUE), add = TRUE)
+download_template(tf)
+}

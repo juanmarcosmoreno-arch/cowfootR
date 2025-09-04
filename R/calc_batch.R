@@ -66,15 +66,33 @@ getv <- function(row, name, default = NA) {
 # ---------------------------------------------
 # Unified batch: processes data.frame -> results
 # ---------------------------------------------
-#' Carbon Footprint Batch by rows (tier 1/2)
+#' Batch carbon footprint calculation
 #'
-#' @param data data.frame with the template columns.
-#' @param tier 1 or 2.
-#' @param boundaries object from \code{set_system_boundaries()}.
-#' @param benchmark_region e.g., "uruguay" (optional).
-#' @param save_detailed_objects TRUE to save detailed objects.
-#' @return list with $summary, $farm_results and class "cf_batch_complete".
+#' Processes a dataset of farms and computes emissions per farm,
+#' returning a summary plus per-farm details (optionally).
+#'
+#' @param data data.frame con una fila por tambo **o** ruta a un Excel.
+#' @param tier integer/numeric que define la metodología (p.ej. 1, 2, 3). Por defecto 2.
+#' @param boundaries Límites del sistema como devuelve \code{set_system_boundaries()}.
+#' @param benchmark_region (opcional) código/región de benchmark (character).
+#' @param save_detailed_objects logical; si \code{TRUE}, retorna objetos detallados por tambo.
+#'
+#' @return Lista con \code{$summary} y \code{$farm_results}.
 #' @export
+#' @aliases calc_emissions_batch
+#'
+#' @examples
+#' \dontrun{
+#' farms <- data.frame(FarmID = c("A","B"), Milk_litres = c(5e5, 7e5), Cows_milking = c(100, 140))
+#' res <- calc_batch(
+#'   data = farms,
+#'   tier = 2,
+#'   boundaries = set_system_boundaries("farm_gate"),
+#'   benchmark_region = "uruguay",
+#'   save_detailed_objects = FALSE
+#' )
+#' str(res$summary)
+#' }
 calc_batch <- function(data,
                        tier = 2,
                        boundaries = set_system_boundaries("farm_gate"),

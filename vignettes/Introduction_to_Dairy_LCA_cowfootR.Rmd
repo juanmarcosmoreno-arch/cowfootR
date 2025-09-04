@@ -1,0 +1,369 @@
+---
+title: "Introduction_to_Dairy_LCA_cowfootR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction_to_Dairy_LCA_cowfootR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  warning = FALSE,
+  message = FALSE
+)
+
+# Load required packages
+library(cowfootR)
+library(ggplot2)
+library(dplyr)
+```
+
+# Introduction to Dairy Life Cycle Assessment
+
+## Overview
+
+The dairy industry plays a crucial role in global food security, but it also contributes significantly to greenhouse gas emissions. Understanding and quantifying the environmental impact of dairy production is essential for sustainable development and climate change mitigation.
+
+The **cowfootR** package provides a comprehensive toolkit for calculating dairy farm carbon footprints following internationally recognized standards, specifically the International Dairy Federation (IDF) 2022 guidelines and IPCC 2019 methodologies.
+
+## Theoretical Background
+
+### Life Cycle Assessment in Dairy Production
+
+Life Cycle Assessment (LCA) is a systematic approach to evaluating the environmental impacts of a product or service throughout its entire life cycle. In dairy production, LCA helps quantify greenhouse gas emissions from various sources within the farm system.
+
+### Key Emission Sources in Dairy Systems
+
+Dairy farm emissions primarily originate from five main sources:
+
+1. **Enteric Fermentation**: Methane (CH₄) produced during digestion in ruminants
+2. **Manure Management**: CH₄ and nitrous oxide (N₂O) from manure storage and treatment
+3. **Soil Emissions**: N₂O from nitrogen fertilizers and excreta deposition
+4. **Energy Use**: Carbon dioxide (CO₂) from fossil fuel combustion and electricity
+5. **Purchased Inputs**: Embodied emissions in feeds, fertilizers, and materials
+
+### System Boundaries
+
+System boundaries define which processes are included in the assessment:
+
+- **Farm Gate**: Includes on-farm emissions only
+- **Cradle-to-Farm Gate**: Includes upstream production of inputs
+- **Partial**: Custom selection of emission sources
+
+### Functional Units and Intensity Metrics
+
+Results are expressed using functional units that allow meaningful comparisons:
+
+- **kg CO₂eq per kg FPCM**: Fat and Protein Corrected Milk intensity
+- **kg CO₂eq per hectare**: Land use intensity
+- **Absolute emissions**: Total farm emissions in kg CO₂eq per year
+
+## Getting Started with cowfootR
+
+### Installation
+
+```{r eval=FALSE}
+# Install from CRAN (when available)
+install.packages("cowfootR")
+
+# Or install development version from GitHub
+# devtools::install_github("yourusername/cowfootR")
+```
+
+### Loading the Package
+
+```{r}
+library(cowfootR)
+```
+
+### Basic Workflow
+
+The typical cowfootR workflow involves four main steps:
+
+1. **Define system boundaries**
+2. **Calculate emissions by source**
+3. **Aggregate total emissions**
+4. **Calculate intensity metrics**
+
+Let's walk through a simple example:
+
+## Example: Basic Farm Assessment
+
+### Step 1: Define System Boundaries
+
+```{r}
+# Define farm-gate boundaries (most common approach)
+boundaries <- set_system_boundaries("farm_gate")
+print(boundaries)
+```
+
+### Step 2: Basic Farm Data
+
+For this example, we'll use data from a typical dairy farm:
+
+```{r}
+# Farm characteristics
+farm_data <- list(
+  # Herd composition
+  dairy_cows = 100,
+  heifers = 30,
+  calves = 25,
+  
+  # Production
+  milk_litres = 600000,  # Annual milk production
+  milk_yield_per_cow = 6000,  # kg/cow/year
+  
+  # Farm area
+  total_area_ha = 120,
+  productive_area_ha = 110,
+  
+  # Inputs
+  concentrate_kg = 180000,  # Annual concentrate use
+  n_fertilizer_kg = 1500,   # Nitrogen fertilizer
+  diesel_litres = 8000,     # Annual diesel consumption
+  electricity_kwh = 35000   # Annual electricity use
+)
+
+print(farm_data)
+```
+
+### Step 3: Calculate Emissions by Source
+
+Now we calculate emissions from each source using the individual calculation functions:
+
+#### Enteric Fermentation
+
+```{r}
+# Calculate enteric methane emissions
+enteric_emissions <- calc_emissions_enteric(
+  n_animals = farm_data$dairy_cows,
+  cattle_category = "dairy_cows",
+  avg_milk_yield = farm_data$milk_yield_per_cow,
+  tier = 2,  # Use Tier 2 for more accurate results
+  boundaries = boundaries
+)
+
+print(enteric_emissions)
+```
+
+#### Manure Management
+
+```{r}
+# Calculate manure management emissions
+manure_emissions <- calc_emissions_manure(
+  n_cows = farm_data$dairy_cows,
+  manure_system = "pasture",  # Typical for extensive systems
+  tier = 2,
+  include_indirect = TRUE,
+  boundaries = boundaries
+)
+
+print(manure_emissions)
+```
+
+#### Soil Emissions
+
+```{r}
+# Calculate soil N2O emissions
+soil_emissions <- calc_emissions_soil(
+  n_fertilizer_synthetic = farm_data$n_fertilizer_kg,
+  n_excreta_pasture = farm_data$dairy_cows * 100,  # Estimated N excretion
+  area_ha = farm_data$total_area_ha,
+  soil_type = "well_drained",
+  climate = "temperate",
+  include_indirect = TRUE,
+  boundaries = boundaries
+)
+
+print(soil_emissions)
+```
+
+#### Energy Use
+
+```{r}
+# Calculate energy-related emissions
+energy_emissions <- calc_emissions_energy(
+  diesel_l = farm_data$diesel_litres,
+  electricity_kwh = farm_data$electricity_kwh,
+  country = "UY",  # Uruguay electricity grid
+  boundaries = boundaries
+)
+
+print(energy_emissions)
+```
+
+#### Purchased Inputs
+
+```{r}
+# Calculate emissions from purchased inputs
+input_emissions <- calc_emissions_inputs(
+  conc_kg = farm_data$concentrate_kg,
+  fert_n_kg = farm_data$n_fertilizer_kg,
+  region = "global",  # Use global emission factors
+  boundaries = boundaries
+)
+
+print(input_emissions)
+```
+
+### Step 4: Aggregate Total Emissions
+
+```{r}
+# Combine all emission sources
+total_emissions <- calc_total_emissions(
+  enteric_emissions,
+  manure_emissions,
+  soil_emissions,
+  energy_emissions,
+  input_emissions
+)
+
+print(total_emissions)
+```
+
+### Step 5: Calculate Intensity Metrics
+
+#### Milk Intensity
+
+```{r}
+# Calculate emissions per kg of milk (FPCM)
+milk_intensity <- calc_intensity_litre(
+  total_emissions = total_emissions,
+  milk_litres = farm_data$milk_litres,
+  fat = 3.8,      # Typical fat content
+  protein = 3.2   # Typical protein content
+)
+
+print(milk_intensity)
+```
+
+#### Area Intensity
+
+```{r}
+# Calculate emissions per hectare
+area_intensity <- calc_intensity_area(
+  total_emissions = total_emissions,
+  area_total_ha = farm_data$total_area_ha,
+  area_productive_ha = farm_data$productive_area_ha,
+  area_breakdown = list(
+    pasture_permanent = 80,
+    pasture_temporary = 20,
+    crops_feed = 15,
+    infrastructure = 5
+  )
+)
+
+print(area_intensity)
+```
+
+## Visualizing Results
+
+### Emission Source Breakdown
+
+```{r}
+# Create a data frame for plotting
+emission_breakdown <- data.frame(
+  Source = names(total_emissions$breakdown),
+  Emissions = as.numeric(total_emissions$breakdown)
+)
+
+# Create pie chart
+ggplot(emission_breakdown, aes(x = "", y = Emissions, fill = Source)) +
+  geom_col(width = 1) +
+  coord_polar("y", start = 0) +
+  theme_void() +
+  labs(title = "Farm Emissions by Source",
+       subtitle = paste("Total:", round(total_emissions$total_co2eq), "kg CO₂eq/year")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+### Intensity Comparison
+
+```{r}
+# Create comparison chart
+intensity_data <- data.frame(
+  Metric = c("Milk Intensity\n(kg CO₂eq/kg FPCM)", 
+             "Area Intensity\n(kg CO₂eq/ha)"),
+  Value = c(milk_intensity$intensity_co2eq_per_kg_fpcm,
+            area_intensity$intensity_per_productive_ha),
+  Benchmark = c(1.2, 8000)  # Typical benchmark values
+)
+
+ggplot(intensity_data, aes(x = Metric)) +
+  geom_col(aes(y = Value), fill = "steelblue", alpha = 0.7) +
+  geom_point(aes(y = Benchmark), color = "red", size = 3) +
+  geom_text(aes(y = Benchmark, label = "Benchmark"), 
+            color = "red", vjust = -0.5) +
+  labs(title = "Farm Intensity Metrics",
+       y = "Value",
+       x = "") +
+  theme_minimal()
+```
+
+## Understanding the Results
+
+### Interpreting Emission Factors
+
+- **Enteric fermentation** typically represents 40-60% of total farm emissions
+- **Purchased inputs** (especially protein feeds) can be 20-40% of emissions
+- **Soil N₂O** usually contributes 5-15% of total emissions
+- **Energy use** is generally the smallest component (2-8%)
+
+### Benchmarking Performance
+
+The calculated intensities can be compared against regional or global benchmarks:
+
+- **Excellent performance**: < 1.0 kg CO₂eq/kg FPCM
+- **Good performance**: 1.0-1.3 kg CO₂eq/kg FPCM  
+- **Average performance**: 1.3-2.0 kg CO₂eq/kg FPCM
+- **Poor performance**: > 2.0 kg CO₂eq/kg FPCM
+
+## Data Quality Considerations
+
+### Required vs Optional Data
+
+**Essential data:**
+- Herd size and composition
+- Milk production
+- Farm area
+- Major input quantities
+
+**Optional but recommended:**
+- Detailed feed composition
+- Animal weights and productivity
+- Energy breakdown by use
+- Soil and climate characteristics
+
+### Common Issues
+
+1. **Missing data**: The package provides reasonable defaults, but farm-specific data improves accuracy
+2. **Unit consistency**: Ensure all inputs use the correct units (kg, litres, hectares)
+3. **System boundaries**: Be consistent about what's included/excluded
+4. **Temporal boundaries**: Use annual data for meaningful comparisons
+
+## Next Steps
+
+This introduction covered the basics of using cowfootR for single farm assessments. For more advanced topics, see:
+
+- **Single Farm Analysis**: Detailed exploration of individual calculation functions
+- **Batch Farm Assessment**: Processing multiple farms simultaneously
+- **Methodology Comparison**: Understanding Tier 1 vs Tier 2 approaches
+- **Regional Factors**: Using location-specific emission factors
+
+## Key Takeaways
+
+1. **cowfootR** follows internationally recognized LCA standards (IDF 2022, IPCC 2019)
+2. The modular approach allows flexible assessment of different emission sources
+3. Results should be interpreted in context of farm system and regional benchmarks
+4. Data quality significantly affects accuracy - collect farm-specific data when possible
+5. The package provides both absolute emissions and intensity metrics for comprehensive analysis
+
+---
+
+*For questions, bug reports, or contributions, visit the cowfootR GitHub repository or contact the development team.*

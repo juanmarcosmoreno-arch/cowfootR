@@ -8,7 +8,7 @@
 #' @return Invisibly returns the file path.
 #' @export
 #'
-#' #' @examples
+#' @examples
 #' tf <- tempfile(fileext = ".xlsx")
 #' on.exit(unlink(tf, force = TRUE), add = TRUE)
 #' download_template(tf)

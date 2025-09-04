@@ -2,7 +2,8 @@
 % Please edit documentation in R/calc_batch.R
 \name{calc_batch}
 \alias{calc_batch}
-\title{Carbon Footprint Batch by rows (tier 1/2)}
+\alias{calc_emissions_batch}
+\title{Batch carbon footprint calculation}
 \usage{
 calc_batch(
   data,
@@ -13,19 +14,33 @@ calc_batch(
 )
 }
 \arguments{
-\item{data}{data.frame with the template columns.}
+\item{data}{data.frame con una fila por tambo \strong{o} ruta a un Excel.}
 
-\item{tier}{1 or 2.}
+\item{tier}{integer/numeric que define la metodología (p.ej. 1, 2, 3). Por defecto 2.}
 
-\item{boundaries}{object from \code{set_system_boundaries()}.}
+\item{boundaries}{Límites del sistema como devuelve \code{set_system_boundaries()}.}
 
-\item{benchmark_region}{e.g., "uruguay" (optional).}
+\item{benchmark_region}{(opcional) código/región de benchmark (character).}
 
-\item{save_detailed_objects}{TRUE to save detailed objects.}
+\item{save_detailed_objects}{logical; si \code{TRUE}, retorna objetos detallados por tambo.}
 }
 \value{
-list with $summary, $farm_results and class "cf_batch_complete".
+Lista con \code{$summary} y \code{$farm_results}.
 }
 \description{
-Carbon Footprint Batch by rows (tier 1/2)
+Processes a dataset of farms and computes emissions per farm,
+returning a summary plus per-farm details (optionally).
+}
+\examples{
+\dontrun{
+farms <- data.frame(FarmID = c("A","B"), Milk_litres = c(5e5, 7e5), Cows_milking = c(100, 140))
+res <- calc_batch(
+  data = farms,
+  tier = 2,
+  boundaries = set_system_boundaries("farm_gate"),
+  benchmark_region = "uruguay",
+  save_detailed_objects = FALSE
+)
+str(res$summary)
+}
 }
