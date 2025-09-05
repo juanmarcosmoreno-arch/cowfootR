@@ -14,26 +14,28 @@ calc_batch(
 )
 }
 \arguments{
-\item{data}{data.frame con una fila por tambo \strong{o} ruta a un Excel.}
+\item{data}{A data.frame with one row per farm (already loaded). This version does not read files.}
 
-\item{tier}{integer/numeric que define la metodología (p.ej. 1, 2, 3). Por defecto 2.}
+\item{tier}{Integer; methodology tier (usually 1 or 2). Default = 2.}
 
-\item{boundaries}{Límites del sistema como devuelve \code{set_system_boundaries()}.}
+\item{boundaries}{System boundaries as returned by \code{set_system_boundaries()}.}
 
-\item{benchmark_region}{(opcional) código/región de benchmark (character).}
+\item{benchmark_region}{Optional character code/region for benchmarking (if supported).}
 
-\item{save_detailed_objects}{logical; si \code{TRUE}, retorna objetos detallados por tambo.}
+\item{save_detailed_objects}{Logical; if TRUE, returns detailed objects per farm.}
 }
 \value{
-Lista con \code{$summary} y \code{$farm_results}.
+A list with \code{$summary} and \code{$farm_results}; class \code{cf_batch_complete}.
 }
 \description{
-Processes a dataset of farms and computes emissions per farm,
+Processes a data.frame of farms and computes emissions per farm,
 returning a summary plus per-farm details (optionally).
 }
 \examples{
 \dontrun{
-farms <- data.frame(FarmID = c("A","B"), Milk_litres = c(5e5, 7e5), Cows_milking = c(100, 140))
+farms <- data.frame(FarmID = c("A","B"),
+                    Milk_litres = c(5e5, 7e5),
+                    Cows_milking = c(100, 140))
 res <- calc_batch(
   data = farms,
   tier = 2,

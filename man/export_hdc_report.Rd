@@ -11,7 +11,7 @@ export_hdc_report(
 )
 }
 \arguments{
-\item{batch_results}{A cf_batch_complete object returned by \code{calc_batch()}.}
+\item{batch_results}{A \code{cf_batch_complete} object returned by \code{calc_batch()}.}
 
 \item{file}{Path to the Excel file to save. Default = "cowfootR_report.xlsx".}
 

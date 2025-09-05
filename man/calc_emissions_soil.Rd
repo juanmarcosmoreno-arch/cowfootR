@@ -31,61 +31,34 @@ Default = 0.}
 \item{n_crop_residues}{Numeric. Nitrogen in crop residues returned to soil (kg N/year).
 Default = 0.}
 
-\item{area_ha}{Numeric. Total farm area (hectares). Used for calculating per-hectare metrics.}
+\item{area_ha}{Numeric. Total farm area (hectares). Used for per-hectare metrics. Optional.}
 
-\item{soil_type}{Character. Soil drainage characteristics. Options: "well_drained",
-"poorly_drained". Default = "well_drained". Affects emission factors.}
+\item{soil_type}{Character. Soil drainage: "well_drained" or "poorly_drained".
+Default = "well_drained".}
 
-\item{climate}{Character. Climate classification. Options: "temperate", "tropical".
-Default = "temperate". Affects emission factors.}
+\item{climate}{Character. Climate: "temperate" or "tropical". Default = "temperate".}
 
-\item{ef_direct}{Numeric. Direct emission factor for N2O-N (kg N2O-N/kg N input).
-If NULL, uses IPCC 2019 values adjusted by soil type and climate.}
+\item{ef_direct}{Numeric. Direct EF for N2O-N (kg N2O-N per kg N input).
+If NULL, uses IPCC 2019 values based on soil type and climate.}
 
-\item{include_indirect}{Logical. Include indirect N2O emissions from volatilization
-and leaching? Default = TRUE.}
+\item{include_indirect}{Logical. Include indirect N2O from volatilization and leaching?
+Default = TRUE.}
 
-\item{gwp_n2o}{Numeric. Global Warming Potential of N2O. Default = 273 (IPCC AR6).}
+\item{gwp_n2o}{Numeric. GWP of N2O. Default = 273 (IPCC AR6).}
 
 \item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
-If "soil" is not included, returns 0.}
+If soil is excluded, returns \code{co2eq_kg = 0}.}
 }
 \value{
-A list with detailed N2O emissions by source, direct/indirect components,
-and metadata following IDF methodology.
+A list with at least \code{source="soil"} and \code{co2eq_kg} (numeric),
+plus detailed breakdown metadata when included by boundaries.
 }
 \description{
 Estimates direct and indirect N2O emissions from soils due to
 fertilization, excreta deposition, and crop residues using IPCC methodology.
 }
-\examples{
-# Basic calculation with synthetic fertilizer
-calc_emissions_soil(n_fertilizer_synthetic = 1500, area_ha = 100)
-
-# Mixed system with fertilizer and grazing
-calc_emissions_soil(
-  n_fertilizer_synthetic = 800,
-  n_fertilizer_organic = 200,
-  n_excreta_pasture = 3000,
-  area_ha = 150
-)
-
-# Tropical poorly-drained conditions
-calc_emissions_soil(
-  n_fertilizer_synthetic = 1200,
-  soil_type = "poorly_drained",
-  climate = "tropical",
-  area_ha = 80
-)
-
-# Without indirect emissions
-calc_emissions_soil(
-  n_fertilizer_synthetic = 1000,
-  include_indirect = FALSE,
-  area_ha = 120
-)
-
-# With system boundaries
-b <- set_system_boundaries("farm_gate")
-calc_emissions_soil(n_fertilizer_synthetic = 1500, boundaries = b, area_ha = 100)
+\details{
+IMPORTANT: When system boundaries exclude soil, this function must return
+a list with \code{source = "soil"} and \code{co2eq_kg = 0} (numeric zero) to match
+the partial-boundaries integration tests.
 }

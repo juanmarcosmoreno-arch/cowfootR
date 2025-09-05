@@ -1,7 +1,9 @@
-#' Calculate total emissions (robust and retro-compatible)
+#' Calculate total emissions (robust and boundary-aware)
 #'
 #' Aggregates results from different sources (enteric, manure, soil, energy, inputs)
 #' even if they don't use exactly the same field name for the total.
+#' IMPORTANT: If a source explicitly reports \code{co2eq_kg = NULL} (e.g. excluded by
+#' system boundaries), it is treated as zero and no fallback summation is attempted.
 #'
 #' @param ... Results from \code{calc_emissions_*()} functions (lists).
 #' @return Object "cf_total" with breakdown (kg CO2eq by source) and total.
@@ -58,7 +60,18 @@ calc_total_emissions <- function(...) {
     as.character(nm)
   }
   .extract_total <- function(x) {
-    # Prioritizes typical total fields
+    # If the source is explicitly excluded, force zero and bail out early
+    if (isTRUE(x$excluded) || identical(x$methodology, "excluded_by_boundaries")) {
+      return(0)
+    }
+
+    # If the object *has* a co2eq_kg field and it is NULL, treat as zero.
+    # (Do NOT try to infer totals from other numbers in this case.)
+    if ("co2eq_kg" %in% names(x) && is.null(x$co2eq_kg)) {
+      return(0)
+    }
+
+    # Prioritize typical total fields
     tot <- .first_non_null(
       .num_or_null(x$co2eq_kg),
       .num_or_null(x$total_co2eq_kg),
@@ -73,7 +86,7 @@ calc_total_emissions <- function(...) {
     tot_bd <- .sum_breakdown(bd)
     if (!is.null(tot_bd)) return(tot_bd)
 
-    # Last attempt: sum all flattened numeric values (risky, but useful)
+    # Last attempt: sum all flattened numeric values
     flat <- suppressWarnings(as.numeric(unlist(x, use.names = FALSE)))
     if (length(flat)) {
       s <- sum(flat, na.rm = TRUE)

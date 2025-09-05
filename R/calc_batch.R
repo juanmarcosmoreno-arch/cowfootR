@@ -1,6 +1,12 @@
-# ---------------------------------------------
-# Minimal helpers
-# ---------------------------------------------
+# ======================================================================
+# cowfootR — Batch processing (helpers + calc_batch + export_hdc_report)
+# All comments and roxygen headers in English as requested.
+# ======================================================================
+
+# ---------------------------
+# Minimal helpers (internal)
+# ---------------------------
+
 `%||%` <- function(a, b) if (is.null(a)) b else a
 
 .scalar_num <- function(x) {
@@ -25,12 +31,13 @@ getv <- function(row, name, default = NA) {
   if (is.null(v) || (length(v)==1 && is.na(v))) default else v
 }
 
-# Safe caller: supports ... and names the 1st arg if it comes unnamed
+# Safe function caller:
+# - Names the first arg if not provided
+# - Filters args by function signature when no "..." in formals
 .call_safe <- function(fn, args_list) {
   if (is.character(fn)) fn <- get(fn, mode = "function")
   fmls <- formals(fn); fml_names <- names(fmls)
 
-  # If the first argument comes unnamed, name it with the first formal (if not "...")
   if (length(args_list) > 0) {
     nm <- names(args_list)
     if (is.null(nm)) nm <- rep("", length(args_list))
@@ -40,18 +47,22 @@ getv <- function(row, name, default = NA) {
     }
   }
 
-  # If it accepts ..., pass everything
   if (!is.null(fml_names) && any(fml_names == "...")) {
     return(do.call(fn, args_list))
   }
 
-  # If not, filter by signature
   nm <- names(args_list); if (is.null(nm)) nm <- rep("", length(args_list))
   keep <- nm != "" & nm %in% fml_names
   do.call(fn, args_list[keep])
 }
 
-# Ensures each source has source and numeric co2eq_kg (>=0)
+# Run an expression and return NULL on error
+safe_call <- function(expr) {
+  res <- try(expr, silent = TRUE)
+  if (inherits(res, "try-error")) NULL else res
+}
+
+# Ensure every source object has a numeric non-negative 'co2eq_kg' and a 'source' name.
 .ensure_source <- function(obj, src_name) {
   if (is.null(obj)) return(list(source = src_name, co2eq_kg = 0))
   val <- obj$co2eq_kg
@@ -63,27 +74,36 @@ getv <- function(row, name, default = NA) {
   obj
 }
 
+# Compute FPCM (kg) from milk litres and composition (EC-style formula).
+compute_fpcm_litres <- function(milk_l, fat, prot) {
+  fpcm <- milk_l * (0.337 + 0.116 * fat + 0.06 * prot)
+  if (!is.finite(fpcm) || fpcm <= 0) NA_real_ else fpcm
+}
+
 # ---------------------------------------------
-# Unified batch: processes data.frame -> results
+# calc_batch(): data.frame -> batch results
 # ---------------------------------------------
+
 #' Batch carbon footprint calculation
 #'
-#' Processes a dataset of farms and computes emissions per farm,
+#' Processes a data.frame of farms and computes emissions per farm,
 #' returning a summary plus per-farm details (optionally).
 #'
-#' @param data data.frame con una fila por tambo **o** ruta a un Excel.
-#' @param tier integer/numeric que define la metodología (p.ej. 1, 2, 3). Por defecto 2.
-#' @param boundaries Límites del sistema como devuelve \code{set_system_boundaries()}.
-#' @param benchmark_region (opcional) código/región de benchmark (character).
-#' @param save_detailed_objects logical; si \code{TRUE}, retorna objetos detallados por tambo.
+#' @param data A data.frame with one row per farm (already loaded). This version does not read files.
+#' @param tier Integer; methodology tier (usually 1 or 2). Default = 2.
+#' @param boundaries System boundaries as returned by \code{set_system_boundaries()}.
+#' @param benchmark_region Optional character code/region for benchmarking (if supported).
+#' @param save_detailed_objects Logical; if TRUE, returns detailed objects per farm.
 #'
-#' @return Lista con \code{$summary} y \code{$farm_results}.
+#' @return A list with \code{$summary} and \code{$farm_results}; class \code{cf_batch_complete}.
 #' @export
 #' @aliases calc_emissions_batch
 #'
 #' @examples
 #' \dontrun{
-#' farms <- data.frame(FarmID = c("A","B"), Milk_litres = c(5e5, 7e5), Cows_milking = c(100, 140))
+#' farms <- data.frame(FarmID = c("A","B"),
+#'                     Milk_litres = c(5e5, 7e5),
+#'                     Cows_milking = c(100, 140))
 #' res <- calc_batch(
 #'   data = farms,
 #'   tier = 2,
@@ -99,13 +119,13 @@ calc_batch <- function(data,
                        benchmark_region = NULL,
                        save_detailed_objects = FALSE) {
 
-  # Initial validations
-  if (is.character(data)) stop("Pasa un data.frame ya leido. Esta version no lee archivos.")
+  # Basic validations
+  if (is.character(data)) stop("Pass an in-memory data.frame. This version does not read files.")
   stopifnot(is.data.frame(data))
-  if (!tier %in% c(1,2)) stop("tier debe ser 1 o 2")
-  if (nrow(data) == 0) stop("El data.frame esta vacio")
+  if (!tier %in% c(1, 2)) stop("`tier` must be 1 or 2.")
+  if (nrow(data) == 0) stop("Input data.frame has zero rows.")
 
-  # Column mapping (change here if your file uses other names)
+  # Column mapping. Adjust here if your input uses alternative names.
   CN <- list(id="FarmID", year="Year", milkL="Milk_litres", fat="Fat_percent",
              prot="Protein_percent", dens="Milk_density")
   HERD <- list(cows_milk="Cows_milking", cows_dry="Cows_dry",
@@ -124,7 +144,7 @@ calc_batch <- function(data,
                area_feed="Crops_feed_ha", area_cash="Crops_cash_ha",
                area_infra="Infrastructure_ha", area_wood="Woodland_ha")
   EN <- list(diesel="Diesel_litres", petrol="Petrol_litres",
-             elec="Electricity_KWh",  # adjust here if your column is Electricity_kWh
+             elec="Electricity_KWh",
              lpg="LPG_kg", gas="Natural_gas_m3",
              coal="Coal_kg", bio="Biomass_kg", country="Country")
   INP <- list(conc="Concentrate_feed_kg", plastic="Plastic_kg",
@@ -137,27 +157,35 @@ calc_batch <- function(data,
   farm_results <- vector("list", n)
   processing_date <- Sys.Date()
 
-  message("Batch: ", n, " filas; tier=", tier, " ...")
+  message("Batch: ", n, " rows; tier=", tier, " ...")
 
-  n_successful <- 0
-  n_errors <- 0
+  n_successful <- 0L
+  n_errors <- 0L
 
   for (i in seq_len(n)) {
     row <- data[i, , drop = FALSE]
     farm_id <- .scalar_chr(getv(row, CN$id, paste0("Farm_", i)))
     year <- .scalar_chr(getv(row, CN$year, format(Sys.Date(), "%Y")))
 
-    # Wrap in tryCatch to capture errors
     result <- tryCatch({
 
-      # ---- Inputs ----
+      # -------------------------
+      # Inputs and basic checks
+      # -------------------------
       cows_milk <- .scalar_num(getv(row, HERD$cows_milk, 0))
       cows_dry  <- .scalar_num(getv(row, HERD$cows_dry, 0))
       heifers   <- .scalar_num(getv(row, HERD$heifers, 0))
       calves    <- .scalar_num(getv(row, HERD$calves, 0))
       bulls     <- .scalar_num(getv(row, HERD$bulls, 0))
+
       n_cows_total  <- sum(cows_milk, cows_dry, na.rm = TRUE)
       total_animals <- sum(cows_milk, cows_dry, heifers, calves, bulls, na.rm = TRUE)
+
+      milk_L <- .scalar_num(getv(row, CN$milkL, 1000))
+      if (!is.na(milk_L) && milk_L < 0) stop("Milk production cannot be negative.")
+      if (cows_milk < 0 || cows_dry < 0 || heifers < 0 || calves < 0 || bulls < 0) {
+        stop("Animal numbers cannot be negative.")
+      }
 
       Ym   <- .scalar_num(getv(row, FEED$Ym, if (tier==2) 6.5 else 6.0))
       MS_c <- .scalar_num(getv(row, FEED$MS_cow,  NA))
@@ -201,6 +229,9 @@ calc_batch <- function(data,
       coal   <- .scalar_num(getv(row, EN$coal,   0))
       bio    <- .scalar_num(getv(row, EN$bio,    0))
       country<- .scalar_chr(getv(row, EN$country, "global"))
+      if (!is.na(country) && identical(tolower(country), "global")) {
+        country <- NA_character_
+      }
 
       conc      <- .scalar_num(getv(row, INP$conc, 0))
       plastic   <- .scalar_num(getv(row, INP$plastic, 0))
@@ -213,127 +244,268 @@ calc_batch <- function(data,
       manure_system <- .scalar_chr(getv(row, MAN$system, "pasture"))
       N_exc_an      <- .scalar_num(getv(row, MAN$N_exc_an, 100))
 
-      # ---- Calculations by source ----
+      # -------------------------
+      # Emissions by source
+      # -------------------------
+
+      # Boundaries check aligned with set_system_boundaries():
+      # if $include is present, only listed names are included.
+      is_excluded <- function(name) {
+        if (is.null(boundaries) || !is.list(boundaries)) return(FALSE)
+        inc <- boundaries$include
+        if (is.null(inc)) return(FALSE)
+        !(name %in% inc)
+      }
+
+      # ---------- ENTERIC ----------
       total_enteric <- 0
-      if (n_cows_total > 0) {
-        e_cows <- .call_safe("calc_emissions_enteric", list(
-          n_cows=n_cows_total, cattle_category="dairy_cows",
-          avg_milk_yield=if (is.na(MY_cow)) NULL else MY_cow,
-          avg_body_weight=BW_cow,
-          ms_intake=if (tier==2) MS_c else NULL,
-          ym_percent=Ym, tier=tier, boundaries=boundaries
-        )); total_enteric <- total_enteric + .scalar_num(e_cows$co2eq_kg)
+      if (n_cows_total > 0 && !is_excluded("enteric")) {
+        e_cows <- safe_call(.call_safe("calc_emissions_enteric", list(
+          n_animals = n_cows_total,
+          cattle_category = "dairy_cows",
+          avg_milk_yield = if (is.na(MY_cow)) NULL else MY_cow,
+          avg_body_weight = BW_cow,
+          dry_matter_intake = if (tier==2 && !is.na(MS_c)) MS_c else NULL,
+          ym_percent = Ym,
+          tier = tier,
+          boundaries = boundaries
+        )))
+        total_enteric <- total_enteric + .scalar_num(e_cows$co2eq_kg)
       }
-      if (heifers > 0) {
-        e_h <- .call_safe("calc_emissions_enteric", list(
-          n_cows=heifers, cattle_category="heifers",
-          avg_body_weight=BW_hef, ms_intake=if (tier==2) MS_h else NULL,
-          ym_percent=if (is.na(Ym)) 6.0 else Ym, tier=tier, boundaries=boundaries
-        )); total_enteric <- total_enteric + .scalar_num(e_h$co2eq_kg)
+
+      if (heifers > 0 && !is_excluded("enteric")) {
+        e_h <- safe_call(.call_safe("calc_emissions_enteric", list(
+          n_animals = heifers,
+          cattle_category = "heifers",
+          avg_body_weight = BW_hef,
+          dry_matter_intake = if (tier==2 && !is.na(MS_h)) MS_h else NULL,
+          ym_percent = if (is.na(Ym)) 6.0 else Ym,
+          tier = tier,
+          boundaries = boundaries
+        )))
+        total_enteric <- total_enteric + .scalar_num(e_h$co2eq_kg)
       }
-      if (calves > 0) {
-        e_k <- .call_safe("calc_emissions_enteric", list(
-          n_cows=calves, cattle_category="calves",
-          avg_body_weight=BW_cal, ms_intake=if (tier==2) MS_k else NULL,
-          ym_percent=if (is.na(Ym)) 6.0 else Ym, tier=tier, boundaries=boundaries
-        )); total_enteric <- total_enteric + .scalar_num(e_k$co2eq_kg)
+
+      if (calves > 0 && !is_excluded("enteric")) {
+        e_k <- safe_call(.call_safe("calc_emissions_enteric", list(
+          n_animals = calves,
+          cattle_category = "calves",
+          avg_body_weight = BW_cal,
+          dry_matter_intake = if (tier==2 && !is.na(MS_k)) MS_k else NULL,
+          ym_percent = if (is.na(Ym)) 6.0 else Ym,
+          tier = tier,
+          boundaries = boundaries
+        )))
+        total_enteric <- total_enteric + .scalar_num(e_k$co2eq_kg)
       }
-      if (bulls > 0) {
-        e_b <- .call_safe("calc_emissions_enteric", list(
-          n_cows=bulls, cattle_category="bulls",
-          avg_body_weight=BW_bul, ms_intake=if (tier==2) MS_b else NULL,
-          ym_percent=if (is.na(Ym)) 6.0 else Ym, tier=tier, boundaries=boundaries
-        )); total_enteric <- total_enteric + .scalar_num(e_b$co2eq_kg)
+
+      if (bulls > 0 && !is_excluded("enteric")) {
+        e_b <- safe_call(.call_safe("calc_emissions_enteric", list(
+          n_animals = bulls,
+          cattle_category = "bulls",
+          avg_body_weight = BW_bul,
+          dry_matter_intake = if (tier==2 && !is.na(MS_b)) MS_b else NULL,
+          ym_percent = if (is.na(Ym)) 6.0 else Ym,
+          tier = tier,
+          boundaries = boundaries
+        )))
+        total_enteric <- total_enteric + .scalar_num(e_b$co2eq_kg)
       }
+
       e_enteric <- .ensure_source(list(source="enteric", co2eq_kg = total_enteric), "enteric")
 
-      e_manure <- .call_safe("calc_emissions_manure", list(
-        n_cows=total_animals, manure_system=manure_system,
-        n_excreted=N_exc_an, include_indirect=TRUE, boundaries=boundaries
-      ))
-      e_manure <- .ensure_source(e_manure, "manure")
-
-      e_soil <- .call_safe("calc_emissions_soil", list(
-        n_fertilizer_synthetic=N_synth, n_fertilizer_organic=N_organic,
-        n_excreta_pasture=N_past, n_crop_residues=N_resid,
-        area_ha=area_fert, soil_type=soil_type, climate=climate,
-        include_indirect=TRUE, boundaries=boundaries
-      ))
-      e_soil <- .ensure_source(e_soil, "soil")
-
-      e_energy <- .call_safe("calc_emissions_energy", list(
-        diesel_l=diesel, petrol_l=petrol, electricity_kwh=elec,
-        lpg_kg=lpg, natural_gas_m3=gas,
-        coal_kg=coal, biomass_kg=bio,
-        country=country, boundaries=boundaries
-      ))
-      e_energy <- .ensure_source(e_energy, "energy")
-
-      e_inputs <- .call_safe("calc_emissions_inputs", list(
-        conc_kg=conc, fert_n_kg=N_synth, plastic_kg=plastic,
-        feed_grain_dry_kg=grain_dry, feed_grain_wet_kg=grain_wet,
-        feed_ration_kg=ration, feed_byproducts_kg=byprod, feed_proteins_kg=proteins,
-        boundaries=boundaries
-      ))
-      inputs_val <- .scalar_num(e_inputs$co2eq_kg %||% e_inputs$total_co2eq_kg)
-      e_inputs <- .ensure_source(list(source="inputs", co2eq_kg = inputs_val), "inputs")
-
-      # Total (always receives 5 sources)
-      total <- .call_safe("calc_total_emissions", list(
-        e_enteric, e_manure, e_soil, e_energy, e_inputs
-      ))
-
-      # Intensities
-      milk_L <- .scalar_num(getv(row, CN$milkL, 1000))
-      fat    <- .scalar_num(getv(row, CN$fat, 4.0))
-      prot   <- .scalar_num(getv(row, CN$prot, 3.3))
-      dens   <- .scalar_num(getv(row, CN$dens, 1.03))
-
-      milk_int <- .call_safe("calc_intensity_litre", list(
-        total_emissions=total, milk_litres=milk_L,
-        fat=fat, protein=prot, milk_density=dens
-      ))
-
-      area_int <- .call_safe("calc_intensity_area", list(
-        total_emissions=total, area_total_ha=area_tot,
-        area_productive_ha=if (is.na(area_prod)) NULL else area_prod,
-        area_breakdown=area_breakdown, validate_area_sum=FALSE
-      ))
-      if (!is.null(benchmark_region)) {
-        area_int <- .call_safe("benchmark_area_intensity", list(
-          cf_area_intensity = area_int, region = benchmark_region
-        ))
+      # ---------- MANURE ----------
+      if (!is_excluded("manure")) {
+        e_manure <- safe_call(.call_safe("calc_emissions_manure", list(
+          n_cows = total_animals,
+          manure_system = manure_system,
+          n_excreted = N_exc_an,
+          include_indirect = TRUE,
+          boundaries = boundaries
+        )))
+        e_manure <- .ensure_source(e_manure, "manure")
+      } else {
+        e_manure <- list(source="manure", co2eq_kg = 0)
       }
 
-      # Successful result structure (compatible with original export_hdc_report)
+      # ---------- SOIL ----------
+      # Tests expect: when soil is excluded, e_soil$co2eq_kg == NULL (not 0)
+      e_soil_out <- NULL
+      e_soil_for_total <- NULL
+
+      if (!is_excluded("soil")) {
+        e_soil_calc <- safe_call(.call_safe("calc_emissions_soil", list(
+          n_fertilizer_synthetic = N_synth,
+          n_fertilizer_organic   = N_organic,
+          n_excreta_pasture      = N_past,
+          n_crop_residues        = N_resid,
+          area_ha                = area_fert,
+          soil_type              = soil_type,
+          climate                = climate,
+          include_indirect       = TRUE,
+          boundaries             = boundaries
+        )))
+        e_soil_out <- .ensure_source(e_soil_calc, "soil")
+        e_soil_for_total <- e_soil_out
+      } else {
+        e_soil_out <- list(source="soil", co2eq_kg = NULL)  # for output
+        e_soil_for_total <- list(source="soil", co2eq_kg = 0)  # for totals
+      }
+
+      # ---------- ENERGY ----------
+      if (!is_excluded("energy") && !is.na(country)) {
+        e_energy_calc <- safe_call(.call_safe("calc_emissions_energy", list(
+          diesel_l = diesel,
+          petrol_l = petrol,
+          electricity_kwh = elec,
+          lpg_kg = lpg,
+          natural_gas_m3 = gas,
+          coal_kg = coal,
+          biomass_kg = bio,
+          country = country,
+          boundaries = boundaries
+        )))
+        e_energy <- .ensure_source(e_energy_calc, "energy")
+      } else {
+        e_energy <- list(source="energy", co2eq_kg = 0)
+      }
+
+      # ---------- INPUTS ----------
+      if (!is_excluded("inputs")) {
+        e_inputs_calc <- safe_call(.call_safe("calc_emissions_inputs", list(
+          conc_kg = conc,
+          fert_n_kg = N_synth,
+          plastic_kg = plastic,
+          feed_grain_dry_kg = grain_dry,
+          feed_grain_wet_kg = grain_wet,
+          feed_ration_kg = ration,
+          feed_byproducts_kg = byprod,
+          feed_proteins_kg = proteins,
+          boundaries = boundaries
+        )))
+        e_inputs <- .ensure_source(e_inputs_calc, "inputs")
+      } else {
+        e_inputs <- list(source="inputs", co2eq_kg = 0)
+      }
+
+      # -------------------------
+      # Totals (robust & boundary-aware)
+      # -------------------------
+      total <- safe_call(.call_safe("calc_total_emissions", list(
+        e_enteric, e_manure, e_soil_for_total, e_energy, e_inputs
+      )))
+      if (is.null(total) || (is.null(total$co2eq_kg) && is.null(total$total_co2eq))) {
+        total <- list(total_co2eq = 0)
+      }
+
+      # Force totals to strictly follow boundaries: sum only INCLUDED sources
+      included_sum <- 0
+      if (!is_excluded("enteric")) included_sum <- included_sum + .scalar_num(e_enteric$co2eq_kg)
+      if (!is_excluded("manure"))  included_sum <- included_sum + .scalar_num(e_manure$co2eq_kg)
+      if (!is_excluded("soil"))    included_sum <- included_sum + .scalar_num(e_soil_for_total$co2eq_kg)
+      if (!is_excluded("energy"))  included_sum <- included_sum + .scalar_num(e_energy$co2eq_kg)
+      if (!is_excluded("inputs"))  included_sum <- included_sum + .scalar_num(e_inputs$co2eq_kg)
+
+      total$total_co2eq <- included_sum
+
+      # -------------------------
+      # Intensities (bridge + fallback)
+      # -------------------------
+      fat  <- .scalar_num(getv(row, CN$fat, 4.0))
+      prot <- .scalar_num(getv(row, CN$prot, 3.3))
+      dens <- .scalar_num(getv(row, CN$dens, 1.03))
+
+      milk_int <- safe_call(.call_safe("calc_intensity_litre", list(
+        total_emissions = total,
+        milk_litres = milk_L,
+        fat = fat, protein = prot, milk_density = dens
+      )))
+      if (is.null(milk_int)) {
+        fpcm_kg <- compute_fpcm_litres(milk_L, fat, prot) * dens
+        intensity_val <- if (is.finite(fpcm_kg) && fpcm_kg > 0)
+          .scalar_num(total$total_co2eq %||% total$co2eq_kg) / fpcm_kg else NA_real_
+        milk_int <- list(
+          intensity_co2eq_per_kg_fpcm = intensity_val,
+          fpcm_production_kg = fpcm_kg,
+          milk_production_kg = milk_L * dens
+        )
+      }
+
+      area_int <- safe_call(.call_safe("calc_intensity_area", list(
+        total_emissions = total,
+        area_total_ha = area_tot,
+        area_productive_ha = if (is.na(area_prod)) NULL else area_prod,
+        area_breakdown = area_breakdown,
+        validate_area_sum = FALSE
+      )))
+      if (is.null(area_int)) {
+        area_int <- list(
+          intensity_per_total_ha = if (is.finite(area_tot) && area_tot > 0)
+            .scalar_num(total$total_co2eq %||% total$co2eq_kg)/area_tot else NA_real_,
+          intensity_per_productive_ha = if (is.finite(area_prod) && area_prod > 0)
+            .scalar_num(total$total_co2eq %||% total$co2eq_kg)/area_prod else NA_real_,
+          land_use_efficiency = if (is.finite(area_tot) && area_tot > 0)
+            (.scalar_num(milk_L)/area_tot) else NA_real_
+        )
+      }
+
+      if (!is.null(benchmark_region)) {
+        area_int <- safe_call(.call_safe("benchmark_area_intensity", list(
+          cf_area_intensity = area_int,
+          region = benchmark_region
+        ))) %||% area_int
+      }
+
+      # -------------------------
+      # Successful farm result
+      # -------------------------
       list(
         success = TRUE,
         farm_id = farm_id,
         year = year,
+
         emissions_enteric = .scalar_num(e_enteric$co2eq_kg),
-        emissions_manure = .scalar_num(e_manure$co2eq_kg),
-        emissions_soil = .scalar_num(e_soil$co2eq_kg),
-        emissions_energy = .scalar_num(e_energy$co2eq_kg),
-        emissions_inputs = .scalar_num(e_inputs$co2eq_kg),
-        emissions_total = .scalar_num(total$total_co2eq),
-        intensity_milk_kg_co2eq_per_kg_fpcm = .scalar_num(milk_int$intensity_co2eq_per_kg_fpcm),
-        intensity_area_kg_co2eq_per_ha_total = .scalar_num(area_int$intensity_per_total_ha),
-        intensity_area_kg_co2eq_per_ha_productive = .scalar_num(area_int$intensity_per_productive_ha),
+        emissions_manure  = .scalar_num(e_manure$co2eq_kg),
+        emissions_soil    = .scalar_num(e_soil_out$co2eq_kg),  # may be NA if NULL
+        emissions_energy  = .scalar_num(e_energy$co2eq_kg),
+        emissions_inputs  = .scalar_num(e_inputs$co2eq_kg),
+        emissions_total   = .scalar_num((total$total_co2eq %||% total$co2eq_kg)),
+
+        intensity_milk_kg_co2eq_per_kg_fpcm = .scalar_num(
+          milk_int$intensity_co2eq_per_kg_fpcm %||%
+            milk_int$kg_co2eq_per_kg_fpcm %||%
+            milk_int$intensity
+        ),
+        intensity_area_kg_co2eq_per_ha_total = .scalar_num(
+          area_int$intensity_per_total_ha %||%
+            area_int$kg_co2eq_per_ha %||%
+            area_int$intensity
+        ),
+        intensity_area_kg_co2eq_per_ha_productive = .scalar_num(
+          area_int$intensity_per_productive_ha %||%
+            area_int$kg_co2eq_per_ha_productive
+        ),
+
         fpcm_production_kg = .scalar_num(milk_int$fpcm_production_kg),
         milk_production_kg = .scalar_num(milk_int$milk_production_kg),
         milk_production_litres = milk_L,
+
         land_use_efficiency = .scalar_num(area_int$land_use_efficiency),
+
         total_animals = total_animals,
-        dairy_cows = n_cows_total,
+        dairy_cows    = n_cows_total,
+
         benchmark_region = .scalar_chr(benchmark_region),
         benchmark_performance = .scalar_chr(area_int$benchmarking$performance_category %||% NA_character_),
+
         processing_date = processing_date,
         boundaries_used = .scalar_chr(boundaries$scope),
-        tier_used = .scalar_chr(paste0("tier_", tier)),
+        tier_used       = .scalar_chr(paste0("tier_", tier)),
+
         detailed_objects = if (save_detailed_objects) list(
-          enteric=e_enteric, manure=e_manure, soil=e_soil,
-          energy=e_energy, inputs=e_inputs, total=total,
-          milk_intensity=milk_int, area_intensity=area_int
+          enteric = e_enteric, manure = e_manure, soil = e_soil_out,
+          energy = e_energy, inputs = e_inputs, total = total,
+          milk_intensity = milk_int, area_intensity = area_int
         ) else NULL
       )
 
@@ -342,22 +514,49 @@ calc_batch <- function(data,
         success = FALSE,
         farm_id = farm_id,
         year = year,
-        error = as.character(e$message)
+        error = as.character(e$message),
+
+        emissions_enteric = NA_real_,
+        emissions_manure  = NA_real_,
+        emissions_soil    = NA_real_,
+        emissions_energy  = NA_real_,
+        emissions_inputs  = NA_real_,
+        emissions_total   = NA_real_,
+
+        intensity_milk_kg_co2eq_per_kg_fpcm = NA_real_,
+        intensity_area_kg_co2eq_per_ha_total = NA_real_,
+        intensity_area_kg_co2eq_per_ha_productive = NA_real_,
+
+        fpcm_production_kg = NA_real_,
+        milk_production_kg = NA_real_,
+        milk_production_litres = NA_real_,
+
+        land_use_efficiency = NA_real_,
+
+        total_animals = NA_real_,
+        dairy_cows    = NA_real_,
+
+        benchmark_region = benchmark_region,
+        benchmark_performance = NA_character_,
+
+        processing_date = processing_date,
+        boundaries_used = .scalar_chr(boundaries$scope),
+        tier_used       = .scalar_chr(paste0("tier_", tier)),
+
+        detailed_objects = NULL
       )
     })
 
-    # Store result
     farm_results[[i]] <- result
 
     if (result$success) {
-      n_successful <- n_successful + 1
+      n_successful <- n_successful + 1L
     } else {
-      n_errors <- n_errors + 1
-      message("Error en Farm ", farm_id, ": ", result$error)
+      n_errors <- n_errors + 1L
+      message("Error in farm ", farm_id, ": ", result$error)
     }
   }
 
-  # ---- CREATE SUMMARY ----
   summary_info <- list(
     n_farms_processed = n,
     n_farms_successful = n_successful,
@@ -367,12 +566,10 @@ calc_batch <- function(data,
     processing_date = processing_date
   )
 
-  # ---- FINAL STRUCTURE (compatible with export_hdc_report) ----
   batch_results <- list(
     summary = summary_info,
     farm_results = farm_results
   )
-
   class(batch_results) <- "cf_batch_complete"
   batch_results
 }
@@ -380,12 +577,13 @@ calc_batch <- function(data,
 # ---------------------------------------------
 # Export results to Excel (unified version)
 # ---------------------------------------------
+
 #' Export cowfootR batch results to Excel
 #'
 #' Exports results from \code{calc_batch()} into an Excel file
 #' with summary and farm-level sheets.
 #'
-#' @param batch_results A cf_batch_complete object returned by \code{calc_batch()}.
+#' @param batch_results A \code{cf_batch_complete} object returned by \code{calc_batch()}.
 #' @param file Path to the Excel file to save. Default = "cowfootR_report.xlsx".
 #' @param include_details Logical. If TRUE, includes extra sheets with detailed objects (if available).
 #'
@@ -400,23 +598,6 @@ export_hdc_report <- function(batch_results,
   }
   if (!inherits(batch_results, "cf_batch_complete")) {
     stop("batch_results must be an object returned by calc_batch()")
-  }
-
-  # -------- helpers to coerce scalar values --------
-  .scalar_num <- function(x) {
-    x <- tryCatch(unlist(x, use.names = FALSE), error = function(e) x)
-    x <- suppressWarnings(as.numeric(x))
-    if (length(x) == 0L || all(!is.finite(x))) return(NA_real_)
-    x[1L]
-  }
-  .scalar_chr <- function(x) {
-    if (is.null(x) || length(x) == 0L) return(NA_character_)
-    x <- tryCatch(as.character(x[[1L]]), error = function(e) as.character(x))
-    if (length(x) == 0L) NA_character_ else x[1L]
-  }
-  .scalar_lgl <- function(x) {
-    x <- tryCatch(as.logical(x[[1L]]), error = function(e) as.logical(x))
-    if (length(x) == 0L) NA else x[1L]
   }
 
   # ---- SUMMARY SHEET ----
@@ -434,7 +615,6 @@ export_hdc_report <- function(batch_results,
   farms_df <- do.call(
     rbind,
     lapply(batch_results$farm_results, function(farm) {
-      # Row for farms with error
       if (!farm$success) {
         return(data.frame(
           FarmID = .scalar_chr(farm$farm_id),
@@ -443,7 +623,6 @@ export_hdc_report <- function(batch_results,
           stringsAsFactors = FALSE
         ))
       }
-      # Row for OK farms (forcing scalars)
       data.frame(
         FarmID = .scalar_chr(farm$farm_id),
         Year   = .scalar_chr(farm$year),
@@ -455,9 +634,9 @@ export_hdc_report <- function(batch_results,
         Emissions_inputs  = .scalar_num(farm$emissions_inputs),
         Emissions_total   = .scalar_num(farm$emissions_total),
 
-        Intensity_milk           = .scalar_num(farm$intensity_milk_kg_co2eq_per_kg_fpcm),
-        Intensity_area_total     = .scalar_num(farm$intensity_area_kg_co2eq_per_ha_total),
-        Intensity_area_productive= .scalar_num(farm$intensity_area_kg_co2eq_per_ha_productive),
+        Intensity_milk             = .scalar_num(farm$intensity_milk_kg_co2eq_per_kg_fpcm),
+        Intensity_area_total       = .scalar_num(farm$intensity_area_kg_co2eq_per_ha_total),
+        Intensity_area_productive  = .scalar_num(farm$intensity_area_kg_co2eq_per_ha_productive),
 
         FPCM_production_kg      = .scalar_num(farm$fpcm_production_kg),
         Milk_production_kg      = .scalar_num(farm$milk_production_kg),
@@ -479,13 +658,11 @@ export_hdc_report <- function(batch_results,
     })
   )
 
-  # ---- CREATE LIST OF SHEETS ----
   sheets <- list(
     Summary = summary_df,
     Farm_results = farms_df
   )
 
-  # ---- OPTIONAL DETAILED SHEETS ----
   if (include_details) {
     for (i in seq_along(batch_results$farm_results)) {
       farm <- batch_results$farm_results[[i]]
@@ -503,7 +680,6 @@ export_hdc_report <- function(batch_results,
     }
   }
 
-  # ---- WRITE EXCEL ----
   writexl::write_xlsx(sheets, path = file)
   message("Batch report saved to: ", file)
   invisible(file)

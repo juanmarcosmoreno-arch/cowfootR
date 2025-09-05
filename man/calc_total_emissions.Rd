@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_total_emissions.R
 \name{calc_total_emissions}
 \alias{calc_total_emissions}
-\title{Calculate total emissions (robust and retro-compatible)}
+\title{Calculate total emissions (robust and boundary-aware)}
 \usage{
 calc_total_emissions(...)
 }
@@ -15,4 +15,6 @@ Object "cf_total" with breakdown (kg CO2eq by source) and total.
 \description{
 Aggregates results from different sources (enteric, manure, soil, energy, inputs)
 even if they don't use exactly the same field name for the total.
+IMPORTANT: If a source explicitly reports \code{co2eq_kg = NULL} (e.g. excluded by
+system boundaries), it is treated as zero and no fallback summation is attempted.
 }

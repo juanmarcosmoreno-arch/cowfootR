@@ -28,5 +28,7 @@ inst/doc
 .Rdata
 .httr-oauth
 .quarto
+cowfootR.Rproj
+uso_single.R
 .Rcheck/
 doc/
