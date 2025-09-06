@@ -2,20 +2,23 @@ Package: cowfootR
 Type: Package
 Title: Tools to Estimate the Carbon Footprint of Dairy Farms
 Version: 0.0.2
-Authors@R: person("Juan", "Moreno", email = "juan@example.com", role = c("aut", "cre"))
-Description: Provides functions to calculate the carbon footprint of dairy farms, based on IDF and IPCC
-             methodologies. Includes tools for single-farm and batch analysis, report generation, and visualization.
+Authors@R: 
+    person("Juan", "Moreno", email = "juanmarcosmoreno@gmail.com", role = c("aut", "cre"))
+Description: Provides functions to calculate the carbon footprint of dairy farms based on IDF and IPCC methodologies. Includes tools for single-farm and batch analysis, report generation, and visualization.
 License: MIT + file LICENSE
+URL: https://github.com/juanmarcosmoreno-arch/cowfootR, https://juanmarcosmoreno-arch.github.io/cowfootR/
+BugReports: https://github.com/juanmarcosmoreno-arch/cowfootR/issues
 Encoding: UTF-8
-LazyData: true
-Imports: writexl,
+Depends: 
+    R (>= 4.1.0)
+Imports: writexl
 Suggests: 
     testthat,
     knitr,
+    readxl,
     rmarkdown,
     plotly,
     gt,
-    readxl,
     knitr,
     rmarkdown,
     knitr,
@@ -23,8 +26,7 @@ Suggests:
     dplyr,
     ggplot2,
     tidyr
+VignetteBuilder: knitr
+Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/juanmarcosmoreno-arch/cowfootR, https://juanmarcosmoreno-arch.github.io/cowfootR/
-BugReports: https://github.com/juanmarcosmoreno-arch/cowfootR/issues
-VignetteBuilder: knitr

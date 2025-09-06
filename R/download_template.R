@@ -19,36 +19,29 @@ download_template <- function(file = "cowfootR_template.xlsx",
   }
 
   columns <- c(
-    # Identificación
     "FarmID", "Year",
-    # Producción
     "Milk_litres", "Fat_percent", "Protein_percent", "Milk_density",
-    # Hato por categoría
     "Cows_milking", "Cows_dry", "Heifers_total", "Calves_total", "Bulls_total",
     "Milk_yield_kg_cow_year",
-    "Body_weight_cows_kg", "Body_weight_heifers_kg",
+    "Body_weight_cows_kg", "Body_weight_cows_dry_kg", "Body_weight_heifers_kg",
     "Body_weight_calves_kg", "Body_weight_bulls_kg",
-    # Ingesta y factores entéricos
-    "MS_intake_cows_kg_day", "MS_intake_heifers_kg_day",
-    "MS_intake_calves_kg_day", "MS_intake_bulls_kg_day",
+    "MS_intake_cows_milking_kg_day",
+    "MS_intake_cows_dry_kg_day",
+    "MS_intake_heifers_kg_day",
+    "MS_intake_calves_kg_day",
+    "MS_intake_bulls_kg_day",
     "Ym_percent",
-    # Insumos alimenticios (kg BS, consumo total anual)
     "Feed_grain_dry_kg", "Feed_grain_wet_kg",
     "Feed_ration_kg", "Feed_byproducts_kg", "Feed_proteins_kg",
-    # Tierra y uso
     "Area_total_ha", "Area_productive_ha",
     "Pasture_permanent_ha", "Pasture_temporary_ha",
     "Crops_feed_ha", "Crops_cash_ha",
     "Infrastructure_ha", "Woodland_ha",
     "Area_fertilized_ha", "Soil_type", "Climate_zone",
-    # Fertilizantes
     "N_fertilizer_kg",
-    # Energía
     "Diesel_litres", "Petrol_litres", "Electricity_kWh",
     "LPG_kg", "Natural_gas_m3", "Country",
-    # Otros insumos
     "Concentrate_feed_kg", "Plastic_kg",
-    # Estiércol
     "Manure_system"
   )
 
@@ -67,6 +60,7 @@ download_template <- function(file = "cowfootR_template.xlsx",
       Bulls_total = c(5, 3),
       Milk_yield_kg_cow_year = c(6000, 5200),
       Body_weight_cows_kg = c(550, 520),
+      Body_weight_cows_dry_kg = c(450, 420),
       Body_weight_heifers_kg = c(350, 340),
       Body_weight_calves_kg = c(150, 140),
       Body_weight_bulls_kg = c(700, 680),

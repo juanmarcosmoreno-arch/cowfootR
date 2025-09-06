@@ -188,13 +188,17 @@ calc_batch <- function(data,
       }
 
       Ym   <- .scalar_num(getv(row, FEED$Ym, if (tier==2) 6.5 else 6.0))
-      MS_c <- .scalar_num(getv(row, FEED$MS_cow,  NA))
+      MS_c <- .scalar_num(getv(row, FEED$MS_cow, NA))
+      MS_cows_milking <- .scalar_num(getv(row, "MS_intake_cows_milking_kg_day", NA))
+      MS_cows_dry     <- .scalar_num(getv(row, "MS_intake_cows_dry_kg_day", NA))
       MS_h <- .scalar_num(getv(row, FEED$MS_heif, NA))
       MS_k <- .scalar_num(getv(row, FEED$MS_calv, NA))
       MS_b <- .scalar_num(getv(row, FEED$MS_bull, NA))
 
       MY_cow <- .scalar_num(getv(row, HERD$MY_cow, if (tier==2) 6000 else NA))
       BW_cow <- .scalar_num(getv(row, HERD$BW_cows, 550))
+      BW_cows_milking <- .scalar_num(getv(row, "Body_weight_cows_milking_kg", 580))
+      BW_cows_dry     <- .scalar_num(getv(row, "Body_weight_cows_dry_kg", 590))
       BW_hef <- .scalar_num(getv(row, HERD$BW_heif, 350))
       BW_cal <- .scalar_num(getv(row, HERD$BW_calv, 150))
       BW_bul <- .scalar_num(getv(row, HERD$BW_bull, 700))
@@ -244,6 +248,15 @@ calc_batch <- function(data,
       manure_system <- .scalar_chr(getv(row, MAN$system, "pasture"))
       N_exc_an      <- .scalar_num(getv(row, MAN$N_exc_an, 100))
 
+      diet_digestibility <- .scalar_num(getv(row, list(diet_dig="Diet_digestibility"), 0.68))
+      protein_intake_daily <- .scalar_num(getv(row, list(prot_int="Protein_intake_kg_day"), if (tier==2) 3.4 else NULL))
+      retention_days <- .scalar_num(getv(row, list(retention="Retention_days"),
+                                         if (manure_system == "solid_storage") 60 else
+                                           if (manure_system == "liquid_storage") 120 else NULL))
+      system_temp <- .scalar_num(getv(row, list(temp="System_temperature"),
+                                      if (climate == "temperate") 18 else
+                                        if (climate == "tropical") 25 else 12))
+
       # -------------------------
       # Emissions by source
       # -------------------------
@@ -259,18 +272,32 @@ calc_batch <- function(data,
 
       # ---------- ENTERIC ----------
       total_enteric <- 0
-      if (n_cows_total > 0 && !is_excluded("enteric")) {
-        e_cows <- safe_call(.call_safe("calc_emissions_enteric", list(
-          n_animals = n_cows_total,
+      if (cows_milk > 0 && !is_excluded("enteric")) {
+        e_cows_milk <- safe_call(.call_safe("calc_emissions_enteric", list(
+          n_animals = cows_milk,
           cattle_category = "dairy_cows",
           avg_milk_yield = if (is.na(MY_cow)) NULL else MY_cow,
-          avg_body_weight = BW_cow,
-          dry_matter_intake = if (tier==2 && !is.na(MS_c)) MS_c else NULL,
+          avg_body_weight = BW_cows_milking,  # ← NUEVO: peso específico
+          dry_matter_intake = if (tier==2 && !is.na(MS_cows_milking)) MS_cows_milking else NULL,  # ← NUEVO
           ym_percent = Ym,
           tier = tier,
           boundaries = boundaries
         )))
-        total_enteric <- total_enteric + .scalar_num(e_cows$co2eq_kg)
+        total_enteric <- total_enteric + .scalar_num(e_cows_milk$co2eq_kg)
+      }
+
+      if (cows_dry > 0 && !is_excluded("enteric")) {
+        e_cows_dry <- safe_call(.call_safe("calc_emissions_enteric", list(
+          n_animals = cows_dry,
+          cattle_category = "dairy_cows",
+          avg_milk_yield = 0,  # ← CLAVE: vacas secas no producen leche
+          avg_body_weight = BW_cows_dry,  # ← NUEVO: peso específico
+          dry_matter_intake = if (tier==2 && !is.na(MS_cows_dry)) MS_cows_dry else NULL,  # ← NUEVO
+          ym_percent = Ym,
+          tier = tier,
+          boundaries = boundaries
+        )))
+        total_enteric <- total_enteric + .scalar_num(e_cows_dry$co2eq_kg)
       }
 
       if (heifers > 0 && !is_excluded("enteric")) {
@@ -319,8 +346,15 @@ calc_batch <- function(data,
         e_manure <- safe_call(.call_safe("calc_emissions_manure", list(
           n_cows = total_animals,
           manure_system = manure_system,
+          tier = tier,
           n_excreted = N_exc_an,
           include_indirect = TRUE,
+          climate = climate,
+          avg_body_weight = BW_cow,
+          diet_digestibility = 0.68,
+          protein_intake_kg = if (tier == 2) 3.4 else NULL,
+          retention_days = if (manure_system != "pasture") 60 else NULL,
+          system_temperature = if (climate == "temperate") 18 else if (climate == "tropical") 25 else 12,
           boundaries = boundaries
         )))
         e_manure <- .ensure_source(e_manure, "manure")
@@ -360,15 +394,15 @@ calc_batch <- function(data,
           electricity_kwh = elec,
           lpg_kg = lpg,
           natural_gas_m3 = gas,
-          coal_kg = coal,
-          biomass_kg = bio,
           country = country,
+          include_upstream = TRUE,
           boundaries = boundaries
         )))
         e_energy <- .ensure_source(e_energy_calc, "energy")
       } else {
         e_energy <- list(source="energy", co2eq_kg = 0)
       }
+
 
       # ---------- INPUTS ----------
       if (!is_excluded("inputs")) {
