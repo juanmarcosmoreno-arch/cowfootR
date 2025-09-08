@@ -57,7 +57,7 @@ boundaries <- set_system_boundaries("farm_gate")
 
 # 2. Calculate emissions by source
 enteric <- calc_emissions_enteric(
-  n_cows = 100, 
+  n_animals = 100, 
   cattle_category = "dairy_cows",
   boundaries = boundaries
 )

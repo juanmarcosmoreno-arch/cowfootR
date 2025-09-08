@@ -91,8 +91,7 @@ and computing intensity metrics.
 
 # Availability
 
-cowfootR package is available on CRAN 
-(https://CRAN.R-project.org/package=cowfootR) and GitHub 
+cowfootR package is available on GitHub 
 (https://github.com/juanmarcosmoreno/cowfootR). Documentation, including 
 vignettes and examples, is provided to facilitate adoption.
 
