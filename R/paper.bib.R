@@ -1,0 +1,57 @@
+
+@article{flysjo2011,
+  title = {How Does Co-Product Handling Affect the Carbon Footprint of Milk? Case Study of Milk Production in New Zealand and Sweden},
+  author = {Flysjö, A. and Cederberg, C. and Henriksson, M. and Ledgard, S.},
+  journal = {International Journal of Life Cycle Assessment},
+  volume = {16},
+  pages = {420--430},
+  year = {2011},
+  doi = {10.1007/s11367-011-0282-9}
+}
+
+@techreport{idf2022,
+  title = {A Common Carbon Footprint Approach for the Dairy Sector: The IDF Guide to Standard Lifecycle Assessment Methodology},
+  author = {{International Dairy Federation}},
+  institution = {International Dairy Federation},
+  address = {Brussels, Belgium},
+  year = {2022},
+  note = {Bulletin of the IDF No 479/2022}
+}
+
+@techreport{ipcc2019,
+  title = {2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories},
+  author = {{IPCC}},
+  editor = {Calvo Buendia, E. and Tanabe, K. and Kranjc, A. and Baasansuren, J. and Fukuda, M. and Ngarize, S. and Osako, A. and Pyrozhenko, Y. and Shermanau, P. and Federici, S.},
+  institution = {Intergovernmental Panel on Climate Change},
+  address = {Geneva, Switzerland},
+  year = {2019},
+  publisher = {IPCC}
+}
+
+@article{pirlo2012,
+  title = {Cradle-to-Farmgate Analysis of Milk Carbon Footprint: A Descriptive Review},
+  author = {Pirlo, G.},
+  journal = {Italian Journal of Animal Science},
+  volume = {11},
+  pages = {109--118},
+  year = {2012},
+  doi = {10.4081/ijas.2012.e16}
+}
+
+@article{stolarski2025,
+  title = {The Carbon Footprint of Milk Production on a Farm},
+  author = {Stolarski, M.J. and Warmiński, K. and Krzyżaniak, M. and Olba-Zięty, E. and Dudziec, P.},
+  journal = {Applied Sciences},
+  volume = {15},
+  pages = {8446},
+  year = {2025},
+  doi = {10.3390/app15188446}
+}
+
+@misc{eu2022,
+  title = {Directive (EU) 2022/2464 of the European Parliament and of the Council of 14 December 2022 Amending Regulation (EU) No 537/2014, Directive 2004/109/EC, Directive 2006/43/EC and Directive 2013/34/EU, as Regards Corporate Sustainability Reporting},
+  author = {{The European Parliament and of the Council}},
+  year = {2022},
+  address = {Strasbourg, France},
+  note = {Text with EEA Relevance}
+}
