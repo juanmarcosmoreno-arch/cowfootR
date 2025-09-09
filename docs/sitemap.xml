@@ -1,13 +1,17 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/404.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/LICENSE-text.html</loc></url>
+<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/LICENSE.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/Complete_Parameter_Reference_Guide.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/IPCC_Methodology_Tiers_cowfootR.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/Introduction_to_Dairy_LCA_cowfootR.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/Single_Farm_Analysis_cowfootR.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/index.html</loc></url>
+<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/workflow.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/authors.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/index.html</loc></url>
+<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/news/index.html</loc></url>
+<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/paper.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/benchmark_area_intensity.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_batch.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_emissions_energy.html</loc></url>
