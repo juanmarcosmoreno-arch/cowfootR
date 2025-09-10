@@ -1,7 +1,7 @@
 Package: cowfootR
 Type: Package
 Title: Tools to Estimate the Carbon Footprint of Dairy Farms
-Version: 0.0.2
+Version: 0.1.0
 Authors@R: 
     person("Juan", "Moreno", email = "juanmarcosmoreno@gmail.com", role = c("aut", "cre"))
 Description: Provides functions to calculate the carbon footprint of dairy farms based on based on methodologies of the International Dairy Federation and the Intergovernmental Panel on Climate Change methodologies. Includes tools for single-farm and batch analysis, report generation, and visualization.
