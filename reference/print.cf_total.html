@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Print method for cf_total objects</h1>
-      <small class="dont-index">Source: <a href="https://github.com/juanmarcosmoreno-arch/cowfootR/blob/master/R/calc_total_emissions.R" class="external-link"><code>R/calc_total_emissions.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/juanmarcosmoreno-arch/cowfootR/blob/main/R/calc_total_emissions.R" class="external-link"><code>R/calc_total_emissions.R</code></a></small>
       <div class="d-none name"><code>print.cf_total.Rd</code></div>
     </div>
 
@@ -62,7 +62,25 @@
 <dd><p>Additional arguments passed to print methods (currently ignored)</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>The input object <code>x</code>, invisibly.</p>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  breakdown   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>enteric <span class="op">=</span> <span class="fl">45000</span>, manure <span class="op">=</span> <span class="fl">12000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  total_co2eq <span class="op">=</span> <span class="fl">57000</span>,</span></span>
+<span class="r-in"><span>  n_sources   <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  date        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"cf_total"</span></span></span>
+<span class="r-in"><span><span class="co"># print(x)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
