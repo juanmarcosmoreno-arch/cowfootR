@@ -14,65 +14,66 @@ calc_emissions_enteric(
   feed_inputs = NULL,
   ym_percent = 6.5,
   emission_factor_ch4 = NULL,
-  tier = 1,
+  tier = 1L,
   gwp_ch4 = 27.2,
   boundaries = NULL
 )
 }
 \arguments{
-\item{n_animals}{Numeric. Number of animals.}
+\item{n_animals}{Numeric scalar > 0. Number of animals.}
 
-\item{cattle_category}{Character. Type of cattle. Options: "dairy_cows",
-"heifers", "calves", "bulls". Default = "dairy_cows".}
+\item{cattle_category}{Character. One of "dairy_cows", "heifers", "calves", "bulls".
+Default = "dairy_cows".}
 
-\item{production_system}{Character. Production system type. Options:
-"intensive", "extensive", "mixed". Default = "mixed".}
+\item{production_system}{Character. One of "intensive", "extensive", "mixed".
+Default = "mixed".}
 
-\item{avg_milk_yield}{Numeric. Average annual milk yield per cow (kg/year).
-Default = 6000. Used for Tier 2 calculations.}
+\item{avg_milk_yield}{Numeric >= 0. Average annual milk yield per cow (kg/year).
+Default = 6000. Used in Tier 2 fallback for dairy cows.}
 
-\item{avg_body_weight}{Numeric. Average live weight (kg).
-Default = 550 for dairy cows.}
+\item{avg_body_weight}{Numeric > 0. Average live weight (kg). If NULL, a
+category-specific default is used (e.g. 550 kg for dairy cows).}
 
-\item{dry_matter_intake}{Numeric. Dry matter intake (kg/animal/day). Optional.
-If provided, overrides body weight-based calculation in Tier 2.}
+\item{dry_matter_intake}{Numeric > 0. Dry matter intake (kg/animal/day).
+If provided (Tier 2), overrides body-weight/energy-based estimation.}
 
-\item{feed_inputs}{Named vector or list with feed amounts in kg DM/year
-(grain_dry, grain_wet, ration, byproducts, proteins). Optional.}
+\item{feed_inputs}{Named numeric vector/list with feed DM amounts in kg/year
+per herd (e.g., grain_dry, grain_wet, byproducts, proteins). Optional.
+If given and \code{dry_matter_intake} is NULL, DMI is inferred as
+\code{sum(feed_inputs)/(n_animals*365)}.}
 
-\item{ym_percent}{Numeric. Methane conversion factor Ym (\% of gross energy to CH4).
-Default = 6.5\%.}
+\item{ym_percent}{Numeric in (0, 100]. Methane conversion factor Ym (\% of GE to CH4).
+Default = 6.5.}
 
-\item{emission_factor_ch4}{Numeric. Emission factor (kg CH4 per head per year).
-If NULL, uses category and system-specific defaults.}
+\item{emission_factor_ch4}{Numeric > 0. If provided, CH4 EF (kg CH4/head/year)
+is used directly; otherwise it is calculated (Tier 1 or Tier 2).}
 
-\item{tier}{Numeric. IPCC methodology tier (1 or 2). Default = 1.}
+\item{tier}{Integer 1 or 2. Default = 1.}
 
-\item{gwp_ch4}{Numeric. Global Warming Potential of CH4.
-Default = 27.2 (100-year horizon, IPCC AR6).}
+\item{gwp_ch4}{Numeric. GWP for CH4 (100-yr, AR6). Default = 27.2.}
 
-\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.}
+\item{boundaries}{Optional list from \code{set_system_boundaries()}.}
 }
 \value{
-A list with detailed emission calculations and metadata.
+List with CH4 (kg), CO2eq (kg), inputs, factors, and metadata.
+Includes \code{co2eq_kg} for compatibility with \code{calc_total_emissions()}.
 }
 \description{
-Estimates enteric methane (CH4) emissions from dairy cattle
-using IPCC Tier 1 or Tier 2 methodology with IDF-specific factors.
+Estimates enteric methane (CH4) emissions from cattle using IPCC Tier 1 or
+Tier 2 approaches with practical defaults for dairy systems.
 }
 \examples{
-# Basic Tier 1 calculation
+\donttest{
+# Tier 1, mixed dairy cows
 calc_emissions_enteric(n_animals = 100)
 
-# Tier 2 with detailed inputs
+# Tier 2 with explicit DMI
 calc_emissions_enteric(
-  n_animals = 120,
-  tier = 2,
-  avg_milk_yield = 7500,
-  dry_matter_intake = 18
+  n_animals = 120, tier = 2, avg_milk_yield = 7500, dry_matter_intake = 18
 )
 
-# With system boundaries
-boundaries <- set_system_boundaries("farm_gate")
-calc_emissions_enteric(n_animals = 100, boundaries = boundaries)
+# Boundary exclusion: enteric not included
+b <- list(include = c("manure", "energy"))
+calc_emissions_enteric(100, boundaries = b)$co2eq_kg  # NULL → excluded
+}
 }

@@ -74,10 +74,14 @@ safe_call <- function(expr) {
   obj
 }
 
-# Compute FPCM (kg) from milk litres and composition (EC-style formula).
-compute_fpcm_litres <- function(milk_l, fat, prot) {
-  fpcm <- milk_l * (0.337 + 0.116 * fat + 0.06 * prot)
-  if (!is.finite(fpcm) || fpcm <= 0) NA_real_ else fpcm
+# Compute FPCM (kg) from litres, composition, and density (IDF-consistent).
+# IDF formula used in calc_intensity_litre:
+#   milk_kg = milk_litres * milk_density
+#   FPCM_kg = milk_kg * (0.1226*fat + 0.0776*protein + 0.2534)
+compute_fpcm_idf <- function(milk_l, fat, prot, milk_density = 1.03) {
+  milk_kg  <- milk_l * milk_density
+  fpcm_kg  <- milk_kg * (0.1226 * fat + 0.0776 * prot + 0.2534)
+  if (!is.finite(fpcm_kg) || fpcm_kg <= 0) NA_real_ else fpcm_kg
 }
 
 # ---------------------------------------------
@@ -133,8 +137,11 @@ calc_batch <- function(data,
                BW_cows="Body_weight_cows_kg", BW_heif="Body_weight_heifers_kg",
                BW_calv="Body_weight_calves_kg", BW_bull="Body_weight_bulls_kg",
                MY_cow="Milk_yield_kg_cow_year")
-  FEED <- list(MS_cow="MS_intake_cows_kg_day", MS_heif="MS_intake_heifers_kg_day",
-               MS_calv="MS_intake_calves_kg_day", MS_bull="MS_intake_bulls_kg_day",
+  FEED <- list(MS_cow_milking="MS_intake_cows_milking_kg_day",
+               MS_cow_dry="MS_intake_cows_dry_kg_day",
+               MS_heif="MS_intake_heifers_kg_day",
+               MS_calv="MS_intake_calves_kg_day",
+               MS_bull="MS_intake_bulls_kg_day",
                Ym="Ym_percent")
   SOIL <- list(N_synth="N_fertilizer_kg", N_organic="N_fertilizer_organic_kg",
                N_past="N_excreta_pasture_kg", N_resid="N_crop_residues_kg",
@@ -144,7 +151,7 @@ calc_batch <- function(data,
                area_feed="Crops_feed_ha", area_cash="Crops_cash_ha",
                area_infra="Infrastructure_ha", area_wood="Woodland_ha")
   EN <- list(diesel="Diesel_litres", petrol="Petrol_litres",
-             elec="Electricity_KWh",
+             elec="Electricity_kWh",
              lpg="LPG_kg", gas="Natural_gas_m3",
              coal="Coal_kg", bio="Biomass_kg", country="Country")
   INP <- list(conc="Concentrate_feed_kg", plastic="Plastic_kg",
@@ -188,9 +195,9 @@ calc_batch <- function(data,
       }
 
       Ym   <- .scalar_num(getv(row, FEED$Ym, if (tier==2) 6.5 else 6.0))
-      MS_c <- .scalar_num(getv(row, FEED$MS_cow, NA))
-      MS_cows_milking <- .scalar_num(getv(row, "MS_intake_cows_milking_kg_day", NA))
-      MS_cows_dry     <- .scalar_num(getv(row, "MS_intake_cows_dry_kg_day", NA))
+      MS_cows_milking <- .scalar_num(getv(row, FEED$MS_cow_milking, NA))
+      MS_cows_dry     <- .scalar_num(getv(row, FEED$MS_cow_dry, NA))
+      MS_c <- MS_cows_milking
       MS_h <- .scalar_num(getv(row, FEED$MS_heif, NA))
       MS_k <- .scalar_num(getv(row, FEED$MS_calv, NA))
       MS_b <- .scalar_num(getv(row, FEED$MS_bull, NA))
@@ -277,22 +284,22 @@ calc_batch <- function(data,
           n_animals = cows_milk,
           cattle_category = "dairy_cows",
           avg_milk_yield = if (is.na(MY_cow)) NULL else MY_cow,
-          avg_body_weight = BW_cows_milking,  # ← NUEVO: peso específico
-          dry_matter_intake = if (tier==2 && !is.na(MS_cows_milking)) MS_cows_milking else NULL,  # ← NUEVO
+          avg_body_weight = BW_cow,  # variable already available
+          dry_matter_intake = if (tier==2 && !is.na(MS_cows_milking)) MS_cows_milking else NULL,
           ym_percent = Ym,
           tier = tier,
           boundaries = boundaries
         )))
-        total_enteric <- total_enteric + .scalar_num(e_cows_milk$co2eq_kg)
+        total_enteric <- total_enteric + .scalar_num(e_cows_milking$co2eq_kg)
       }
 
       if (cows_dry > 0 && !is_excluded("enteric")) {
         e_cows_dry <- safe_call(.call_safe("calc_emissions_enteric", list(
           n_animals = cows_dry,
           cattle_category = "dairy_cows",
-          avg_milk_yield = 0,  # ← CLAVE: vacas secas no producen leche
-          avg_body_weight = BW_cows_dry,  # ← NUEVO: peso específico
-          dry_matter_intake = if (tier==2 && !is.na(MS_cows_dry)) MS_cows_dry else NULL,  # ← NUEVO
+          avg_milk_yield = 0,  # KEY: dry cows produce no milk
+          avg_body_weight = .scalar_num(getv(row, "Body_weight_cows_dry_kg", BW_cow)),
+          dry_matter_intake = if (tier==2) .scalar_num(getv(row, "MS_intake_cows_dry_kg_day", MS_c)) else NULL,
           ym_percent = Ym,
           tier = tier,
           boundaries = boundaries
@@ -382,19 +389,20 @@ calc_batch <- function(data,
         e_soil_out <- .ensure_source(e_soil_calc, "soil")
         e_soil_for_total <- e_soil_out
       } else {
-        e_soil_out <- list(source="soil", co2eq_kg = NULL)  # for output
-        e_soil_for_total <- list(source="soil", co2eq_kg = 0)  # for totals
+        e_soil_out <- list(source="soil", co2eq_kg = NULL)   # for output
+        e_soil_for_total <- list(source="soil", co2eq_kg = 0) # for totals
       }
 
       # ---------- ENERGY ----------
-      if (!is_excluded("energy") && !is.na(country)) {
+      use_energy <- !is_excluded("energy") && (diesel > 0 || petrol > 0 || elec > 0 || lpg > 0 || gas > 0)
+      if (use_energy) {
         e_energy_calc <- safe_call(.call_safe("calc_emissions_energy", list(
           diesel_l = diesel,
           petrol_l = petrol,
           electricity_kwh = elec,
           lpg_kg = lpg,
           natural_gas_m3 = gas,
-          country = country,
+          country = if (!is.na(country)) country else "UY",
           include_upstream = TRUE,
           boundaries = boundaries
         )))
@@ -402,7 +410,6 @@ calc_batch <- function(data,
       } else {
         e_energy <- list(source="energy", co2eq_kg = 0)
       }
-
 
       # ---------- INPUTS ----------
       if (!is_excluded("inputs")) {
@@ -455,7 +462,8 @@ calc_batch <- function(data,
         fat = fat, protein = prot, milk_density = dens
       )))
       if (is.null(milk_int)) {
-        fpcm_kg <- compute_fpcm_litres(milk_L, fat, prot) * dens
+        # Fallback using the same IDF-consistent FPCM used in calc_intensity_litre
+        fpcm_kg <- compute_fpcm_idf(milk_L, fat, prot, dens)
         intensity_val <- if (is.finite(fpcm_kg) && fpcm_kg > 0)
           .scalar_num(total$total_co2eq %||% total$co2eq_kg) / fpcm_kg else NA_real_
         milk_int <- list(
@@ -623,6 +631,42 @@ calc_batch <- function(data,
 #'
 #' @return Invisibly returns the file path.
 #' @export
+#' @examples
+#' \donttest{
+#' # Minimal dummy object (como el devuelto por calc_batch)
+#' br <- list(
+#'   summary = list(
+#'     n_farms_processed = 1L,
+#'     n_farms_successful = 1L,
+#'     n_farms_with_errors = 0L,
+#'     boundaries_used = list(scope = "farm_gate"),
+#'     benchmark_region = NA_character_,
+#'     processing_date = Sys.Date()
+#'   ),
+#'   farm_results = list(list(
+#'     success = TRUE,
+#'     farm_id = "Farm_A",
+#'     year = format(Sys.Date(), "%Y"),
+#'     emissions_enteric = 100, emissions_manure = 50, emissions_soil = 20,
+#'     emissions_energy = 10, emissions_inputs = 5, emissions_total = 185,
+#'     intensity_milk_kg_co2eq_per_kg_fpcm = 1.2,
+#'     intensity_area_kg_co2eq_per_ha_total = 800,
+#'     intensity_area_kg_co2eq_per_ha_productive = 1000,
+#'     fpcm_production_kg = 150000, milk_production_kg = 154500,
+#'     milk_production_litres = 150000,
+#'     land_use_efficiency = 3000,
+#'     total_animals = 200, dairy_cows = 120,
+#'     benchmark_region = NA_character_, benchmark_performance = NA_character_,
+#'     processing_date = Sys.Date(), boundaries_used = "farm_gate",
+#'     tier_used = "tier_2", detailed_objects = NULL
+#'   ))
+#' )
+#' class(br) <- "cf_batch_complete"
+#'
+#' f <- tempfile(fileext = ".xlsx")
+#' export_hdc_report(br, file = f)
+#' file.exists(f)
+#' }
 export_hdc_report <- function(batch_results,
                               file = "cowfootR_report.xlsx",
                               include_details = FALSE) {

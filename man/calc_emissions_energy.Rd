@@ -36,7 +36,7 @@ calc_emissions_energy(
 Default = "UY" (Uruguay). Options include "UY", "AR", "BR", "NZ", "US", etc.}
 
 \item{ef_diesel}{Numeric. Emission factor for diesel (kg CO2/liter).
-Default = 2.67 (IPCC 2019, includes combustion only).}
+Default = 2.67 (IPCC 2019, combustion).}
 
 \item{ef_petrol}{Numeric. Emission factor for petrol (kg CO2/liter).
 Default = 2.31 (IPCC 2019).}
@@ -53,15 +53,17 @@ If NULL, uses country-specific grid factors.}
 \item{include_upstream}{Logical. Include upstream emissions from fuel production?
 Default = FALSE (combustion only).}
 
-\item{energy_breakdown}{List. Optional detailed breakdown by equipment/use.}
+\item{energy_breakdown}{Optional. Detailed breakdown by equipment/use (list or data.frame).
+If list, each element can include diesel_l, petrol_l, lpg_kg, natural_gas_m3, electricity_kwh.}
 
 \item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
-If "energy" is not included, returns 0.}
+If "energy" is not included, returns an excluded record.}
 }
 \value{
-A list with detailed emissions by fuel type, end use, and metadata.
+A list with detailed emissions by fuel type, total (co2eq_kg), metadata,
+and (if provided) breakdown by use. Compatible with \code{calc_total_emissions()}.
 }
 \description{
 Estimates CO2 emissions from fossil fuel use and electricity consumption
-on dairy farms following IDF methodology.
+on dairy farms following IDF/IPCC methodology.
 }

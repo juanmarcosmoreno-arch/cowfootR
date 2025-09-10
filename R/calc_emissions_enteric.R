@@ -1,48 +1,49 @@
 #' Calculate enteric methane emissions
 #'
-#' Estimates enteric methane (CH4) emissions from dairy cattle
-#' using IPCC Tier 1 or Tier 2 methodology with IDF-specific factors.
+#' Estimates enteric methane (CH4) emissions from cattle using IPCC Tier 1 or
+#' Tier 2 approaches with practical defaults for dairy systems.
 #'
-#' @param n_animals Numeric. Number of animals.
-#' @param cattle_category Character. Type of cattle. Options: "dairy_cows",
-#'   "heifers", "calves", "bulls". Default = "dairy_cows".
-#' @param production_system Character. Production system type. Options:
-#'   "intensive", "extensive", "mixed". Default = "mixed".
-#' @param avg_milk_yield Numeric. Average annual milk yield per cow (kg/year).
-#'   Default = 6000. Used for Tier 2 calculations.
-#' @param avg_body_weight Numeric. Average live weight (kg).
-#'   Default = 550 for dairy cows.
-#' @param dry_matter_intake Numeric. Dry matter intake (kg/animal/day). Optional.
-#'   If provided, overrides body weight-based calculation in Tier 2.
-#' @param feed_inputs Named vector or list with feed amounts in kg DM/year
-#'   (grain_dry, grain_wet, ration, byproducts, proteins). Optional.
-#' @param ym_percent Numeric. Methane conversion factor Ym (% of gross energy to CH4).
-#'   Default = 6.5%.
-#' @param emission_factor_ch4 Numeric. Emission factor (kg CH4 per head per year).
-#'   If NULL, uses category and system-specific defaults.
-#' @param tier Numeric. IPCC methodology tier (1 or 2). Default = 1.
-#' @param gwp_ch4 Numeric. Global Warming Potential of CH4.
-#'   Default = 27.2 (100-year horizon, IPCC AR6).
-#' @param boundaries Optional. An object from \code{set_system_boundaries()}.
+#' @param n_animals Numeric scalar > 0. Number of animals.
+#' @param cattle_category Character. One of "dairy_cows", "heifers", "calves", "bulls".
+#'   Default = "dairy_cows".
+#' @param production_system Character. One of "intensive", "extensive", "mixed".
+#'   Default = "mixed".
+#' @param avg_milk_yield Numeric >= 0. Average annual milk yield per cow (kg/year).
+#'   Default = 6000. Used in Tier 2 fallback for dairy cows.
+#' @param avg_body_weight Numeric > 0. Average live weight (kg). If NULL, a
+#'   category-specific default is used (e.g. 550 kg for dairy cows).
+#' @param dry_matter_intake Numeric > 0. Dry matter intake (kg/animal/day).
+#'   If provided (Tier 2), overrides body-weight/energy-based estimation.
+#' @param feed_inputs Named numeric vector/list with feed DM amounts in kg/year
+#'   per herd (e.g., grain_dry, grain_wet, byproducts, proteins). Optional.
+#'   If given and \code{dry_matter_intake} is NULL, DMI is inferred as
+#'   \code{sum(feed_inputs)/(n_animals*365)}.
+#' @param ym_percent Numeric in (0, 100]. Methane conversion factor Ym (% of GE to CH4).
+#'   Default = 6.5.
+#' @param emission_factor_ch4 Numeric > 0. If provided, CH4 EF (kg CH4/head/year)
+#'   is used directly; otherwise it is calculated (Tier 1 or Tier 2).
+#' @param tier Integer 1 or 2. Default = 1.
+#' @param gwp_ch4 Numeric. GWP for CH4 (100-yr, AR6). Default = 27.2.
+#' @param boundaries Optional list from \code{set_system_boundaries()}.
 #'
-#' @return A list with detailed emission calculations and metadata.
+#' @return List with CH4 (kg), CO2eq (kg), inputs, factors, and metadata.
+#'   Includes \code{co2eq_kg} for compatibility with \code{calc_total_emissions()}.
 #' @export
 #'
 #' @examples
-#' # Basic Tier 1 calculation
+#' \donttest{
+#' # Tier 1, mixed dairy cows
 #' calc_emissions_enteric(n_animals = 100)
 #'
-#' # Tier 2 with detailed inputs
+#' # Tier 2 with explicit DMI
 #' calc_emissions_enteric(
-#'   n_animals = 120,
-#'   tier = 2,
-#'   avg_milk_yield = 7500,
-#'   dry_matter_intake = 18
+#'   n_animals = 120, tier = 2, avg_milk_yield = 7500, dry_matter_intake = 18
 #' )
 #'
-#' # With system boundaries
-#' boundaries <- set_system_boundaries("farm_gate")
-#' calc_emissions_enteric(n_animals = 100, boundaries = boundaries)
+#' # Boundary exclusion: enteric not included
+#' b <- list(include = c("manure", "energy"))
+#' calc_emissions_enteric(100, boundaries = b)$co2eq_kg  # NULL → excluded
+#' }
 calc_emissions_enteric <- function(n_animals,
                                    cattle_category = "dairy_cows",
                                    production_system = "mixed",
@@ -52,140 +53,154 @@ calc_emissions_enteric <- function(n_animals,
                                    feed_inputs = NULL,
                                    ym_percent = 6.5,
                                    emission_factor_ch4 = NULL,
-                                   tier = 1,
+                                   tier = 1L,
                                    gwp_ch4 = 27.2,
                                    boundaries = NULL) {
 
-  # === INPUT VALIDATION ===
+  # ------------------------------ Validation ---------------------------------
   valid_categories <- c("dairy_cows", "heifers", "calves", "bulls")
-  valid_systems   <- c("intensive", "extensive", "mixed")
-  valid_tiers     <- c(1, 2)
+  valid_systems    <- c("intensive", "extensive", "mixed")
+  valid_tiers      <- c(1L, 2L)
 
-  if (!cattle_category %in% valid_categories) {
+  if (!is.finite(n_animals) || length(n_animals) != 1L || n_animals <= 0)
+    stop("n_animals must be a single positive number")
+  if (!is.character(cattle_category) || !(cattle_category %in% valid_categories))
     stop("Invalid cattle_category. Use: ", paste(valid_categories, collapse = ", "))
-  }
-  if (!production_system %in% valid_systems) {
+  if (!is.character(production_system) || !(production_system %in% valid_systems))
     stop("Invalid production_system. Use: ", paste(valid_systems, collapse = ", "))
-  }
-  if (!tier %in% valid_tiers) {
+  if (!is.numeric(tier) || !(as.integer(tier) %in% valid_tiers))
     stop("Invalid tier. Use 1 or 2.")
-  }
-  if (n_animals < 0) {
-    stop("Number of animals must be positive.")
-  }
-  if (avg_milk_yield < 0) {
-    stop("Average milk yield must be positive.")
-  }
+  tier <- as.integer(tier)
+  if (!is.finite(avg_milk_yield) || avg_milk_yield < 0)
+    stop("avg_milk_yield must be >= 0")
+  if (!is.finite(ym_percent) || ym_percent <= 0 || ym_percent > 100)
+    stop("ym_percent must be in (0, 100]")
 
-  # Exclude if boundaries do not include enteric emissions
-  if (!is.null(boundaries) && !"enteric" %in% boundaries$include) {
+  # Boundary exclusion: clean signal for calc_total_emissions()
+  if (is.list(boundaries) && !is.null(boundaries$include) &&
+      !("enteric" %in% boundaries$include)) {
     return(list(
       source = "enteric",
       category = cattle_category,
-      ch4_kg = 0,
-      co2eq_kg = 0,
-      note = "Excluded by system boundaries"
+      co2eq_kg = NULL,                    # explicit exclusion → treated as zero
+      methodology = "excluded_by_boundaries",
+      excluded = TRUE
     ))
   }
 
-  # Default body weights by category
-  if (is.null(avg_body_weight)) {
-    default_weights <- list(
-      dairy_cows = 550,
-      heifers    = 350,
-      calves     = 150,
-      bulls      = 700
-    )
-    avg_body_weight <- default_weights[[cattle_category]]
+  # Category defaults for body weight (if not supplied)
+  if (is.null(avg_body_weight) || !is.finite(avg_body_weight) || avg_body_weight <= 0) {
+    default_weights <- c(dairy_cows = 550, heifers = 350, calves = 150, bulls = 700)
+    avg_body_weight <- unname(default_weights[[cattle_category]])
   }
 
-  # === DETERMINE DRY MATTER INTAKE ===
-  # If user didn't provide dry_matter_intake but did provide feed_inputs -> estimate
+  # --------------------------- Infer DMI if needed ---------------------------
+  # If no DMI but feed_inputs provided (annual herd totals in kg DM),
+  # approximate DMI per animal per day.
   if (is.null(dry_matter_intake) && !is.null(feed_inputs) && length(feed_inputs) > 0) {
-    total_feed_kg <- sum(unlist(feed_inputs), na.rm = TRUE)
-    dry_matter_intake <- total_feed_kg / (n_animals * 365)
+    total_feed_kg <- suppressWarnings(sum(unlist(feed_inputs), na.rm = TRUE))
+    if (is.finite(total_feed_kg) && total_feed_kg > 0) {
+      dmi_inferred <- total_feed_kg / (n_animals * 365)
+      if (is.finite(dmi_inferred) && dmi_inferred > 0)
+        dry_matter_intake <- dmi_inferred
+    }
   }
+  if (!is.null(dry_matter_intake) && (!is.finite(dry_matter_intake) || dry_matter_intake <= 0))
+    stop("dry_matter_intake must be positive if provided")
 
-  # === CALCULATE EMISSION FACTOR ===
-  if (is.null(emission_factor_ch4)) {
-    if (tier == 1) {
-      # Tier 1: Fixed factors based on category and system
-      tier1_factors <- list(
-        dairy_cows = list(intensive = 120, extensive = 100, mixed = 115),
-        heifers    = list(intensive = 85,  extensive = 75,  mixed = 80),
-        calves     = list(intensive = 45,  extensive = 40,  mixed = 42),
-        bulls      = list(intensive = 110, extensive = 95,  mixed = 105)
+  # ---------------------- Compute/choose emission factor ---------------------
+  ef_ch4 <- emission_factor_ch4
+
+  if (is.null(ef_ch4)) {
+    if (tier == 1L) {
+      # Tier 1: simple category × system fixed EFs (kg CH4/head/year)
+      tier1 <- list(
+        dairy_cows = c(intensive = 120, extensive = 100, mixed = 115),
+        heifers    = c(intensive =  85, extensive =  75, mixed =  80),
+        calves     = c(intensive =  45, extensive =  40, mixed =  42),
+        bulls      = c(intensive = 110, extensive =  95, mixed = 105)
       )
-      emission_factor_ch4 <- tier1_factors[[cattle_category]][[production_system]]
+      ef_ch4 <- tier1[[cattle_category]][[production_system]]
 
-    } else if (tier == 2) {
+    } else {
+      # Tier 2
       if (!is.null(dry_matter_intake)) {
-        # Tier 2 preferred method: based on dry matter intake
-        gross_energy <- dry_matter_intake * 18.45 * 365 / 1000  # GJ/year
-        emission_factor_ch4 <- (gross_energy * ym_percent/100) / 55.65 * 1000  # kg CH4/year/head
+        # Preferred Tier 2: from DMI and GE content of feed (≈ 18.45 MJ/kg DM)
+        # GE (GJ/yr) = DMI (kg/d) * 18.45 (MJ/kg) * 365 / 1000
+        GE_GJ <- dry_matter_intake * 18.45 * 365 / 1000
+        # CH4 (kg/yr/head) = GE * Ym(%) / 55.65 (MJ/kg CH4) * 1000 (MJ/GJ)
+        ef_ch4 <- (GE_GJ * 1000 * (ym_percent / 100)) / 55.65
+
       } else if (cattle_category == "dairy_cows") {
-        # Alternative approach using energy requirements
-        maintenance_energy <- 0.335 * (avg_body_weight^0.75)
-        lactation_energy   <- avg_milk_yield * 5.15 / 365
-        pregnancy_energy   <- 10
-        total_energy <- (maintenance_energy + lactation_energy + pregnancy_energy) * 365 / 1000
-        gross_energy <- total_energy / 0.6
-        emission_factor_ch4 <- (gross_energy * 1000 * ym_percent/100) / 55.65
+        # Alternative Tier 2: simple energy-balance for dairy cows
+        # Maintenance energy (MJ/d) ~ 0.335 * BW^0.75
+        maint_MJ_d <- 0.335 * (avg_body_weight^0.75)
+        # Lactation energy (MJ/d) ~ milk_kg/d * 5.15 (approx net energy)
+        lact_MJ_d  <- (avg_milk_yield / 365) * 5.15
+        # Pregnancy + activity small allowance (MJ/d)
+        preg_act_MJ_d <- 10
+        total_MJ_d <- maint_MJ_d + lact_MJ_d + preg_act_MJ_d
+
+        # Convert to GE and then to CH4 with Ym
+        # Assume 60% efficiency to get GE (very rough, doc-note only)
+        GE_GJ <- (total_MJ_d * 365 / 0.60) / 1000
+        ef_ch4 <- (GE_GJ * 1000 * (ym_percent / 100)) / 55.65
+
       } else {
-        # Simple estimation for non-dairy categories
-        emission_factor_ch4 <- avg_body_weight * 0.022 * 365
+        # Simple fallback for non-dairy categories when no DMI: scale with BW
+        ef_ch4 <- avg_body_weight * 0.022  # kg CH4/yr/head (coarse)
       }
     }
   }
 
-  # Fallback to Tier 1 if calculation resulted in invalid value
-  if (is.null(emission_factor_ch4) || emission_factor_ch4 <= 0) {
-    warning("Tier 2 calculation produced invalid result; falling back to Tier 1 defaults.")
-    tier <- 1
-    emission_factor_ch4 <- switch(cattle_category,
-                                  dairy_cows = 115,
-                                  heifers    = 80,
-                                  calves     = 42,
-                                  bulls      = 105)
+  # Guard against invalid EF and fallback to Tier 1 baseline if needed
+  if (!is.finite(ef_ch4) || ef_ch4 <= 0) {
+    warning("Tier 2 calculation produced an invalid EF; falling back to Tier 1 defaults.")
+    tier <- 1L
+    ef_ch4 <- switch(cattle_category,
+                     dairy_cows = 115, heifers = 80, calves = 42, bulls = 105)
   }
 
-  # === CALCULATE EMISSIONS ===
-  ch4_annual   <- n_animals * emission_factor_ch4
+  # ----------------------------- Emissions -----------------------------------
+  ch4_annual   <- n_animals * ef_ch4
   co2eq_annual <- ch4_annual * gwp_ch4
 
-  # === RETURN RESULTS ===
+  # ----------------------------- Result object --------------------------------
   list(
     source = "enteric",
     category = cattle_category,
     production_system = production_system,
-    ch4_kg = round(ch4_annual, 2),
+
+    ch4_kg  = round(ch4_annual, 2),
     co2eq_kg = round(co2eq_annual, 2),
+
     emission_factors = list(
-      emission_factor_ch4 = round(emission_factor_ch4, 1),
+      emission_factor_ch4 = round(ef_ch4, 3),
+      ym_percent = ym_percent,
       gwp_ch4 = gwp_ch4,
       method_used = paste0("Tier ", tier)
     ),
+
     inputs = list(
       n_animals = n_animals,
       avg_body_weight = avg_body_weight,
       avg_milk_yield = avg_milk_yield,
       dry_matter_intake = dry_matter_intake,
-      ym_percent = ym_percent,
       feed_inputs = feed_inputs,
       tier = tier
     ),
+
     methodology = paste0("IPCC Tier ", tier,
-                         ifelse(tier == 2, " (energy-based)", " (default factors)")),
+                         ifelse(tier == 2L, " (GE-based where possible)", " (default factors)")),
     standards = "IPCC 2019 Refinement, IDF 2022",
     date = Sys.Date(),
+
     per_animal = list(
-      ch4_kg = round(emission_factor_ch4, 1),
-      co2eq_kg = round(emission_factor_ch4 * gwp_ch4, 2),
-      milk_intensity = ifelse(
-        cattle_category == "dairy_cows" & avg_milk_yield > 0,
-        round((emission_factor_ch4 * gwp_ch4) / avg_milk_yield * 1000, 2),
-        NA
-      )
+      ch4_kg  = round(ef_ch4, 3),
+      co2eq_kg = round(ef_ch4 * gwp_ch4, 3),
+      milk_intensity_kg_co2eq_per_kg_milk = if (cattle_category == "dairy_cows" && avg_milk_yield > 0) {
+        round((ef_ch4 * gwp_ch4) / avg_milk_yield, 4)
+      } else NA_real_
     )
   )
 }

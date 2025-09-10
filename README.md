@@ -14,6 +14,7 @@ status](https://www.r-pkg.org/badges/version/cowfootR)](https://CRAN.R-project.o
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
+[![R-CMD-check](https://github.com/juanmarcosmoreno-arch/cowfootR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/juanmarcosmoreno-arch/cowfootR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Overview

@@ -21,7 +21,7 @@ calc_intensity_area(
 \item{area_productive_ha}{Numeric. Productive/utilized area in hectares.
 If NULL, uses total area. Default = NULL.}
 
-\item{area_breakdown}{Named list. Optional detailed area breakdown by land use type.
+\item{area_breakdown}{Named list or named numeric vector. Optional detailed area breakdown by land use type.
 Names should be descriptive (e.g., "pasture_permanent", "crops_feed").}
 
 \item{validate_area_sum}{Logical. Check if area breakdown sums to total? Default = TRUE.}
@@ -64,7 +64,6 @@ area_detail <- list(
   infrastructure = 3,
   woodland = 7
 )
-
 calc_intensity_area(
   total_emissions = 88000,
   area_total_ha = 135,
@@ -72,9 +71,11 @@ calc_intensity_area(
 )
 
 # Using with calc_total_emissions output
-b <- set_system_boundaries("farm_gate")
-e1 <- calc_emissions_enteric(100, boundaries = b)
-e2 <- calc_emissions_manure(100, boundaries = b)
-tot <- calc_total_emissions(e1, e2)
-calc_intensity_area(tot, area_total_ha = 120)
+# \donttest{
+# b <- set_system_boundaries("farm_gate")
+# e1 <- calc_emissions_enteric(100, boundaries = b)
+# e2 <- calc_emissions_manure(100, boundaries = b)
+# tot <- calc_total_emissions(e1, e2)
+# calc_intensity_area(tot, area_total_ha = 120)
+# }
 }

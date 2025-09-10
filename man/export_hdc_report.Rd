@@ -24,3 +24,40 @@ Invisibly returns the file path.
 Exports results from \code{calc_batch()} into an Excel file
 with summary and farm-level sheets.
 }
+\examples{
+\donttest{
+# Minimal dummy object (como el devuelto por calc_batch)
+br <- list(
+  summary = list(
+    n_farms_processed = 1L,
+    n_farms_successful = 1L,
+    n_farms_with_errors = 0L,
+    boundaries_used = list(scope = "farm_gate"),
+    benchmark_region = NA_character_,
+    processing_date = Sys.Date()
+  ),
+  farm_results = list(list(
+    success = TRUE,
+    farm_id = "Farm_A",
+    year = format(Sys.Date(), "\%Y"),
+    emissions_enteric = 100, emissions_manure = 50, emissions_soil = 20,
+    emissions_energy = 10, emissions_inputs = 5, emissions_total = 185,
+    intensity_milk_kg_co2eq_per_kg_fpcm = 1.2,
+    intensity_area_kg_co2eq_per_ha_total = 800,
+    intensity_area_kg_co2eq_per_ha_productive = 1000,
+    fpcm_production_kg = 150000, milk_production_kg = 154500,
+    milk_production_litres = 150000,
+    land_use_efficiency = 3000,
+    total_animals = 200, dairy_cows = 120,
+    benchmark_region = NA_character_, benchmark_performance = NA_character_,
+    processing_date = Sys.Date(), boundaries_used = "farm_gate",
+    tier_used = "tier_2", detailed_objects = NULL
+  ))
+)
+class(br) <- "cf_batch_complete"
+
+f <- tempfile(fileext = ".xlsx")
+export_hdc_report(br, file = f)
+file.exists(f)
+}
+}

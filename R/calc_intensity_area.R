@@ -7,7 +7,7 @@
 #' @param area_total_ha Numeric. Total farm area in hectares.
 #' @param area_productive_ha Numeric. Productive/utilized area in hectares.
 #'   If NULL, uses total area. Default = NULL.
-#' @param area_breakdown Named list. Optional detailed area breakdown by land use type.
+#' @param area_breakdown Named list or named numeric vector. Optional detailed area breakdown by land use type.
 #'   Names should be descriptive (e.g., "pasture_permanent", "crops_feed").
 #' @param validate_area_sum Logical. Check if area breakdown sums to total? Default = TRUE.
 #'
@@ -46,7 +46,6 @@
 #'   infrastructure = 3,
 #'   woodland = 7
 #' )
-#'
 #' calc_intensity_area(
 #'   total_emissions = 88000,
 #'   area_total_ha = 135,
@@ -54,11 +53,13 @@
 #' )
 #'
 #' # Using with calc_total_emissions output
-#' b <- set_system_boundaries("farm_gate")
-#' e1 <- calc_emissions_enteric(100, boundaries = b)
-#' e2 <- calc_emissions_manure(100, boundaries = b)
-#' tot <- calc_total_emissions(e1, e2)
-#' calc_intensity_area(tot, area_total_ha = 120)
+#' # \donttest{
+#' # b <- set_system_boundaries("farm_gate")
+#' # e1 <- calc_emissions_enteric(100, boundaries = b)
+#' # e2 <- calc_emissions_manure(100, boundaries = b)
+#' # tot <- calc_total_emissions(e1, e2)
+#' # calc_intensity_area(tot, area_total_ha = 120)
+#' # }
 calc_intensity_area <- function(total_emissions,
                                 area_total_ha,
                                 area_productive_ha = NULL,
@@ -66,7 +67,7 @@ calc_intensity_area <- function(total_emissions,
                                 validate_area_sum = TRUE) {
 
   # Extract emissions value if cf_total object is passed
-  if (is.list(total_emissions) && "total_co2eq" %in% names(total_emissions)) {
+  if (inherits(total_emissions, "cf_total")) {
     emissions_value <- total_emissions$total_co2eq
     emissions_breakdown <- total_emissions
   } else if (is.numeric(total_emissions)) {
@@ -80,7 +81,6 @@ calc_intensity_area <- function(total_emissions,
   if (length(emissions_value) != 1 || is.na(emissions_value) || emissions_value < 0) {
     stop("total_emissions must be a single non-negative number")
   }
-
   if (length(area_total_ha) != 1 || is.na(area_total_ha) || area_total_ha <= 0) {
     stop("area_total_ha must be a single positive number")
   }
@@ -98,15 +98,20 @@ calc_intensity_area <- function(total_emissions,
 
   # Validate area breakdown if provided
   if (!is.null(area_breakdown)) {
-    if (!is.list(area_breakdown) || is.null(names(area_breakdown))) {
-      stop("area_breakdown must be a named list")
+    # Allow named numeric vectors too
+    if (is.list(area_breakdown)) {
+      ab_values <- unlist(area_breakdown, use.names = TRUE)
+    } else if (is.numeric(area_breakdown) && !is.null(names(area_breakdown))) {
+      ab_values <- area_breakdown
+    } else {
+      stop("area_breakdown must be a named list or a named numeric vector")
     }
 
-    if (any(sapply(area_breakdown, function(x) !is.numeric(x) || length(x) != 1 || is.na(x) || x < 0))) {
-      stop("All area_breakdown values must be single non-negative numbers")
+    if (any(!is.finite(ab_values)) || any(ab_values < 0)) {
+      stop("All area_breakdown values must be finite non-negative numbers")
     }
 
-    total_breakdown_area <- sum(unlist(area_breakdown))
+    total_breakdown_area <- sum(ab_values)
 
     if (validate_area_sum) {
       if (abs(total_breakdown_area - area_total_ha) > 0.1) {
@@ -114,11 +119,9 @@ calc_intensity_area <- function(total_emissions,
                     " ha) doesn't match total area (", area_total_ha, " ha). ",
                     "Set validate_area_sum = FALSE to override."))
       }
-    } else {
-      if (abs(total_breakdown_area - area_total_ha) > 0.1) {
-        warning(paste0("Area breakdown sum (", round(total_breakdown_area, 1),
-                       " ha) doesn't match total area (", area_total_ha, " ha)"))
-      }
+    } else if (abs(total_breakdown_area - area_total_ha) > 0.1) {
+      warning(paste0("Area breakdown sum (", round(total_breakdown_area, 1),
+                     " ha) doesn't match total area (", area_total_ha, " ha)"))
     }
   }
 
@@ -128,37 +131,37 @@ calc_intensity_area <- function(total_emissions,
 
   # Build result object
   result <- list(
-    # Main intensity metrics
     intensity_per_total_ha = round(intensity_total, 2),
     intensity_per_productive_ha = round(intensity_productive, 2),
-
-    # Area data
     total_emissions_co2eq = emissions_value,
     area_total_ha = area_total_ha,
     area_productive_ha = area_productive_ha,
     land_use_efficiency = round(area_productive_ha / area_total_ha, 3),
-
-    # Calculation date
     date = Sys.Date()
   )
 
   # Add area breakdown analysis if provided
   if (!is.null(area_breakdown)) {
-    # Calculate proportional emissions by land use
-    proportional_emissions <- lapply(area_breakdown, function(area) {
-      round(emissions_value * (area / area_total_ha), 1)
-    })
+    # ensure named numeric vector
+    if (exists("ab_values")) {
+      land_use_ha <- ab_values
+    } else {
+      land_use_ha <- unlist(area_breakdown, use.names = TRUE)
+    }
 
-    # Calculate area percentages
-    area_percentages <- lapply(area_breakdown, function(area) {
-      round((area / area_total_ha) * 100, 1)
-    })
+    proportional_emissions <- vapply(land_use_ha, function(a) {
+      round(emissions_value * (a / area_total_ha), 1)
+    }, FUN.VALUE = numeric(1))
+
+    area_percentages <- vapply(land_use_ha, function(a) {
+      round((a / area_total_ha) * 100, 1)
+    }, FUN.VALUE = numeric(1))
 
     result$area_breakdown <- list(
-      land_use_ha = area_breakdown,
-      land_use_percentages = area_percentages,
-      proportional_emissions_co2eq = proportional_emissions,
-      breakdown_total_ha = sum(unlist(area_breakdown))
+      land_use_ha = as.list(land_use_ha),
+      land_use_percentages = as.list(area_percentages),
+      proportional_emissions_co2eq = as.list(proportional_emissions),
+      breakdown_total_ha = sum(land_use_ha)
     )
   }
 
@@ -174,7 +177,16 @@ calc_intensity_area <- function(total_emissions,
 #'
 #' @param x A cf_area_intensity object
 #' @param ... Additional arguments (ignored)
+#' @return The input object `x`, invisibly.
 #' @export
+#' @examples
+#' x <- list(
+#'   intensity_per_total_ha = 900,
+#'   intensity_per_productive_ha = 1100,
+#'   land_use_efficiency = 3200
+#' )
+#' class(x) <- "cf_area_intensity"
+#' print(x)
 print.cf_area_intensity <- function(x, ...) {
   cat("Carbon Footprint Area Intensity\n")
   cat("===============================\n")
@@ -188,14 +200,12 @@ print.cf_area_intensity <- function(x, ...) {
 
   if (!is.null(x$area_breakdown)) {
     cat("Land use breakdown:\n")
-    for (i in seq_along(x$area_breakdown$land_use_ha)) {
-      land_use <- names(x$area_breakdown$land_use_ha)[i]
-      area <- x$area_breakdown$land_use_ha[[i]]
-      percentage <- x$area_breakdown$land_use_percentages[[i]]
-      emissions <- x$area_breakdown$proportional_emissions_co2eq[[i]]
-
+    for (nm in names(x$area_breakdown$land_use_ha)) {
+      area <- x$area_breakdown$land_use_ha[[nm]]
+      percentage <- x$area_breakdown$land_use_percentages[[nm]]
+      emissions <- x$area_breakdown$proportional_emissions_co2eq[[nm]]
       cat(sprintf(" %s: %.1f ha (%.1f%%) -> %.0f kg CO2eq\n",
-                  gsub("_", " ", land_use), area, percentage, emissions))
+                  gsub("_", " ", nm), area, percentage, emissions))
     }
     cat("\n")
   }
@@ -214,6 +224,12 @@ print.cf_area_intensity <- function(x, ...) {
 #'
 #' @return Original object with added benchmarking information
 #' @export
+#' @examples
+#' \donttest{
+#' res <- calc_intensity_area(total_emissions = 90000, area_total_ha = 150, area_productive_ha = 140)
+#' out <- benchmark_area_intensity(res, region = "uruguay")
+#' # str(out$benchmarking)
+#' }
 benchmark_area_intensity <- function(cf_area_intensity,
                                      region = NULL,
                                      benchmark_data = NULL) {
@@ -222,20 +238,14 @@ benchmark_area_intensity <- function(cf_area_intensity,
     stop("Input must be a cf_area_intensity object")
   }
 
-  # Default regional benchmarks (kg CO2eq/ha) - should be updated with real data sources
+  # Default regional benchmarks (kg CO2eq/ha) - placeholders, reemplazar con fuentes reales (IDF/FAO/etc.)
   default_benchmarks <- list(
-    uruguay = list(mean = 6000, range = c(5000, 7000),
-                   source = "Example data - replace with actual research"),
-    argentina = list(mean = 6800, range = c(5500, 8500),
-                     source = "Example data - replace with actual research"),
-    brazil = list(mean = 7200, range = c(5500, 9000),
-                  source = "Example data - replace with actual research"),
-    new_zealand = list(mean = 8500, range = c(700, 10500),
-                       source = "Example data - replace with actual research"),
-    ireland = list(mean = 9200, range = c(8000, 11000),
-                   source = "Example data - replace with actual research"),
-    global = list(mean = 750, range = c(4000, 12000),
-                  source = "FAO, 2020")
+    uruguay = list(mean = 6000, range = c(5000, 7000),  source = "Placeholder"),
+    argentina = list(mean = 6800, range = c(5500, 8500), source = "Placeholder"),
+    brazil = list(mean = 7200, range = c(5500, 9000),   source = "Placeholder"),
+    new_zealand = list(mean = 8500, range = c(7000, 10500), source = "Placeholder"),
+    ireland = list(mean = 9200, range = c(8000, 11000), source = "Placeholder"),
+    global = list(mean = 7500, range = c(4000, 12000),  source = "FAO/IDF (placeholder)")
   )
 
   if (!is.null(benchmark_data)) {
@@ -243,13 +253,12 @@ benchmark_area_intensity <- function(cf_area_intensity,
       stop("benchmark_data must have 'mean' and 'range' elements")
     }
     benchmark <- benchmark_data
-    benchmark$source <- benchmark_data$source %||% "User provided"
+    if (is.null(benchmark$source)) benchmark$source <- "User provided"
   } else if (!is.null(region) && region %in% names(default_benchmarks)) {
     benchmark <- default_benchmarks[[region]]
   } else {
     stop("Must provide either a valid region or benchmark_data")
   }
-
   intensity <- cf_area_intensity$intensity_per_productive_ha
 
   # Calculate comparison metrics

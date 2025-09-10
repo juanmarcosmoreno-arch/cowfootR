@@ -1,35 +1,48 @@
 #' Calculate soil N2O emissions
 #'
-#' Estimates direct and indirect N2O emissions from soils due to
-#' fertilization, excreta deposition, and crop residues using IPCC methodology.
+#' Estimates direct and indirect N2O emissions from soils due to fertilisation,
+#' excreta deposition and crop residues, following a Tier 1-style IPCC approach.
 #'
 #' IMPORTANT: When system boundaries exclude soil, this function must return
-#'   a list with `source = "soil"` and `co2eq_kg = 0` (numeric zero) to match
-#'   the partial-boundaries integration tests.
+#' a list with `source = "soil"` and `co2eq_kg = 0` (numeric zero) to match
+#' partial-boundaries integration tests.
 #'
-#' @param n_fertilizer_synthetic Numeric. Synthetic nitrogen fertilizer applied (kg N/year).
-#'   Default = 0.
-#' @param n_fertilizer_organic Numeric. Organic nitrogen fertilizer applied (kg N/year).
-#'   Default = 0.
-#' @param n_excreta_pasture Numeric. Nitrogen excreted directly on pasture (kg N/year).
-#'   Default = 0.
-#' @param n_crop_residues Numeric. Nitrogen in crop residues returned to soil (kg N/year).
-#'   Default = 0.
-#' @param area_ha Numeric. Total farm area (hectares). Used for per-hectare metrics. Optional.
-#' @param soil_type Character. Soil drainage: "well_drained" or "poorly_drained".
-#'   Default = "well_drained".
-#' @param climate Character. Climate: "temperate" or "tropical". Default = "temperate".
-#' @param ef_direct Numeric. Direct EF for N2O-N (kg N2O-N per kg N input).
-#'   If NULL, uses IPCC 2019 values based on soil type and climate.
-#' @param include_indirect Logical. Include indirect N2O from volatilization and leaching?
-#'   Default = TRUE.
-#' @param gwp_n2o Numeric. GWP of N2O. Default = 273 (IPCC AR6).
-#' @param boundaries Optional. An object from \code{set_system_boundaries()}.
-#'   If soil is excluded, returns \code{co2eq_kg = 0}.
+#' @param n_fertilizer_synthetic Numeric. Synthetic N fertiliser applied (kg N/year). Default = 0.
+#' @param n_fertilizer_organic   Numeric. Organic N fertiliser applied (kg N/year). Default = 0.
+#' @param n_excreta_pasture      Numeric. N excreted directly on pasture (kg N/year). Default = 0.
+#' @param n_crop_residues        Numeric. N in crop residues returned to soil (kg N/year). Default = 0.
+#' @param area_ha                Numeric. Total farm area (ha). Optional, for per-hectare metrics.
+#' @param soil_type              Character. "well_drained" or "poorly_drained". Default = "well_drained".
+#' @param climate                Character. "temperate" or "tropical". Default = "temperate".
+#' @param ef_direct              Numeric. Direct EF for N2O-N (kg N2O-N per kg N input).
+#'                               If NULL, uses IPCC-style values by soil/climate.
+#' @param include_indirect       Logical. Include indirect N2O (volatilisation + leaching)? Default = TRUE.
+#' @param gwp_n2o                Numeric. GWP of N2O. Default = 273 (IPCC AR6).
+#' @param boundaries             Optional. Object from \code{set_system_boundaries()}.
+#'                               If soil is excluded, returns \code{co2eq_kg = 0}.
 #'
 #' @return A list with at least \code{source="soil"} and \code{co2eq_kg} (numeric),
-#'   plus detailed breakdown metadata when included by boundaries.
+#' plus detailed breakdown metadata when included by boundaries.
 #' @export
+#'
+#' @examples
+#' \donttest{
+#' # Direct + indirect (default), temperate, well-drained
+#' calc_emissions_soil(
+#'   n_fertilizer_synthetic = 2500,
+#'   n_fertilizer_organic   = 500,
+#'   n_excreta_pasture      = 1200,
+#'   n_crop_residues        = 300,
+#'   area_ha                = 150
+#' )
+#'
+#' # Direct-only
+#' calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
+#'
+#' # Boundary exclusion example
+#' b <- list(include = c("energy", "manure"))  # soil not included
+#' calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = b)$co2eq_kg  # 0
+#' }
 calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
                                 n_fertilizer_organic = 0,
                                 n_excreta_pasture = 0,
@@ -45,84 +58,71 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
   # --------------------------
   # Validation & boundary gate
   # --------------------------
-  valid_soils <- c("well_drained", "poorly_drained")
+  valid_soils    <- c("well_drained", "poorly_drained")
   valid_climates <- c("temperate", "tropical")
 
-  if (!soil_type %in% valid_soils) {
+  if (!soil_type %in% valid_soils)
     stop("Invalid soil_type. Use: ", paste(valid_soils, collapse = ", "))
-  }
-  if (!climate %in% valid_climates) {
+  if (!climate %in% valid_climates)
     stop("Invalid climate. Use: ", paste(valid_climates, collapse = ", "))
-  }
-  if (any(c(n_fertilizer_synthetic, n_fertilizer_organic,
-            n_excreta_pasture, n_crop_residues) < 0)) {
+
+  nin <- c(n_fertilizer_synthetic, n_fertilizer_organic, n_excreta_pasture, n_crop_residues)
+  if (any(!is.finite(nin)))
+    stop("Nitrogen inputs must be finite numeric scalars.")
+  if (any(nin < 0))
     stop("All nitrogen inputs must be non-negative.")
-  }
 
-  # Boundary exclusion: soil is excluded when 'include' is present and does not contain "soil".
-  soil_excluded <- is.list(boundaries) &&
-    !is.null(boundaries$include) &&
-    !"soil" %in% boundaries$include
-
+  # Boundary exclusion: return numeric zero (not NULL) for co2eq_kg as per tests.
+  soil_excluded <- is.list(boundaries) && !is.null(boundaries$include) && !("soil" %in% boundaries$include)
   if (soil_excluded) {
-    # Test expects numeric 0 (not NULL) when soil is excluded.
     return(list(
-      source        = "soil",
-      co2eq_kg      = 0,
-      methodology   = "excluded_by_boundaries",
+      source             = "soil",
+      co2eq_kg           = 0,  # numeric zero required by tests
+      methodology        = "excluded_by_boundaries",
       emissions_breakdown = NULL,
       nitrogen_inputs     = NULL,
-      date = Sys.Date()
+      date               = Sys.Date()
     ))
   }
 
-  # Keep original arg to label factor provenance later
+  # Keep original EF arg to label provenance
   ef_direct_arg <- ef_direct
 
   # ------------------------------------
-  # Emission factors (IPCC defaults T1)
+  # Direct emission factors (IPCC-like)
   # ------------------------------------
   if (is.null(ef_direct)) {
-    # IPCC 2019 direct EF for N2O-N (kg N2O-N per kg N input)
+    # Illustrative Tier 1-style values; adjust as you source country/region data.
     direct_factors <- list(
-      temperate = list(
-        well_drained   = 0.01,
-        poorly_drained = 0.015
-      ),
-      tropical = list(
-        well_drained   = 0.012,
-        poorly_drained = 0.018
-      )
+      temperate = list(well_drained = 0.010, poorly_drained = 0.015),
+      tropical  = list(well_drained = 0.012, poorly_drained = 0.018)
     )
     ef_direct <- direct_factors[[climate]][[soil_type]]
   } else {
-    if (!is.numeric(ef_direct) || length(ef_direct) != 1L) {
+    if (!is.numeric(ef_direct) || length(ef_direct) != 1L)
       stop("ef_direct must be a single numeric value.")
-    }
-    if (ef_direct < 0 || ef_direct > 0.05) {
+    if (ef_direct < 0 || ef_direct > 0.05)
       warning("ef_direct seems unusual (typical range is ~0.005 to 0.02).")
-    }
   }
 
   # -------------------------
   # Activity data & pathways
   # -------------------------
-  total_n_input <- n_fertilizer_synthetic + n_fertilizer_organic +
-    n_excreta_pasture + n_crop_residues
+  total_n_input <- n_fertilizer_synthetic + n_fertilizer_organic + n_excreta_pasture + n_crop_residues
 
   # Direct N2O (convert N2O-N to N2O using 44/28)
-  n2o_direct <- total_n_input * ef_direct * (44/28)
+  n2o_direct <- total_n_input * ef_direct * (44 / 28)
 
-  # Predefine indirect terms to avoid undefined variables if include_indirect = FALSE
+  # Pre-define indirect components
   n2o_volatilization <- 0
-  n2o_leaching <- 0
-  n2o_indirect <- 0
-  ef_vol <- NA_real_
-  ef_leach <- NA_real_
+  n2o_leaching       <- 0
+  n2o_indirect       <- 0
+  ef_vol             <- NA_real_
+  ef_leach           <- NA_real_
 
   if (isTRUE(include_indirect)) {
-    # IPCC 2019 typical Tier 1 fractions/Efs for indirect pathways
-    # Volatilization (NH3 + NOx)
+    # IPCC-style fractions/EFs (illustrative Tier 1)
+    # Volatilisation (NH3 + NOx)
     frac_vol_synthetic <- 0.10
     frac_vol_organic   <- 0.20
     frac_vol_excreta   <- 0.20
@@ -131,14 +131,14 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
     n_vol <- (n_fertilizer_synthetic * frac_vol_synthetic) +
       (n_fertilizer_organic   * frac_vol_organic)   +
       (n_excreta_pasture      * frac_vol_excreta)
-    n2o_volatilization <- n_vol * ef_vol * (44/28)
+    n2o_volatilization <- n_vol * ef_vol * (44 / 28)
 
     # Leaching/runoff (NO3-)
     frac_leach <- 0.30
     ef_leach   <- 0.0075
 
     n_leach <- total_n_input * frac_leach
-    n2o_leaching <- n_leach * ef_leach * (44/28)
+    n2o_leaching <- n_leach * ef_leach * (44 / 28)
 
     n2o_indirect <- n2o_volatilization + n2o_leaching
   }
@@ -174,7 +174,7 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
       total_n2o_kg                   = round(n2o_total, 3)
     ),
 
-    # Primary field used by tests
+    # Primary field used downstream (and by your tests)
     co2eq_kg = round(co2eq_total, 2),
 
     emission_factors = list(
@@ -183,13 +183,13 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
       ef_leaching       = ef_leach,
       gwp_n2o           = gwp_n2o,
       factors_source    = if (is.null(ef_direct_arg))
-        paste0("IPCC 2019 (", climate, ", ", soil_type, ")") else "User-provided"
+        paste0("IPCC-style defaults (", climate, ", ", soil_type, ")") else "User-provided"
     ),
 
     methodology = if (isTRUE(include_indirect))
-      "IPCC 2019 Tier 1 (direct + indirect)"
+      "Tier 1-style (direct + indirect)"
     else
-      "IPCC 2019 Tier 1 (direct only)",
+      "Tier 1-style (direct only)",
 
     standards = "IPCC 2019 Refinement, IDF 2022",
     date = Sys.Date()

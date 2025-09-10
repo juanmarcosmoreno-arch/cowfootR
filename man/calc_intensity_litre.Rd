@@ -38,14 +38,11 @@ The correction to FPCM (fat- and protein-corrected milk) follows the IDF formula
 Where milk_kg = milk_litres * milk_density
 }
 \examples{
-b <- set_system_boundaries("farm_gate")
-e1 <- calc_emissions_enteric(100, boundaries = b)
-e2 <- calc_emissions_manure(100, boundaries = b)
-tot <- calc_total_emissions(e1, e2)
+\donttest{
+# Using numeric total emissions directly
+calc_intensity_litre(total_emissions = 85000, milk_litres = 750000)
 
-# Using cf_total object directly
-calc_intensity_litre(tot, milk_litres = 750000)
-
-# Using numeric value
-calc_intensity_litre(tot$total_co2eq, milk_litres = 750000)
+# If you have a cf_total object 'tot' (e.g., from calc_total_emissions):
+# calc_intensity_litre(tot, milk_litres = 750000)
+}
 }

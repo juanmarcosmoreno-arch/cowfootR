@@ -19,34 +19,28 @@ calc_emissions_soil(
 )
 }
 \arguments{
-\item{n_fertilizer_synthetic}{Numeric. Synthetic nitrogen fertilizer applied (kg N/year).
-Default = 0.}
+\item{n_fertilizer_synthetic}{Numeric. Synthetic N fertiliser applied (kg N/year). Default = 0.}
 
-\item{n_fertilizer_organic}{Numeric. Organic nitrogen fertilizer applied (kg N/year).
-Default = 0.}
+\item{n_fertilizer_organic}{Numeric. Organic N fertiliser applied (kg N/year). Default = 0.}
 
-\item{n_excreta_pasture}{Numeric. Nitrogen excreted directly on pasture (kg N/year).
-Default = 0.}
+\item{n_excreta_pasture}{Numeric. N excreted directly on pasture (kg N/year). Default = 0.}
 
-\item{n_crop_residues}{Numeric. Nitrogen in crop residues returned to soil (kg N/year).
-Default = 0.}
+\item{n_crop_residues}{Numeric. N in crop residues returned to soil (kg N/year). Default = 0.}
 
-\item{area_ha}{Numeric. Total farm area (hectares). Used for per-hectare metrics. Optional.}
+\item{area_ha}{Numeric. Total farm area (ha). Optional, for per-hectare metrics.}
 
-\item{soil_type}{Character. Soil drainage: "well_drained" or "poorly_drained".
-Default = "well_drained".}
+\item{soil_type}{Character. "well_drained" or "poorly_drained". Default = "well_drained".}
 
-\item{climate}{Character. Climate: "temperate" or "tropical". Default = "temperate".}
+\item{climate}{Character. "temperate" or "tropical". Default = "temperate".}
 
 \item{ef_direct}{Numeric. Direct EF for N2O-N (kg N2O-N per kg N input).
-If NULL, uses IPCC 2019 values based on soil type and climate.}
+If NULL, uses IPCC-style values by soil/climate.}
 
-\item{include_indirect}{Logical. Include indirect N2O from volatilization and leaching?
-Default = TRUE.}
+\item{include_indirect}{Logical. Include indirect N2O (volatilisation + leaching)? Default = TRUE.}
 
 \item{gwp_n2o}{Numeric. GWP of N2O. Default = 273 (IPCC AR6).}
 
-\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.
+\item{boundaries}{Optional. Object from \code{set_system_boundaries()}.
 If soil is excluded, returns \code{co2eq_kg = 0}.}
 }
 \value{
@@ -54,11 +48,30 @@ A list with at least \code{source="soil"} and \code{co2eq_kg} (numeric),
 plus detailed breakdown metadata when included by boundaries.
 }
 \description{
-Estimates direct and indirect N2O emissions from soils due to
-fertilization, excreta deposition, and crop residues using IPCC methodology.
+Estimates direct and indirect N2O emissions from soils due to fertilisation,
+excreta deposition and crop residues, following a Tier 1-style IPCC approach.
 }
 \details{
 IMPORTANT: When system boundaries exclude soil, this function must return
 a list with \code{source = "soil"} and \code{co2eq_kg = 0} (numeric zero) to match
-the partial-boundaries integration tests.
+partial-boundaries integration tests.
+}
+\examples{
+\donttest{
+# Direct + indirect (default), temperate, well-drained
+calc_emissions_soil(
+  n_fertilizer_synthetic = 2500,
+  n_fertilizer_organic   = 500,
+  n_excreta_pasture      = 1200,
+  n_crop_residues        = 300,
+  area_ha                = 150
+)
+
+# Direct-only
+calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
+
+# Boundary exclusion example
+b <- list(include = c("energy", "manure"))  # soil not included
+calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = b)$co2eq_kg  # 0
+}
 }

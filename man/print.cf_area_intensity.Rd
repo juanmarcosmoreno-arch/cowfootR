@@ -11,6 +11,18 @@
 
 \item{...}{Additional arguments (ignored)}
 }
+\value{
+The input object \code{x}, invisibly.
+}
 \description{
 Print method for cf_area_intensity objects
+}
+\examples{
+x <- list(
+  intensity_per_total_ha = 900,
+  intensity_per_productive_ha = 1100,
+  land_use_efficiency = 3200
+)
+class(x) <- "cf_area_intensity"
+print(x)
 }

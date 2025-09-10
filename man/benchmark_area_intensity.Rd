@@ -24,3 +24,10 @@ Original object with added benchmarking information
 \description{
 Benchmark area intensity against regional data
 }
+\examples{
+\donttest{
+res <- calc_intensity_area(total_emissions = 90000, area_total_ha = 150, area_productive_ha = 140)
+out <- benchmark_area_intensity(res, region = "uruguay")
+# str(out$benchmarking)
+}
+}

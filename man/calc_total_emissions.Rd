@@ -18,3 +18,15 @@ even if they don't use exactly the same field name for the total.
 IMPORTANT: If a source explicitly reports \code{co2eq_kg = NULL} (e.g. excluded by
 system boundaries), it is treated as zero and no fallback summation is attempted.
 }
+\examples{
+\donttest{
+# hipotético: totales ya agregados por fuente
+enteric <- list(co2eq_kg = 45000, source = "enteric")
+manure  <- list(co2eq_kg = 12000, source = "manure")
+soil    <- list(co2eq_kg = 18000, source = "soil")
+energy  <- list(co2eq_kg =  8000, source = "energy")
+
+tot <- calc_total_emissions(enteric = enteric, manure = manure, soil = soil, energy = energy)
+# print(tot)
+}
+}

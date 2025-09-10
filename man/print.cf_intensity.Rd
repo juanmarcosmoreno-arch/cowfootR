@@ -11,6 +11,24 @@
 
 \item{...}{Additional arguments (ignored)}
 }
+\value{
+The input object \code{x}, invisibly.
+}
 \description{
 Print method for cf_intensity objects
+}
+\examples{
+\donttest{
+x <- list(
+  intensity_co2eq_per_kg_fpcm = 0.9,
+  total_emissions_co2eq = 85000,
+  milk_production_litres = 750000,
+  milk_production_kg = 750000 * 1.03,
+  fpcm_production_kg = 750000 * 1.03 * (0.1226*4 + 0.0776*3.3 + 0.2534),
+  fat_percent = 4, protein_percent = 3.3, milk_density_kg_per_l = 1.03,
+  date = Sys.Date()
+)
+class(x) <- "cf_intensity"
+# print(x)
+}
 }

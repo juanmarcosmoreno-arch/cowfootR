@@ -19,16 +19,13 @@
 #' @export
 #'
 #' @examples
-#' b <- set_system_boundaries("farm_gate")
-#' e1 <- calc_emissions_enteric(100, boundaries = b)
-#' e2 <- calc_emissions_manure(100, boundaries = b)
-#' tot <- calc_total_emissions(e1, e2)
+#' \donttest{
+#' # Using numeric total emissions directly
+#' calc_intensity_litre(total_emissions = 85000, milk_litres = 750000)
 #'
-#' # Using cf_total object directly
-#' calc_intensity_litre(tot, milk_litres = 750000)
-#'
-#' # Using numeric value
-#' calc_intensity_litre(tot$total_co2eq, milk_litres = 750000)
+#' # If you have a cf_total object 'tot' (e.g., from calc_total_emissions):
+#' # calc_intensity_litre(tot, milk_litres = 750000)
+#' }
 calc_intensity_litre <- function(total_emissions,
                                  milk_litres,
                                  fat = 4,
@@ -36,7 +33,7 @@ calc_intensity_litre <- function(total_emissions,
                                  milk_density = 1.03) {
 
   # Extract emissions value if cf_total object is passed
-  if (is.list(total_emissions) && "total_co2eq" %in% names(total_emissions)) {
+  if (inherits(total_emissions, "cf_total")) {
     emissions_value <- total_emissions$total_co2eq
   } else if (is.numeric(total_emissions)) {
     emissions_value <- total_emissions
@@ -48,20 +45,16 @@ calc_intensity_litre <- function(total_emissions,
   if (length(emissions_value) != 1 || is.na(emissions_value) || emissions_value < 0) {
     stop("total_emissions must be a single non-negative number")
   }
-
   if (length(milk_litres) != 1 || is.na(milk_litres) || milk_litres <= 0) {
     stop("milk_litres must be a single positive number")
   }
-
-  if (fat < 0 || fat > 100) {
+  if (!is.finite(fat) || fat < 0 || fat > 100) {
     stop("fat percentage must be between 0 and 100")
   }
-
-  if (protein < 0 || protein > 100) {
+  if (!is.finite(protein) || protein < 0 || protein > 100) {
     stop("protein percentage must be between 0 and 100")
   }
-
-  if (milk_density <= 0) {
+  if (!is.finite(milk_density) || milk_density <= 0) {
     stop("milk_density must be positive")
   }
 
@@ -70,6 +63,9 @@ calc_intensity_litre <- function(total_emissions,
 
   # Convert milk to fat- and protein-corrected milk (FPCM)
   fpcm_kg <- milk_kg * (0.1226 * fat + 0.0776 * protein + 0.2534)
+  if (!is.finite(fpcm_kg) || fpcm_kg <= 0) {
+    stop("Computed FPCM is not positive; check fat/protein/density inputs.")
+  }
 
   # Intensity (kg CO2eq per kg FPCM)
   intensity <- emissions_value / fpcm_kg
@@ -94,15 +90,30 @@ calc_intensity_litre <- function(total_emissions,
 #'
 #' @param x A cf_intensity object
 #' @param ... Additional arguments (ignored)
+#' @return The input object `x`, invisibly.
 #' @export
+#' @examples
+#' \donttest{
+#' x <- list(
+#'   intensity_co2eq_per_kg_fpcm = 0.9,
+#'   total_emissions_co2eq = 85000,
+#'   milk_production_litres = 750000,
+#'   milk_production_kg = 750000 * 1.03,
+#'   fpcm_production_kg = 750000 * 1.03 * (0.1226*4 + 0.0776*3.3 + 0.2534),
+#'   fat_percent = 4, protein_percent = 3.3, milk_density_kg_per_l = 1.03,
+#'   date = Sys.Date()
+#' )
+#' class(x) <- "cf_intensity"
+#' # print(x)
+#' }
 print.cf_intensity <- function(x, ...) {
   cat("Carbon Footprint Intensity\n")
   cat("==========================\n")
   cat("Intensity:", round(x$intensity_co2eq_per_kg_fpcm, 3), "kg CO2eq/kg FPCM\n\n")
   cat("Production data:\n")
-  cat(" Raw milk:", format(x$milk_production_litres, big.mark = ","), "L\n")
-  cat(" Raw milk:", format(round(x$milk_production_kg), big.mark = ","), "kg\n")
-  cat(" FPCM:", format(round(x$fpcm_production_kg), big.mark = ","), "kg\n")
+  cat(" Raw milk (L):", format(x$milk_production_litres, big.mark = ","), "L\n")
+  cat(" Raw milk (kg):", format(round(x$milk_production_kg), big.mark = ","), "kg\n")
+  cat(" FPCM (kg):", format(round(x$fpcm_production_kg), big.mark = ","), "kg\n")
   cat(" Fat content:", x$fat_percent, "%\n")
   cat(" Protein content:", x$protein_percent, "%\n\n")
   cat("Total emissions:", format(round(x$total_emissions_co2eq), big.mark = ","), "kg CO2eq\n")

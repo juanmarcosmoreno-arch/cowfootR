@@ -8,9 +8,23 @@
 #' @param ... Results from \code{calc_emissions_*()} functions (lists).
 #' @return Object "cf_total" with breakdown (kg CO2eq by source) and total.
 #' @export
+#' @examples
+#' \donttest{
+#' # hipotético: totales ya agregados por fuente
+#' enteric <- list(co2eq_kg = 45000, source = "enteric")
+#' manure  <- list(co2eq_kg = 12000, source = "manure")
+#' soil    <- list(co2eq_kg = 18000, source = "soil")
+#' energy  <- list(co2eq_kg =  8000, source = "energy")
+#'
+#' tot <- calc_total_emissions(enteric = enteric, manure = manure, soil = soil, energy = energy)
+#' # print(tot)
+#' }
 calc_total_emissions <- function(...) {
   sources <- list(...)
   if (length(sources) == 0) stop("Must provide at least one emission source")
+
+  dot_names <- names(match.call(expand.dots = FALSE)$...)
+  if (is.null(dot_names)) dot_names <- rep("", length(sources))
 
   # internal helpers -------------------------
   .first_non_null <- function(...) {
@@ -24,22 +38,17 @@ calc_total_emissions <- function(...) {
     if (length(x) == 1L && is.finite(x)) x else NULL
   }
   .sum_breakdown <- function(bd) {
-    # Supports: numeric vector with names, list, data.frame
     if (is.null(bd)) return(NULL)
 
-    # 1) numeric vector
     if (is.numeric(bd) && is.null(dim(bd))) {
       return(sum(bd, na.rm = TRUE))
     }
 
-    # 2) list -> try unlist numeric
     if (is.list(bd) && !is.data.frame(bd)) {
-      v <- suppressWarnings(unlist(bd, use.names = FALSE))
-      v <- as.numeric(v)
+      v <- suppressWarnings(as.numeric(unlist(bd, use.names = FALSE)))
       return(sum(v, na.rm = TRUE))
     }
 
-    # 3) data.frame -> look for CO2 column
     if (is.data.frame(bd)) {
       cand <- c("co2eq_kg","CO2eq_kg","co2eq","kg_co2eq","emissions_kg","value","valor")
       col_ok <- intersect(cand, names(bd))
@@ -47,31 +56,25 @@ calc_total_emissions <- function(...) {
         v <- suppressWarnings(as.numeric(bd[[col_ok[1]]]))
         return(sum(v, na.rm = TRUE))
       }
-      # if no clear column, try summing everything numeric
       nums <- unlist(bd[vapply(bd, is.numeric, logical(1))], use.names = FALSE)
       if (length(nums)) return(sum(nums, na.rm = TRUE))
     }
 
     NULL
   }
-  .infer_source_name <- function(x, i) {
-    nm <- .first_non_null(x$source, attr(x, "source"), x$type, x$category)
-    if (is.null(nm)) nm <- paste0("source_", i)
+  .infer_source_name <- function(x, i, dot_nm = "") {
+    # prioridad: nombre provisto en ... → campo 'source' → atributo → type/category → fallback
+    nm <- if (nzchar(dot_nm)) dot_nm else .first_non_null(x$source, attr(x, "source"), x$type, x$category)
+    if (is.null(nm) || !nzchar(nm)) nm <- paste0("source_", i)
     as.character(nm)
   }
   .extract_total <- function(x) {
-    # If the source is explicitly excluded, force zero and bail out early
     if (isTRUE(x$excluded) || identical(x$methodology, "excluded_by_boundaries")) {
       return(0)
     }
-
-    # If the object *has* a co2eq_kg field and it is NULL, treat as zero.
-    # (Do NOT try to infer totals from other numbers in this case.)
     if ("co2eq_kg" %in% names(x) && is.null(x$co2eq_kg)) {
       return(0)
     }
-
-    # Prioritize typical total fields
     tot <- .first_non_null(
       .num_or_null(x$co2eq_kg),
       .num_or_null(x$total_co2eq_kg),
@@ -81,12 +84,10 @@ calc_total_emissions <- function(...) {
     )
     if (!is.null(tot)) return(tot)
 
-    # If no direct total, try calculating from breakdown
     bd <- .first_non_null(x$breakdown, x$emissions_breakdown, x$summary)
     tot_bd <- .sum_breakdown(bd)
     if (!is.null(tot_bd)) return(tot_bd)
 
-    # Last attempt: sum all flattened numeric values
     flat <- suppressWarnings(as.numeric(unlist(x, use.names = FALSE)))
     if (length(flat)) {
       s <- sum(flat, na.rm = TRUE)
@@ -105,16 +106,16 @@ calc_total_emissions <- function(...) {
     if (!is.list(x)) {
       stop("All arguments must be results from calc_emissions_*() functions (got a non-list).")
     }
-    src_names[i] <- .infer_source_name(x, i)
+    src_names[i] <- .infer_source_name(x, i, dot_nm = dot_names[i])
     values[i]    <- .extract_total(x)
     if (!is.finite(values[i])) {
       stop(sprintf("Could not extract a numeric total from source '%s'.", src_names[i]))
     }
   }
 
-  # Aggregate by source name (if duplicates came in)
   breakdown <- tapply(values, src_names, sum, na.rm = TRUE)
-  breakdown <- breakdown[order(names(breakdown))]
+  # asegurar vector named puro (no array) por si tapply devuelve 'array'
+  breakdown <- as.numeric(breakdown); names(breakdown) <- names(tapply(values, src_names, sum, na.rm = TRUE))
 
   total <- sum(breakdown, na.rm = TRUE)
 
@@ -130,10 +131,26 @@ calc_total_emissions <- function(...) {
 }
 
 #' Print method for cf_total objects
+#'
 #' @param x A cf_total object
 #' @param ... Additional arguments passed to print methods (currently ignored)
+#' @return The input object `x`, invisibly.
 #' @export
+#' @examples
+#' \donttest{
+#' x <- list(
+#'   breakdown   = c(enteric = 45000, manure = 12000),
+#'   total_co2eq = 57000,
+#'   n_sources   = 2,
+#'   date        = Sys.Date()
+#' )
+#' class(x) <- "cf_total"
+#' # print(x)
+#' }
 print.cf_total <- function(x, ...) {
+  # ...
+  invisible(x)
+} <- function(x, ...) {
   cat("Carbon Footprint - Total Emissions\n")
   cat("==================================\n")
   cat("Total CO2eq:", round(x$total_co2eq, 2), "kg\n")

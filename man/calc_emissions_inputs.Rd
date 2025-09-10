@@ -38,69 +38,62 @@ calc_emissions_inputs(
 
 \item{feed_grain_wet_kg}{Numeric. Grain wet (kg/year, DM). Default = 0.}
 
-\item{feed_ration_kg}{Numeric. Ration + lex (kg/year, DM). Default = 0.}
+\item{feed_ration_kg}{Numeric. Ration (total mixed ration) (kg/year, DM). Default = 0.}
 
 \item{feed_byproducts_kg}{Numeric. Byproducts (kg/year, DM). Default = 0.}
 
-\item{feed_proteins_kg}{Numeric. Proteins (kg/year, DM). Default = 0.}
+\item{feed_proteins_kg}{Numeric. Protein feeds (kg/year, DM). Default = 0.}
 
-\item{feed_corn_kg}{Numeric. Corn grain specific (kg/year, DM). Default = 0.}
+\item{feed_corn_kg}{Numeric. Corn (kg/year, DM). Default = 0.}
 
-\item{feed_soy_kg}{Numeric. Soybean meal specific (kg/year, DM). Default = 0.}
+\item{feed_soy_kg}{Numeric. Soybean meal (kg/year, DM). Default = 0.}
 
-\item{feed_wheat_kg}{Numeric. Wheat grain specific (kg/year, DM). Default = 0.}
+\item{feed_wheat_kg}{Numeric. Wheat (kg/year, DM). Default = 0.}
 
-\item{region}{Character. Geographic region for emission factors.
-Options: "EU", "US", "Brazil", "Argentina", "Australia", "global". Default = "global".}
+\item{region}{Character. "EU","US","Brazil","Argentina","Australia","global". Default "global".}
 
-\item{fert_type}{Character. Fertilizer type. Options: "urea", "ammonium_nitrate",
-"mixed", "organic". Default = "mixed".}
+\item{fert_type}{Character. "urea","ammonium_nitrate","mixed","organic". Default "mixed".}
 
-\item{plastic_type}{Character. Plastic type. Options: "LDPE", "HDPE", "PP", "mixed".
-Default = "mixed".}
+\item{plastic_type}{Character. "LDPE","HDPE","PP","mixed". Default "mixed".}
 
-\item{include_uncertainty}{Logical. Include uncertainty ranges in output? Default = FALSE.}
+\item{include_uncertainty}{Logical. Include uncertainty ranges? Default FALSE.}
 
-\item{transport_km}{Numeric. Average transport distance for feeds (km). Default = NULL.}
+\item{transport_km}{Numeric. Average feed transport distance (km). Optional.}
 
-\item{ef_conc}{Numeric. Override EF for concentrate feed (kg CO2eq/kg). Default = NULL.}
+\item{ef_conc, ef_fert, ef_plastic}{Numeric overrides for emission factors (kg CO2e per unit).}
 
-\item{ef_fert}{Numeric. Override EF for N fertilizer (kg CO2eq/kg N). Default = NULL.}
-
-\item{ef_plastic}{Numeric. Override EF for plastic (kg CO2eq/kg). Default = NULL.}
-
-\item{boundaries}{Optional. An object from \code{set_system_boundaries()}.}
+\item{boundaries}{Optional. Object from \code{set_system_boundaries()}.}
 }
 \value{
-A list with emissions (kg CO2eq) by input, uncertainties, and metadata.
+A list with fields:
+\itemize{
+\item source = "inputs"
+\item emissions_breakdown (named values per input)
+\item co2eq_kg (numeric total)
+\item total_co2eq_kg (duplicate of co2eq_kg)
+\item emission_factors_used, inputs_summary, contribution_analysis, uncertainty (if requested)
+\item metadata (methodology, standards, date)
+}
 }
 \description{
-Estimates CO2eq emissions from purchased inputs such as feeds, concentrates,
-fertilizers, and plastics with regional factors and uncertainty analysis.
+Estimates CO2e emissions from purchased inputs such as feeds, fertilizers,
+and plastics using regional factors, with optional uncertainty analysis.
+}
+\details{
+Notes:
+\itemize{
+\item When system boundaries exclude "inputs", this function MUST return a list
+with \code{source = "inputs"} and a numeric \code{co2eq_kg = 0} to satisfy
+partial-boundaries integration.
+\item The primary total field is \code{co2eq_kg} (for compatibility with
+\code{calc_total_emissions()}); \code{total_co2eq_kg} is included as a duplicate for
+convenience.
+}
 }
 \examples{
-# Basic usage with regional factors
-calc_emissions_inputs(
-  conc_kg = 1000,
-  feed_soy_kg = 500,
-  fert_n_kg = 200,
-  region = "EU"
-)
+# Quick example (runs fast)
+calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 
 # With uncertainty analysis
-calc_emissions_inputs(
-  conc_kg = 1000,
-  feed_corn_kg = 2000,
-  region = "US",
-  include_uncertainty = TRUE
-)
-
-# Specific fertilizer and plastic types
-calc_emissions_inputs(
-  fert_n_kg = 300,
-  plastic_kg = 50,
-  fert_type = "urea",
-  plastic_type = "LDPE",
-  region = "Brazil"
-)
+calc_emissions_inputs(feed_corn_kg = 2000, region = "US", include_uncertainty = TRUE)
 }

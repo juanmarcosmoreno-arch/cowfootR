@@ -8,6 +8,11 @@
 #'
 #' @return A list with $scope and $include
 #' @export
+#' @examples
+#' b1 <- set_system_boundaries("farm_gate")
+#' b2 <- set_system_boundaries(include = c("enteric", "manure", "soil"))
+#' b3 <- set_system_boundaries(exclude = c("inputs", "energy"))
+#' b1$scope; b2$include; b3$exclude
 set_system_boundaries <- function(scope = "farm_gate", include = NULL) {
 
   scope <- match.arg(scope, c("farm_gate", "cradle_to_farm_gate", "partial"))
