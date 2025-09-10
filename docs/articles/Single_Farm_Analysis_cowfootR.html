@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -603,23 +603,23 @@ data.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $methodology</span></span>
-<span><span class="co">#&gt; [1] "IPCC Tier 2 (VS and MCF-based calculation)"</span></span>
+<span><span class="co">#&gt; [1] "IPCC Tier 2 (VS_B0_MCF calculation)"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $standards</span></span>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2025-09-09"</span></span>
+<span><span class="co">#&gt; [1] "2025-09-10"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_cow</span></span>
 <span><span class="co">#&gt; $per_cow$ch4_kg</span></span>
-<span><span class="co">#&gt; [1] 17.56</span></span>
+<span><span class="co">#&gt; [1] 17.5636</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_cow$n2o_kg</span></span>
-<span><span class="co">#&gt; [1] 3.7204</span></span>
+<span><span class="co">#&gt; [1] 3.720357</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_cow$co2eq_kg</span></span>
-<span><span class="co">#&gt; [1] 1493.39</span></span>
+<span><span class="co">#&gt; [1] 1493.387</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $tier2_details</span></span>
@@ -712,17 +712,17 @@ data.</p>
 <span><span class="co">#&gt; [1] 273</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors$factors_source</span></span>
-<span><span class="co">#&gt; [1] "IPCC 2019 (temperate, well_drained)"</span></span>
+<span><span class="co">#&gt; [1] "IPCC-style defaults (temperate, well_drained)"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $methodology</span></span>
-<span><span class="co">#&gt; [1] "IPCC 2019 Tier 1 (direct + indirect)"</span></span>
+<span><span class="co">#&gt; [1] "Tier 1-style (direct + indirect)"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $standards</span></span>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2025-09-09"</span></span>
+<span><span class="co">#&gt; [1] "2025-09-10"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_hectare_metrics</span></span>
 <span><span class="co">#&gt; $per_hectare_metrics$n_input_kg_per_ha</span></span>
@@ -850,7 +850,7 @@ data.</p>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2025-09-09"</span></span>
+<span><span class="co">#&gt; [1] "2025-09-10"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $energy_metrics</span></span>
 <span><span class="co">#&gt; $energy_metrics$electricity_share_pct</span></span>
@@ -887,9 +887,6 @@ data.</p>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "inputs"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $region</span></span>
-<span><span class="co">#&gt; [1] "global"</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emissions_breakdown</span></span>
 <span><span class="co">#&gt; $emissions_breakdown$concentrate_co2eq_kg</span></span>
 <span><span class="co">#&gt; [1] 154000</span></span>
@@ -906,15 +903,21 @@ data.</p>
 <span><span class="co">#&gt;      wheat </span></span>
 <span><span class="co">#&gt;          0 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $emissions_breakdown$transport_adjustment_co2eq_kg</span></span>
-<span><span class="co">#&gt; [1] 5580</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emissions_breakdown$total_feeds_co2eq_kg</span></span>
 <span><span class="co">#&gt; [1] 148250</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $emissions_breakdown$transport_adjustment_co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] 5580</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] 324795</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $total_co2eq_kg</span></span>
 <span><span class="co">#&gt; [1] 324795</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $region</span></span>
+<span><span class="co">#&gt; [1] "global"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used</span></span>
 <span><span class="co">#&gt; $emission_factors_used$concentrate</span></span>
@@ -922,7 +925,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.7</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$concentrate$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$fertilizer</span></span>
@@ -933,7 +936,7 @@ data.</p>
 <span><span class="co">#&gt; [1] "mixed"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$fertilizer$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg N"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg N"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$plastic</span></span>
@@ -944,7 +947,7 @@ data.</p>
 <span><span class="co">#&gt; [1] "mixed"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$plastic$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds</span></span>
@@ -953,7 +956,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.4</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$grain_dry$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$grain_wet</span></span>
@@ -961,7 +964,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.3</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$grain_wet$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$ration</span></span>
@@ -969,7 +972,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.6</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$ration$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$byproducts</span></span>
@@ -977,7 +980,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.15</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$byproducts$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$proteins</span></span>
@@ -985,7 +988,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 1.8</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$proteins$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$corn</span></span>
@@ -993,7 +996,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.45</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$corn$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$soy</span></span>
@@ -1001,7 +1004,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 2.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$soy$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$wheat</span></span>
@@ -1009,7 +1012,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 0.52</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$wheat$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2eq/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1081,13 +1084,13 @@ data.</p>
 <span><span class="co">#&gt; NULL</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $methodology</span></span>
-<span><span class="co">#&gt; [1] "Enhanced regional emission factors with uncertainty analysis"</span></span>
+<span><span class="co">#&gt; [1] "Regional emission factors with optional uncertainty analysis"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $standards</span></span>
-<span><span class="co">#&gt; [1] "IDF 2022, Ecoinvent 3.8, Regional databases"</span></span>
+<span><span class="co">#&gt; [1] "IDF 2022; generic LCI sources"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2025-09-09"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2025-09-10"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -1125,7 +1128,7 @@ data.</p>
 <span><span class="co">#&gt;   manure : 347959.2 kg CO2eq</span></span>
 <span><span class="co">#&gt;   soil : 112601.8 kg CO2eq</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Calculated on: 2025-09-09</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2025-09-10</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="visualize-emission-sources">Visualize Emission Sources<a class="anchor" aria-label="anchor" href="#visualize-emission-sources"></a>
@@ -1178,14 +1181,14 @@ data.</p>
 <span><span class="co">#&gt; Intensity: 1.684 kg CO2eq/kg FPCM</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Production data:</span></span>
-<span><span class="co">#&gt;  Raw milk: 950,000 L</span></span>
-<span><span class="co">#&gt;  Raw milk: 980,400 kg</span></span>
-<span><span class="co">#&gt;  FPCM: 944,223 kg</span></span>
+<span><span class="co">#&gt;  Raw milk (L): 950,000 L</span></span>
+<span><span class="co">#&gt;  Raw milk (kg): 980,400 kg</span></span>
+<span><span class="co">#&gt;  FPCM (kg): 944,223 kg</span></span>
 <span><span class="co">#&gt;  Fat content: 3.7 %</span></span>
 <span><span class="co">#&gt;  Protein content: 3.3 %</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total emissions: 1,590,294 kg CO2eq</span></span>
-<span><span class="co">#&gt; Calculated on: 2025-09-09</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2025-09-10</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="area-intensity">Area Intensity<a class="anchor" aria-label="anchor" href="#area-intensity"></a>
@@ -1229,7 +1232,7 @@ data.</p>
 <span><span class="co">#&gt;  woodland: 7.0 ha (3.5%) -&gt; 55660 kg CO2eq</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total emissions: 1,590,294 kg CO2eq</span></span>
-<span><span class="co">#&gt; Calculated on: 2025-09-09</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2025-09-10</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="benchmarking-against-regional-standards">Benchmarking Against Regional Standards<a class="anchor" aria-label="anchor" href="#benchmarking-against-regional-standards"></a>
@@ -1252,7 +1255,7 @@ data.</p>
 <span><span class="co">#&gt; [1] 5000 7000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $benchmark_source</span></span>
-<span><span class="co">#&gt; [1] "Example data - replace with actual research"</span></span>
+<span><span class="co">#&gt; [1] "Placeholder"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $vs_mean_percent</span></span>
 <span><span class="co">#&gt; [1] 43.3</span></span>
@@ -1685,7 +1688,7 @@ limitations guides decision-making</li>
 Assessment” vignette. For methodology details, consult the “IPCC Tier
 Comparison” vignette.</p>
 <hr>
-<p><em>This analysis used cowfootR version 0.0.2 following IDF 2022 and
+<p><em>This analysis used cowfootR version 0.1.0 following IDF 2022 and
 IPCC 2019 standards.</em></p>
 </div>
 </div>

@@ -359,7 +359,7 @@ total_emissions <- calc_total_emissions(
   input_emissions
 )
 
-print(total_emissions)
+total_emissions
 ```
 
 ### Visualize Emission Sources

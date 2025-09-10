@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,38 @@
 <dd><p>Additional arguments (ignored)</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>The input object <code>x</code>, invisibly.</p>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  intensity_per_total_ha <span class="op">=</span> <span class="fl">900</span>,</span></span>
+<span class="r-in"><span>  intensity_per_productive_ha <span class="op">=</span> <span class="fl">1100</span>,</span></span>
+<span class="r-in"><span>  land_use_efficiency <span class="op">=</span> <span class="fl">0.92</span>,</span></span>
+<span class="r-in"><span>  total_emissions_co2eq <span class="op">=</span> <span class="fl">108000</span>,</span></span>
+<span class="r-in"><span>  area_total_ha <span class="op">=</span> <span class="fl">120</span>,</span></span>
+<span class="r-in"><span>  area_productive_ha <span class="op">=</span> <span class="fl">110</span>,</span></span>
+<span class="r-in"><span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"cf_area_intensity"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Carbon Footprint Area Intensity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===============================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Intensity (total area): 900 kg CO2eq/ha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Intensity (productive area): 1100 kg CO2eq/ha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Area summary:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Total area: 120 ha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Productive area: 110 ha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Land use efficiency: 92%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total emissions: 108,000 kg CO2eq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-10 </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

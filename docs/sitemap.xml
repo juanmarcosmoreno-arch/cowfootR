@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/404.html</loc></url>
+<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/CONTRIBUTING.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/LICENSE-text.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/LICENSE.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/articles/Complete_Parameter_Reference_Guide.html</loc></url>
@@ -22,7 +23,7 @@
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_intensity_area.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_intensity_litre.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_total_emissions.html</loc></url>
-<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/download_template.html</loc></url>
+<url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/cf_download_template.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/export_hdc_report.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/index.html</loc></url>
 <url><loc>https://juanmarcosmoreno-arch.github.io/cowfootR/reference/print.cf_area_intensity.html</loc></url>

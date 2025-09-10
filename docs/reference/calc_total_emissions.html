@@ -13,7 +13,7 @@ system boundaries), it is treated as zero and no fallback summation is attempted
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +71,20 @@ system boundaries), it is treated as zero and no fallback summation is attempted
     <p>Object "cf_total" with breakdown (kg CO2eq by source) and total.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># hipotético: totales ya agregados por fuente</span></span></span>
+<span class="r-in"><span><span class="va">enteric</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>co2eq_kg <span class="op">=</span> <span class="fl">45000</span>, source <span class="op">=</span> <span class="st">"enteric"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">manure</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>co2eq_kg <span class="op">=</span> <span class="fl">12000</span>, source <span class="op">=</span> <span class="st">"manure"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">soil</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>co2eq_kg <span class="op">=</span> <span class="fl">18000</span>, source <span class="op">=</span> <span class="st">"soil"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">energy</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>co2eq_kg <span class="op">=</span>  <span class="fl">8000</span>, source <span class="op">=</span> <span class="st">"energy"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tot</span> <span class="op">&lt;-</span> <span class="fu">calc_total_emissions</span><span class="op">(</span>enteric <span class="op">=</span> <span class="va">enteric</span>, manure <span class="op">=</span> <span class="va">manure</span>, soil <span class="op">=</span> <span class="va">soil</span>, energy <span class="op">=</span> <span class="va">energy</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># print(tot)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

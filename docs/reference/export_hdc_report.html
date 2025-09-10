@@ -9,7 +9,7 @@ with summary and farm-level sheets."><meta property="og:image" content="https://
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,47 @@ with summary and farm-level sheets.</p>
     <p>Invisibly returns the file path.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># Minimal dummy object (como el devuelto por calc_batch)</span></span></span>
+<span class="r-in"><span><span class="va">br</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  summary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    n_farms_processed <span class="op">=</span> <span class="fl">1L</span>,</span></span>
+<span class="r-in"><span>    n_farms_successful <span class="op">=</span> <span class="fl">1L</span>,</span></span>
+<span class="r-in"><span>    n_farms_with_errors <span class="op">=</span> <span class="fl">0L</span>,</span></span>
+<span class="r-in"><span>    boundaries_used <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>scope <span class="op">=</span> <span class="st">"farm_gate"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    benchmark_region <span class="op">=</span> <span class="cn">NA_character_</span>,</span></span>
+<span class="r-in"><span>    processing_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  farm_results <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    success <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    farm_id <span class="op">=</span> <span class="st">"Farm_A"</span>,</span></span>
+<span class="r-in"><span>    year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%Y"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    emissions_enteric <span class="op">=</span> <span class="fl">100</span>, emissions_manure <span class="op">=</span> <span class="fl">50</span>, emissions_soil <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>    emissions_energy <span class="op">=</span> <span class="fl">10</span>, emissions_inputs <span class="op">=</span> <span class="fl">5</span>, emissions_total <span class="op">=</span> <span class="fl">185</span>,</span></span>
+<span class="r-in"><span>    intensity_milk_kg_co2eq_per_kg_fpcm <span class="op">=</span> <span class="fl">1.2</span>,</span></span>
+<span class="r-in"><span>    intensity_area_kg_co2eq_per_ha_total <span class="op">=</span> <span class="fl">800</span>,</span></span>
+<span class="r-in"><span>    intensity_area_kg_co2eq_per_ha_productive <span class="op">=</span> <span class="fl">1000</span>,</span></span>
+<span class="r-in"><span>    fpcm_production_kg <span class="op">=</span> <span class="fl">150000</span>, milk_production_kg <span class="op">=</span> <span class="fl">154500</span>,</span></span>
+<span class="r-in"><span>    milk_production_litres <span class="op">=</span> <span class="fl">150000</span>,</span></span>
+<span class="r-in"><span>    land_use_efficiency <span class="op">=</span> <span class="fl">3000</span>,</span></span>
+<span class="r-in"><span>    total_animals <span class="op">=</span> <span class="fl">200</span>, dairy_cows <span class="op">=</span> <span class="fl">120</span>,</span></span>
+<span class="r-in"><span>    benchmark_region <span class="op">=</span> <span class="cn">NA_character_</span>, benchmark_performance <span class="op">=</span> <span class="cn">NA_character_</span>,</span></span>
+<span class="r-in"><span>    processing_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, boundaries_used <span class="op">=</span> <span class="st">"farm_gate"</span>,</span></span>
+<span class="r-in"><span>    tier_used <span class="op">=</span> <span class="st">"tier_2"</span>, detailed_objects <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">br</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"cf_batch_complete"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".xlsx"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">export_hdc_report</span><span class="op">(</span><span class="va">br</span>, file <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Batch report saved to: /var/folders/x9/y40ct6757nsbw7ypnp3kvfnh0000gn/T//RtmpPSwLfK/filed0369431658.xlsx</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

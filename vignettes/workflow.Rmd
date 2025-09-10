@@ -11,7 +11,7 @@ vignette: >
 
 This vignette presents the overall workflow used by `cowfootR` to estimate dairy farm greenhouse gas (GHG) emissions. The flowchart below shows the main stages (data inputs, system boundaries, emission modules, aggregation, and reporting).
 
-![](figures/cowfoot_workflow.png){width=80%}
+![](figures/diagram.png){width=80%}
 
 ## What the diagram covers
 

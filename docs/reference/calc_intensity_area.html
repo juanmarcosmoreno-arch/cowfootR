@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@ If NULL, uses total area. Default = NULL.</p></dd>
 
 
 <dt id="arg-area-breakdown">area_breakdown<a class="anchor" aria-label="anchor" href="#arg-area-breakdown"></a></dt>
-<dd><p>Named list. Optional detailed area breakdown by land use type.
+<dd><p>Named list or named numeric vector. Optional detailed area breakdown by land use type.
 Names should be descriptive (e.g., "pasture_permanent", "crops_feed").</p></dd>
 
 
@@ -115,7 +115,7 @@ Names should be descriptive (e.g., "pasture_permanent", "crops_feed").</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Land use efficiency: 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total emissions: 85,000 kg CO2eq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-10 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With productive area distinction</span></span></span>
 <span class="r-in"><span><span class="fu">calc_intensity_area</span><span class="op">(</span></span></span>
@@ -134,7 +134,7 @@ Names should be descriptive (e.g., "pasture_permanent", "crops_feed").</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Land use efficiency: 90%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total emissions: 95,000 kg CO2eq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-10 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With area breakdown</span></span></span>
 <span class="r-in"><span><span class="va">area_detail</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
@@ -144,7 +144,6 @@ Names should be descriptive (e.g., "pasture_permanent", "crops_feed").</p></dd>
 <span class="r-in"><span>  infrastructure <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  woodland <span class="op">=</span> <span class="fl">7</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">calc_intensity_area</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  total_emissions <span class="op">=</span> <span class="fl">88000</span>,</span></span>
 <span class="r-in"><span>  area_total_ha <span class="op">=</span> <span class="fl">135</span>,</span></span>
@@ -168,26 +167,16 @@ Names should be descriptive (e.g., "pasture_permanent", "crops_feed").</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  woodland: 7.0 ha (5.2%) -&gt; 4563 kg CO2eq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total emissions: 88,000 kg CO2eq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-10 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using with calc_total_emissions output</span></span></span>
-<span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"farm_gate"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="calc_emissions_enteric.html">calc_emissions_enteric</a></span><span class="op">(</span><span class="fl">100</span>, boundaries <span class="op">=</span> <span class="va">b</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">e2</span> <span class="op">&lt;-</span> <span class="fu"><a href="calc_emissions_manure.html">calc_emissions_manure</a></span><span class="op">(</span><span class="fl">100</span>, boundaries <span class="op">=</span> <span class="va">b</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tot</span> <span class="op">&lt;-</span> <span class="fu"><a href="calc_total_emissions.html">calc_total_emissions</a></span><span class="op">(</span><span class="va">e1</span>, <span class="va">e2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">calc_intensity_area</span><span class="op">(</span><span class="va">tot</span>, area_total_ha <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Carbon Footprint Area Intensity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===============================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Intensity (total area): 3355.67 kg CO2eq/ha</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Intensity (productive area): 3355.67 kg CO2eq/ha</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Area summary:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Total area: 120 ha</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Productive area: 120 ha</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Land use efficiency: 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total emissions: 402,680 kg CO2eq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calculated on: 2025-09-09 </span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># b &lt;- set_system_boundaries("farm_gate")</span></span></span>
+<span class="r-in"><span><span class="co"># e1 &lt;- calc_emissions_enteric(100, boundaries = b)</span></span></span>
+<span class="r-in"><span><span class="co"># e2 &lt;- calc_emissions_manure(100, boundaries = b)</span></span></span>
+<span class="r-in"><span><span class="co"># tot &lt;- calc_total_emissions(e1, e2)</span></span></span>
+<span class="r-in"><span><span class="co"># calc_intensity_area(tot, area_total_ha = 120)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
