@@ -290,7 +290,7 @@ calc_batch <- function(data,
           tier = tier,
           boundaries = boundaries
         )))
-        total_enteric <- total_enteric + .scalar_num(e_cows_milking$co2eq_kg)
+        total_enteric <- total_enteric + .scalar_num(e_cows_milk$co2eq_kg)
       }
 
       if (cows_dry > 0 && !is_excluded("enteric")) {

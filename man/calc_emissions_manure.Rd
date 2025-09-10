@@ -53,7 +53,7 @@ Tier 2 can refine N excretion.}
 
 \item{retention_days}{Numeric. Days manure remains in system (Tier 2 adjustment).}
 
-\item{system_temperature}{Numeric. Average system temperature (°C) (Tier 2 adjustment).}
+\item{system_temperature}{Numeric. Average system temperature (Tier 2 adjustment).}
 
 \item{gwp_ch4}{Numeric. GWP for CH4 (AR6). Default = 27.2.}
 
@@ -78,7 +78,7 @@ calc_emissions_manure(n_cows = 120, manure_system = "liquid_storage")
 # Tier 1 with indirect N2O
 calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_indirect = TRUE)
 
-# Tier 2 (VS–B0–MCF approach) with refinements
+# Tier 2 (VS_B0_MCF approach) with refinements
 calc_emissions_manure(
   n_cows = 100, manure_system = "liquid_storage", tier = 2,
   avg_body_weight = 580, diet_digestibility = 0.68, climate = "temperate",

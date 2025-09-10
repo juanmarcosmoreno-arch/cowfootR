@@ -30,6 +30,14 @@
 #' @return A list with detailed emissions by fuel type, total (co2eq_kg), metadata,
 #'   and (if provided) breakdown by use. Compatible with \code{calc_total_emissions()}.
 #' @export
+#' @examples
+#' # Minimal, fast example (<<1s)
+#' res <- calc_emissions_energy(
+#'   diesel_l = 10,
+#'   electricity_kwh = 100,
+#'   country = "UY"
+#' )
+#' print(res$co2eq_kg)
 calc_emissions_energy <- function(diesel_l = 0,
                                   petrol_l = 0,
                                   lpg_kg = 0,
@@ -61,7 +69,7 @@ calc_emissions_energy <- function(diesel_l = 0,
       !("energy" %in% boundaries$include)) {
     return(list(
       source = "energy",
-      co2eq_kg = NULL,  # convention for excluded sources in outputs
+      co2eq_kg = 0,
       methodology = "excluded_by_boundaries",
       excluded = TRUE
     ))

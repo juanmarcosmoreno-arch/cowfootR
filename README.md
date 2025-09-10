@@ -14,7 +14,6 @@ status](https://www.r-pkg.org/badges/version/cowfootR)](https://CRAN.R-project.o
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![R-CMD-check](https://github.com/juanmarcosmoreno-arch/cowfootR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/juanmarcosmoreno-arch/cowfootR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Overview
@@ -112,12 +111,13 @@ For analyzing multiple farms, use the Excel template approach:
 
 ``` r
 # 1. Download and fill template
-download_template("my_farms_template.xlsx")
+cf_download_template("my_farms_template.xlsx")
 # Open the file, fill with your farm data, and save
 
-# 2. Process multiple farms from Excel file
+# 2. Read data and process multiple farms
+farm_data <- readxl::read_excel("my_farms_data.xlsx")
 results <- calc_batch(
-  data = readxl::read_excel("my_farms_data.xlsx"),
+  data = farm_data,
   tier = 2,
   benchmark_region = "uruguay"  # optional
 )
@@ -145,7 +145,7 @@ farm_data <- data.frame(
   Area_total_ha = c(200, 300, 120),
   N_fertilizer_kg = c(2000, 3000, 1200),
   Diesel_litres = c(4000, 6000, 2400),
-  Electricity_KWh = c(10000, 15000, 6000)
+  Electricity_kWh = c(10000, 15000, 6000)
 )
 
 # Process all farms
@@ -209,12 +209,13 @@ The package calculates multiple intensity metrics:
 - Animal data: `Cows_dry`, `Heifers_total`, `Calves_total`,
   `Bulls_total`
 - Production: `Fat_percent`, `Protein_percent`, `Milk_yield_kg_cow_year`
-- Feed: `MS_intake_cows_kg_day`, `Ym_percent`, `Concentrate_feed_kg`
+- Feed: `MS_intake_cows_milking_kg_day`, `Ym_percent`,
+  `Concentrate_feed_kg`
 - Fertilizer: `N_fertilizer_kg`, `N_fertilizer_organic_kg`
-- Energy: `Diesel_litres`, `Electricity_KWh`, `Petrol_litres`
+- Energy: `Diesel_litres`, `Electricity_kWh`, `Petrol_litres`
 - Land use: `Area_productive_ha`, `Pasture_permanent_ha`
 
-Use `download_template()` to get the complete column structure.
+Use `cf_download_template()` to get the complete column structure.
 
 ## Error Handling
 

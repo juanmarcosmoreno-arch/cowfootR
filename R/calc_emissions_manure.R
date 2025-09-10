@@ -20,7 +20,7 @@
 #' @param protein_intake_kg Numeric. Daily protein intake (kg/day). If provided,
 #'   Tier 2 can refine N excretion.
 #' @param retention_days Numeric. Days manure remains in system (Tier 2 adjustment).
-#' @param system_temperature Numeric. Average system temperature (°C) (Tier 2 adjustment).
+#' @param system_temperature Numeric. Average system temperature (Tier 2 adjustment).
 #' @param gwp_ch4 Numeric. GWP for CH4 (AR6). Default = 27.2.
 #' @param gwp_n2o Numeric. GWP for N2O (AR6). Default = 273.
 #' @param boundaries Optional list from \code{set_system_boundaries()}.
@@ -38,7 +38,7 @@
 #' # Tier 1 with indirect N2O
 #' calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_indirect = TRUE)
 #'
-#' # Tier 2 (VS–B0–MCF approach) with refinements
+#' # Tier 2 (VS_B0_MCF approach) with refinements
 #' calc_emissions_manure(
 #'   n_cows = 100, manure_system = "liquid_storage", tier = 2,
 #'   avg_body_weight = 580, diet_digestibility = 0.68, climate = "temperate",
@@ -90,7 +90,7 @@ calc_emissions_manure <- function(n_cows,
       source = "manure",
       system = manure_system,
       tier = tier,
-      co2eq_kg = NULL,                   # explicit exclusion
+      co2eq_kg = 0,                   # explicit exclusion
       methodology = "excluded_by_boundaries",
       excluded = TRUE
     ))
@@ -127,7 +127,7 @@ calc_emissions_manure <- function(n_cows,
 
   } else {
     # --------------------------- Tier 2 --------------------------------------
-    # CH4 via VS–B0–MCF approach with temperature/retention adjustments
+    # CH4 via VS_B0_MCF approach with temperature/retention adjustments
     ch4_results <- calc_ch4_tier2(
       n_cows = n_cows,
       avg_body_weight = avg_body_weight,
@@ -149,7 +149,7 @@ calc_emissions_manure <- function(n_cows,
       tier2_enhancement = TRUE
     )
 
-    methodology_note <- "IPCC Tier 2 (VS–B0–MCF calculation)"
+    methodology_note <- "IPCC Tier 2 (VS_B0_MCF calculation)"
   }
 
   # --------------------------- Aggregation -----------------------------------
@@ -211,7 +211,7 @@ calc_emissions_manure <- function(n_cows,
 
 # --------------------------- Helper: Tier 2 CH4 ------------------------------
 
-# Computes CH4 using VS–B0–MCF, with optional adjustments for system temperature
+# Computes CH4 using VS_B0_MCF, with optional adjustments for system temperature
 # and retention time.
 calc_ch4_tier2 <- function(n_cows, avg_body_weight, diet_digestibility,
                            manure_system, climate, retention_days = NULL,
@@ -234,7 +234,7 @@ calc_ch4_tier2 <- function(n_cows, avg_body_weight, diet_digestibility,
     b0 <- 0.15
   }
 
-  # Step 3: Methane Conversion Factor (MCF) by system & climate (in % → fraction)
+  # Step 3: Methane Conversion Factor (MCF) by system & climate (in % fraction)
   mcf_table <- list(
     pasture = list(cold = 1.0, temperate = 1.5, warm = 2.0),
     solid_storage = list(cold = 2.0, temperate = 3.5, warm = 5.5),
@@ -284,7 +284,7 @@ calc_n2o_emissions <- function(n_cows, n_excreted, ef_n2o_direct,
 
   # Optional Tier 2 refinement of N excretion from protein intake
   if (!is.null(protein_intake_kg) && (tier2_enhancement || !is.null(protein_intake_kg))) {
-    n_in_protein <- protein_intake_kg / 6.25    # crude protein → N
+    n_in_protein <- protein_intake_kg / 6.25    # crude protein N
     n_retention_milk <- 0.25                    # assumed retained fraction for milk
     n_excreted_used <- n_in_protein * (1 - n_retention_milk) * 365
   } else {

@@ -11,8 +11,8 @@
 #' @examples
 #' tf <- tempfile(fileext = ".xlsx")
 #' on.exit(unlink(tf, force = TRUE), add = TRUE)
-#' download_template(tf)
-download_template <- function(file = "cowfootR_template.xlsx",
+#' cf_download_template(tf)
+cf_download_template <- function(file = "cowfootR_template.xlsx",
                               include_examples = FALSE) {
   if (!requireNamespace("writexl", quietly = TRUE)) {
     stop("Package 'writexl' is required. Please install it with install.packages('writexl').")
@@ -106,4 +106,12 @@ download_template <- function(file = "cowfootR_template.xlsx",
   writexl::write_xlsx(df, file)
   message("Template saved to: ", file)
   invisible(file)
+}
+
+#' @export
+#' @keywords internal
+#' @rdname cf_download_template
+download_template <- function(...) {
+  .Deprecated("cf_download_template")
+  cf_download_template(...)
 }

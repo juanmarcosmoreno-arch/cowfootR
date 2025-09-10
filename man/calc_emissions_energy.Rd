@@ -67,3 +67,12 @@ and (if provided) breakdown by use. Compatible with \code{calc_total_emissions()
 Estimates CO2 emissions from fossil fuel use and electricity consumption
 on dairy farms following IDF/IPCC methodology.
 }
+\examples{
+# Minimal, fast example (<<1s)
+res <- calc_emissions_energy(
+  diesel_l = 10,
+  electricity_kwh = 100,
+  country = "UY"
+)
+print(res$co2eq_kg)
+}

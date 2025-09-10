@@ -20,13 +20,13 @@ test_that("export_hdc_report creates Excel file", {
   expect_true(file.exists(temp_file))
 })
 
-test_that("download_template creates template file", {
+test_that("cf_download_template creates template file", {
   skip_if_not_installed("writexl")
 
   temp_file <- tempfile(fileext = ".xlsx")
   on.exit(unlink(temp_file), add = TRUE)
 
-  suppressMessages(download_template(file = temp_file, include_examples = TRUE))
+  suppressMessages(cf_download_template(file = temp_file, include_examples = TRUE))
 
   expect_true(file.exists(temp_file))
 })

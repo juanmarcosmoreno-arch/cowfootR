@@ -148,9 +148,6 @@ calc_total_emissions <- function(...) {
 #' # print(x)
 #' }
 print.cf_total <- function(x, ...) {
-  # ...
-  invisible(x)
-} <- function(x, ...) {
   cat("Carbon Footprint - Total Emissions\n")
   cat("==================================\n")
   cat("Total CO2eq:", round(x$total_co2eq, 2), "kg\n")

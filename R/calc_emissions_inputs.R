@@ -245,6 +245,7 @@ calc_emissions_inputs <- function(conc_kg = 0,
     # Duplicate field for convenience
     total_co2eq_kg = round(total_co2, 2),
 
+    region = region,
     emission_factors_used = list(
       concentrate = list(value = ef_conc,   unit = "kg CO2e/kg"),
       fertilizer  = list(value = ef_fert,   type = fert_type,     unit = "kg CO2e/kg N"),

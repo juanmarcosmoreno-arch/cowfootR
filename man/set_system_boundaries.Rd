@@ -25,6 +25,6 @@ Define system boundaries for carbon footprint calculation
 \examples{
 b1 <- set_system_boundaries("farm_gate")
 b2 <- set_system_boundaries(include = c("enteric", "manure", "soil"))
-b3 <- set_system_boundaries(exclude = c("inputs", "energy"))
-b1$scope; b2$include; b3$exclude
+b3 <- set_system_boundaries(include = c("enteric", "manure"))
+b1$scope; b2$include; b3$include
 }
