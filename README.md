@@ -14,6 +14,8 @@ status](https://www.r-pkg.org/badges/version/cowfootR)](https://CRAN.R-project.o
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
+[![Codecov test
+coverage](https://codecov.io/gh/juanmarcosmoreno-arch/cowfootR/graph/badge.svg)](https://app.codecov.io/gh/juanmarcosmoreno-arch/cowfootR)
 <!-- badges: end -->
 
 ## Overview

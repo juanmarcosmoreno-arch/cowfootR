@@ -32,7 +32,7 @@ Processes a data.frame of farms and computes emissions per farm,
 returning a summary plus per-farm details (optionally).
 }
 \examples{
-\dontrun{
+\donttest{
 farms <- data.frame(FarmID = c("A","B"),
                     Milk_litres = c(5e5, 7e5),
                     Cows_milking = c(100, 140))

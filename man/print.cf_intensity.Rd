@@ -12,6 +12,9 @@
 \item{...}{Additional arguments (ignored)}
 }
 \value{
+No return value, called for side effects. Prints formatted carbon footprint
+intensity information to the console and invisibly returns the input object.
+
 The input object \code{x}, invisibly.
 }
 \description{

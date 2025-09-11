@@ -1,21 +1,24 @@
-
 ## Resubmission
 
-This is a resubmission to fix the vignette issue identified in the previous submission.
+This is a resubmission. In this version I have:
 
-### Changes made:
-* Moved `cran-comments.Rmd` out of the `vignettes/` directory as it was not intended to be a vignette
+* Removed redundant "Provides functions to" from the Description field
+* Added proper references to IDF (2022) and IPCC (2019) methodologies in Description field using the format: authors (year) "Title" <doi:...> and <https:...>
+* Added missing \value tags to all print methods: print.cf_area_intensity, print.cf_intensity, and print.cf_total
+* Replaced all \dontrun{} with \donttest{} in function examples
+* Fixed file timestamp issues that were causing NOTEs
 
-### Test environments
-* Local Windows 11, R 4.4.1
-* Win-builder (release and devel)
-* GitHub Actions: Windows, macOS, Ubuntu (release and devel)
+## Test environments
 
-### R CMD check results
-0 errors | 0 warnings | 1 note
+* local macOS install, R 4.5.1
+* ubuntu-latest (on GitHub Actions), R devel, release
+* windows-latest (on GitHub Actions), R release
+* macOS-latest (on GitHub Actions), R release
 
-* This is a new release, so there is one NOTE about the new submission.
+## R CMD check results
 
-### Downstream dependencies
+0 errors | 0 warnings | 0 notes
+
+## Downstream dependencies
+
 There are currently no downstream dependencies for this package.
-

@@ -12,6 +12,9 @@
 \item{...}{Additional arguments passed to print methods (currently ignored)}
 }
 \value{
+No return value, called for side effects. Prints formatted total emissions
+summary to the console and invisibly returns the input object.
+
 The input object \code{x}, invisibly.
 }
 \description{

@@ -177,6 +177,8 @@ calc_intensity_area <- function(total_emissions,
 #'
 #' @param x A cf_area_intensity object
 #' @param ... Additional arguments (ignored)
+#' @return No return value, called for side effects. Prints formatted area intensity
+#'   information to the console and invisibly returns the input object.
 #' @return The input object `x`, invisibly.
 #' @export
 #' @examples

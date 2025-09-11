@@ -134,6 +134,8 @@ calc_total_emissions <- function(...) {
 #'
 #' @param x A cf_total object
 #' @param ... Additional arguments passed to print methods (currently ignored)
+#' @return No return value, called for side effects. Prints formatted total emissions
+#'   summary to the console and invisibly returns the input object.
 #' @return The input object `x`, invisibly.
 #' @export
 #' @examples

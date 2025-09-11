@@ -104,7 +104,7 @@ compute_fpcm_idf <- function(milk_l, fat, prot, milk_density = 1.03) {
 #' @aliases calc_emissions_batch
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' farms <- data.frame(FarmID = c("A","B"),
 #'                     Milk_litres = c(5e5, 7e5),
 #'                     Cows_milking = c(100, 140))

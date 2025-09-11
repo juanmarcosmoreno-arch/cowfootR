@@ -90,6 +90,8 @@ calc_intensity_litre <- function(total_emissions,
 #'
 #' @param x A cf_intensity object
 #' @param ... Additional arguments (ignored)
+#' @return No return value, called for side effects. Prints formatted carbon footprint
+#'   intensity information to the console and invisibly returns the input object.
 #' @return The input object `x`, invisibly.
 #' @export
 #' @examples
