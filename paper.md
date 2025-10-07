@@ -16,7 +16,7 @@ affiliations:
    index: 1
 date: 06 September 2025
 bibliography: paper.bib
-
+---
 # Summary
 
 The cowfootR package is an open-source R package designed for comprehensive 
