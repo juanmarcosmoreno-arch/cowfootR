@@ -33,7 +33,7 @@ includes:
 
 ## Installation
 
-You can install the development version of cowfootR from GitHub:
+You can install the latest version of cowfootR from GitHub or CRAN:
 
 ``` r
 # Install from CRAN or Github
