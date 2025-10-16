@@ -36,8 +36,8 @@ includes:
 You can install the development version of cowfootR from GitHub:
 
 ``` r
-# Install development version from GitHub
-# install.packages("devtools")
+# Install from CRAN or Github
+install.packages("cowfootR")
 devtools::install_github("juanmarcosmoreno-arch/cowfootR")
 ```
 
