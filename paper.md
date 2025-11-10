@@ -71,8 +71,7 @@ total emissions, and computing intensity metrics.
 
 # Workflow
 
-![Workflow of the cowfootR
-package.](reference/figures/cowfoot_workflow.png)
+![Workflow of the cowfootR package.](reference/figures/diagram.png)
 
 Workflow of the cowfootR package.
 
