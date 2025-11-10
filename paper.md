@@ -77,8 +77,14 @@ Workflow of the cowfootR package.
 
 # Availability
 
-cowfootR package is available on GitHub
-(<https://github.com/juanmarcosmoreno/cowfootR>). Documentation,
+The cowfootR package is freely available on both
+[CRAN](https://cran.r-project.org/package=cowfootR) and
+[GitHub](https://github.com/juanmarcosmoreno-arch/cowfootR).
+Comprehensive documentation, including vignettes and reproducible
+examples, is provided to facilitate adoption and integration into
+research and sustainability assessment workflows. cowfootR package is
+available on GitHub
+(<https://github.com/juanmarcosmoreno-arch/cowfootR>). Documentation,
 including vignettes and examples, is provided to facilitate adoption.
 
 # Acknowledgements
