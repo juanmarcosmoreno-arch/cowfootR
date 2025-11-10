@@ -86,7 +86,7 @@ and computing intensity metrics.
 
 # Workflow
 
-![Workflow of the cowfootR package.](man/figures/cowfoot_workflow.png)
+![Workflow of the cowfootR package.](man/figures/diagram.png)
 
 
 # Availability
