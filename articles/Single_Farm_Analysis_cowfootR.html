@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Single_Farm_Analysis_cowfootR • cowfootR</title>
+<title>Single Farm Analysis (cowfootR) • cowfootR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Single_Farm_Analysis_cowfootR">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Single Farm Analysis (cowfootR)">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -41,7 +41,7 @@
 <li><a class="dropdown-item" href="../articles/Complete_Parameter_Reference_Guide.html">Complete_Parameter_Reference_Guide</a></li>
     <li><a class="dropdown-item" href="../articles/Introduction_to_Dairy_LCA_cowfootR.html">Introduction to Dairy Life Cycle Assessment with cowfootR</a></li>
     <li><a class="dropdown-item" href="../articles/IPCC_Methodology_Tiers_cowfootR.html">IPCC_Methodology_Tiers_cowfootR</a></li>
-    <li><a class="dropdown-item" href="../articles/Single_Farm_Analysis_cowfootR.html">Single_Farm_Analysis_cowfootR</a></li>
+    <li><a class="dropdown-item" href="../articles/Single_Farm_Analysis_cowfootR.html">Single Farm Analysis (cowfootR)</a></li>
     <li><a class="dropdown-item" href="../articles/workflow.html">cowfootR Workflow</a></li>
   </ul>
 </li>
@@ -65,7 +65,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Single_Farm_Analysis_cowfootR</h1>
+      <h1>Single Farm Analysis (cowfootR)</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/juanmarcosmoreno-arch/cowfootR/blob/main/vignettes/Single_Farm_Analysis_cowfootR.Rmd" class="external-link"><code>vignettes/Single_Farm_Analysis_cowfootR.Rmd</code></a></small>
@@ -74,19 +74,18 @@
 
     
     
-<p>`</p>
 <div class="section level2">
 <h2 id="comprehensive-single-farm-carbon-footprint-analysis">Comprehensive Single Farm Carbon Footprint Analysis<a class="anchor" aria-label="anchor" href="#comprehensive-single-farm-carbon-footprint-analysis"></a>
 </h2>
-<p>This vignette demonstrates how to conduct a detailed carbon footprint
-assessment for an individual dairy farm using all available functions in
-cowfootR. We’ll work through a realistic example with comprehensive data
-collection and analysis.</p>
+<p>This vignette shows a complete, end-to-end carbon footprint
+assessment for one dairy farm using cowfootR. The goal is to demonstrate
+how individual emission sources can be calculated, combined, visualized,
+and summarized into intensity metrics.</p>
 <div class="section level3">
 <h3 id="farm-profile-estancia-las-flores">Farm Profile: Estancia Las Flores<a class="anchor" aria-label="anchor" href="#farm-profile-estancia-las-flores"></a>
 </h3>
-<p>For this analysis, we’ll assess a medium-sized dairy farm in Uruguay
-with the following characteristics:</p>
+<p>We will analyze a medium-sized dairy farm with a mixed grazing system
+and supplementation:</p>
 <ul>
 <li>
 <strong>Location</strong>: Temperate climate, well-drained
@@ -102,76 +101,77 @@ soils</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="step-1-system-boundaries-definition">Step 1: System Boundaries Definition<a class="anchor" aria-label="anchor" href="#step-1-system-boundaries-definition"></a>
+<h3 id="step-1-define-system-boundaries">Step 1: Define system boundaries<a class="anchor" aria-label="anchor" href="#step-1-define-system-boundaries"></a>
 </h3>
-<p>First, we define what emission sources to include in our
-assessment:</p>
+<p><strong>Purpose</strong>. System boundaries specify which emission
+sources are included in the assessment (e.g., farm-gate vs
+cradle-to-farm-gate). This affects which functions are relevant and how
+totals are interpreted.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Define comprehensive farm-gate boundaries</span></span>
+<code class="sourceCode R"><span><span class="co"># Most common scope: farm-gate boundaries</span></span>
 <span><span class="va">boundaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"farm_gate"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">boundaries</span><span class="op">)</span></span>
+<span><span class="va">boundaries</span></span>
 <span><span class="co">#&gt; $scope</span></span>
 <span><span class="co">#&gt; [1] "farm_gate"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $include</span></span>
-<span><span class="co">#&gt; [1] "enteric" "manure"  "soil"    "energy"  "inputs"</span></span>
-<span></span>
-<span><span class="co"># Alternative: cradle-to-farm-gate (includes upstream emissions)</span></span>
+<span><span class="co">#&gt; [1] "enteric" "manure"  "soil"    "energy"  "inputs"</span></span></code></pre></div>
+<p>You can also explore other boundary configurations:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Includes upstream emissions (e.g., purchased inputs)</span></span>
 <span><span class="va">boundaries_extended</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"cradle_to_farm_gate"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">boundaries_extended</span><span class="op">)</span></span>
+<span><span class="va">boundaries_extended</span></span>
 <span><span class="co">#&gt; $scope</span></span>
 <span><span class="co">#&gt; [1] "cradle_to_farm_gate"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $include</span></span>
 <span><span class="co">#&gt; [1] "feed"    "enteric" "manure"  "soil"    "energy"  "inputs"</span></span>
 <span></span>
-<span><span class="co"># Custom boundaries example</span></span>
+<span><span class="co"># Custom selection of sources</span></span>
 <span><span class="va">boundaries_partial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span></span>
 <span>  scope <span class="op">=</span> <span class="st">"partial"</span>,</span>
 <span>  include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"enteric"</span>, <span class="st">"manure"</span>, <span class="st">"soil"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">boundaries_partial</span><span class="op">)</span></span>
+<span><span class="va">boundaries_partial</span></span>
 <span><span class="co">#&gt; $scope</span></span>
 <span><span class="co">#&gt; [1] "partial"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $include</span></span>
 <span><span class="co">#&gt; [1] "enteric" "manure"  "soil"</span></span></code></pre></div>
-<p>For this analysis, we’ll use farm-gate boundaries as they represent
-the most common assessment scope.</p>
+<p>For the rest of this vignette, we use farm-gate boundaries because it
+is a common scope in farm-level reporting.</p>
 </div>
 <div class="section level3">
-<h3 id="step-2-detailed-farm-data-collection">Step 2: Detailed Farm Data Collection<a class="anchor" aria-label="anchor" href="#step-2-detailed-farm-data-collection"></a>
+<h3 id="step-2-provide-farm-data-inputs">Step 2: Provide farm data (inputs)<a class="anchor" aria-label="anchor" href="#step-2-provide-farm-data-inputs"></a>
 </h3>
+<p><strong>Purpose</strong>. cowfootR functions require inputs
+describing the herd, production, land use, energy consumption, and
+purchased inputs. In real applications, this information often comes
+from farm records, advisory systems, or templates.</p>
 <div class="section level4">
-<h4 id="herd-composition-and-management">Herd Composition and Management<a class="anchor" aria-label="anchor" href="#herd-composition-and-management"></a>
+<h4 id="herd-composition-and-production">Herd Composition and production<a class="anchor" aria-label="anchor" href="#herd-composition-and-production"></a>
 </h4>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Detailed herd data</span></span>
-<span><span class="va">herd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="co"># Main herd</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">herd_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  dairy_cows_milking <span class="op">=</span> <span class="fl">120</span>,</span>
 <span>  dairy_cows_dry <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Young stock</span></span>
 <span>  heifers_total <span class="op">=</span> <span class="fl">45</span>,</span>
 <span>  calves_total <span class="op">=</span> <span class="fl">35</span>,</span>
 <span>  bulls_total <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Animal characteristics (kg live weight)</span></span>
+<span></span>
 <span>  body_weight_cows <span class="op">=</span> <span class="fl">580</span>,</span>
 <span>  body_weight_heifers <span class="op">=</span> <span class="fl">380</span>,</span>
 <span>  body_weight_calves <span class="op">=</span> <span class="fl">180</span>,</span>
 <span>  body_weight_bulls <span class="op">=</span> <span class="fl">750</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Production parameters</span></span>
-<span>  milk_yield_per_cow <span class="op">=</span> <span class="fl">6300</span>,  <span class="co"># kg/cow/year</span></span>
+<span></span>
+<span>  milk_yield_per_cow <span class="op">=</span> <span class="fl">6300</span>,</span>
 <span>  annual_milk_litres <span class="op">=</span> <span class="fl">950000</span>,</span>
 <span>  fat_percent <span class="op">=</span> <span class="fl">3.7</span>,</span>
 <span>  protein_percent <span class="op">=</span> <span class="fl">3.3</span>,</span>
 <span>  milk_density <span class="op">=</span> <span class="fl">1.032</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">herd_data</span><span class="op">)</span></span>
+<span><span class="va">herd_data</span></span>
 <span><span class="co">#&gt; $dairy_cows_milking</span></span>
 <span><span class="co">#&gt; [1] 120</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -215,28 +215,25 @@ the most common assessment scope.</p>
 <span><span class="co">#&gt; [1] 1.032</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="feed-and-nutrition-management">Feed and Nutrition Management<a class="anchor" aria-label="anchor" href="#feed-and-nutrition-management"></a>
+<h4 id="feed-and-nutrition">Feed and nutrition<a class="anchor" aria-label="anchor" href="#feed-and-nutrition"></a>
 </h4>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Feed inputs (all in kg dry matter per year)</span></span>
-<span><span class="va">feed_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="co"># Purchased feeds</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">feed_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  concentrate_kg <span class="op">=</span> <span class="fl">220000</span>,</span>
 <span>  grain_dry_kg <span class="op">=</span> <span class="fl">80000</span>,</span>
 <span>  grain_wet_kg <span class="op">=</span> <span class="fl">45000</span>,</span>
 <span>  ration_kg <span class="op">=</span> <span class="fl">60000</span>,</span>
 <span>  byproducts_kg <span class="op">=</span> <span class="fl">25000</span>,</span>
 <span>  proteins_kg <span class="op">=</span> <span class="fl">35000</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Nutritional parameters</span></span>
-<span>  dry_matter_intake_cows <span class="op">=</span> <span class="fl">19.5</span>,  <span class="co"># kg DM/cow/day</span></span>
+<span></span>
+<span>  dry_matter_intake_cows <span class="op">=</span> <span class="fl">19.5</span>,</span>
 <span>  dry_matter_intake_heifers <span class="op">=</span> <span class="fl">11.0</span>,</span>
 <span>  dry_matter_intake_calves <span class="op">=</span> <span class="fl">6.0</span>,</span>
 <span>  dry_matter_intake_bulls <span class="op">=</span> <span class="fl">14.0</span>,</span>
-<span>  ym_percent <span class="op">=</span> <span class="fl">6.3</span>  <span class="co"># Methane conversion factor</span></span>
+<span>  ym_percent <span class="op">=</span> <span class="fl">6.3</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">feed_data</span><span class="op">)</span></span>
+<span><span class="va">feed_data</span></span>
 <span><span class="co">#&gt; $concentrate_kg</span></span>
 <span><span class="co">#&gt; [1] 220000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -271,36 +268,31 @@ the most common assessment scope.</p>
 <span><span class="co">#&gt; [1] 6.3</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="land-use-and-soil-management">Land Use and Soil Management<a class="anchor" aria-label="anchor" href="#land-use-and-soil-management"></a>
+<h4 id="land-use-and-soil-management">Land use and soil management<a class="anchor" aria-label="anchor" href="#land-use-and-soil-management"></a>
 </h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Detailed land use breakdown</span></span>
-<span><span class="va">land_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="co"># Total areas (hectares)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">land_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  area_total <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  area_productive <span class="op">=</span> <span class="fl">185</span>,</span>
 <span>  area_fertilized <span class="op">=</span> <span class="fl">160</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Area breakdown</span></span>
+<span></span>
 <span>  pasture_permanent <span class="op">=</span> <span class="fl">140</span>,</span>
 <span>  pasture_temporary <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  crops_feed <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  crops_cash <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  infrastructure <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  woodland <span class="op">=</span> <span class="fl">7</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Soil and climate</span></span>
+<span></span>
 <span>  soil_type <span class="op">=</span> <span class="st">"well_drained"</span>,</span>
 <span>  climate_zone <span class="op">=</span> <span class="st">"temperate"</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Nitrogen inputs (kg N/year)</span></span>
+<span></span>
 <span>  n_fertilizer_synthetic <span class="op">=</span> <span class="fl">2400</span>,</span>
 <span>  n_fertilizer_organic <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>  n_excreta_pasture <span class="op">=</span> <span class="fl">15000</span>,  <span class="co"># Estimated from grazing</span></span>
+<span>  n_excreta_pasture <span class="op">=</span> <span class="fl">15000</span>,</span>
 <span>  n_crop_residues <span class="op">=</span> <span class="fl">800</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">land_data</span><span class="op">)</span></span>
+<span><span class="va">land_data</span></span>
 <span><span class="co">#&gt; $area_total</span></span>
 <span><span class="co">#&gt; [1] 200</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -347,25 +339,19 @@ the most common assessment scope.</p>
 <span><span class="co">#&gt; [1] 800</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="energy-consumption">Energy Consumption<a class="anchor" aria-label="anchor" href="#energy-consumption"></a>
+<h4 id="energy-consumption">Energy consumption<a class="anchor" aria-label="anchor" href="#energy-consumption"></a>
 </h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Energy use breakdown</span></span>
-<span><span class="va">energy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="co"># Fuel consumption (litres/year)</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">energy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  diesel_litres <span class="op">=</span> <span class="fl">12000</span>,</span>
 <span>  petrol_litres <span class="op">=</span> <span class="fl">1800</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Other energy sources</span></span>
 <span>  lpg_kg <span class="op">=</span> <span class="fl">600</span>,</span>
 <span>  natural_gas_m3 <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  electricity_kwh <span class="op">=</span> <span class="fl">48000</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Country for electricity factors</span></span>
 <span>  country <span class="op">=</span> <span class="st">"UY"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">energy_data</span><span class="op">)</span></span>
+<span><span class="va">energy_data</span></span>
 <span><span class="co">#&gt; $diesel_litres</span></span>
 <span><span class="co">#&gt; [1] 12000</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -385,26 +371,18 @@ the most common assessment scope.</p>
 <span><span class="co">#&gt; [1] "UY"</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="additional-inputs">Additional Inputs<a class="anchor" aria-label="anchor" href="#additional-inputs"></a>
+<h4 id="additional-purchased-inputs">Additional purchased inputs<a class="anchor" aria-label="anchor" href="#additional-purchased-inputs"></a>
 </h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Other purchased inputs</span></span>
-<span><span class="va">other_inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="co"># Materials (kg/year)</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">other_inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  plastic_kg <span class="op">=</span> <span class="fl">450</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Transport (optional)</span></span>
-<span>  transport_km <span class="op">=</span> <span class="fl">120</span>,  <span class="co"># Average transport distance for feeds</span></span>
-<span>  </span>
-<span>  <span class="co"># Fertilizer types</span></span>
+<span>  transport_km <span class="op">=</span> <span class="fl">120</span>,</span>
 <span>  fert_type <span class="op">=</span> <span class="st">"mixed"</span>,</span>
 <span>  plastic_type <span class="op">=</span> <span class="st">"mixed"</span>,</span>
-<span>  </span>
-<span>  <span class="co"># Regional factors</span></span>
-<span>  region <span class="op">=</span> <span class="st">"global"</span>  <span class="co"># Can be "EU", "US", "Brazil", etc.</span></span>
+<span>  region <span class="op">=</span> <span class="st">"global"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">other_inputs</span><span class="op">)</span></span>
+<span><span class="va">other_inputs</span></span>
 <span><span class="co">#&gt; $plastic_kg</span></span>
 <span><span class="co">#&gt; [1] 450</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -422,16 +400,22 @@ the most common assessment scope.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-3-emission-calculations-by-source">Step 3: Emission Calculations by Source<a class="anchor" aria-label="anchor" href="#step-3-emission-calculations-by-source"></a>
+<h3 id="step-3-calculate-emissions-by-source">Step 3: Calculate emissions by source<a class="anchor" aria-label="anchor" href="#step-3-calculate-emissions-by-source"></a>
 </h3>
-<p>Now we calculate emissions from each source using the detailed farm
-data.</p>
+<p><strong>Purpose</strong>. Here we compute each emission source
+separately. This is useful for transparency, debugging, and hotspot
+analysis.</p>
 <div class="section level4">
-<h4 id="enteric-fermentation-emissions">Enteric Fermentation Emissions<a class="anchor" aria-label="anchor" href="#enteric-fermentation-emissions"></a>
+<h4 id="enteric-fermentation">Enteric fermentation<a class="anchor" aria-label="anchor" href="#enteric-fermentation"></a>
 </h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate enteric emissions for each animal category</span></span>
-<span><span class="va">enteric_cows</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_enteric.html">calc_emissions_enteric</a></span><span class="op">(</span></span>
+<div class="section level5">
+<h5 id="key-arguments-">Key arguments.<a class="anchor" aria-label="anchor" href="#key-arguments-"></a>
+</h5>
+<pre><code>-   n_animals, cattle_category: define the livestock group
+-   Tier 2 options include avg_body_weight, dry_matter_intake, ym_percent
+-   boundaries ensures calculations align with scope</code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">enteric_cows</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_enteric.html">calc_emissions_enteric</a></span><span class="op">(</span></span>
 <span>  n_animals <span class="op">=</span> <span class="va">herd_data</span><span class="op">$</span><span class="va">dairy_cows_milking</span> <span class="op">+</span> <span class="va">herd_data</span><span class="op">$</span><span class="va">dairy_cows_dry</span>,</span>
 <span>  cattle_category <span class="op">=</span> <span class="st">"dairy_cows"</span>,</span>
 <span>  avg_milk_yield <span class="op">=</span> <span class="va">herd_data</span><span class="op">$</span><span class="va">milk_yield_per_cow</span>,</span>
@@ -470,19 +454,16 @@ data.</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Summary of enteric emissions</span></span>
 <span><span class="va">enteric_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dairy Cows"</span>, <span class="st">"Heifers"</span>, <span class="st">"Calves"</span>, <span class="st">"Bulls"</span><span class="op">)</span>,</span>
 <span>  Animals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">heifers_total</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">calves_total</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">bulls_total</span><span class="op">)</span>,</span>
-<span>  CH4_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">enteric_cows</span><span class="op">$</span><span class="va">ch4_kg</span>, <span class="va">enteric_heifers</span><span class="op">$</span><span class="va">ch4_kg</span>, </span>
-<span>             <span class="va">enteric_calves</span><span class="op">$</span><span class="va">ch4_kg</span>, <span class="va">enteric_bulls</span><span class="op">$</span><span class="va">ch4_kg</span><span class="op">)</span>,</span>
-<span>  CO2eq_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">enteric_cows</span><span class="op">$</span><span class="va">co2eq_kg</span>, <span class="va">enteric_heifers</span><span class="op">$</span><span class="va">co2eq_kg</span>,</span>
-<span>               <span class="va">enteric_calves</span><span class="op">$</span><span class="va">co2eq_kg</span>, <span class="va">enteric_bulls</span><span class="op">$</span><span class="va">co2eq_kg</span><span class="op">)</span></span>
+<span>  CH4_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">enteric_cows</span><span class="op">$</span><span class="va">ch4_kg</span>, <span class="va">enteric_heifers</span><span class="op">$</span><span class="va">ch4_kg</span>, <span class="va">enteric_calves</span><span class="op">$</span><span class="va">ch4_kg</span>, <span class="va">enteric_bulls</span><span class="op">$</span><span class="va">ch4_kg</span><span class="op">)</span>,</span>
+<span>  CO2eq_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">enteric_cows</span><span class="op">$</span><span class="va">co2eq_kg</span>, <span class="va">enteric_heifers</span><span class="op">$</span><span class="va">co2eq_kg</span>, <span class="va">enteric_calves</span><span class="op">$</span><span class="va">co2eq_kg</span>, <span class="va">enteric_bulls</span><span class="op">$</span><span class="va">co2eq_kg</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">enteric_summary</span>, caption <span class="op">=</span> <span class="st">"Enteric Emissions by Animal Category"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">kable</span><span class="op">(</span><span class="va">enteric_summary</span>, caption <span class="op">=</span> <span class="st">"Enteric emissions by animal category"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Enteric Emissions by Animal Category</caption>
+<caption>Enteric emissions by animal category</caption>
 <thead><tr class="header">
 <th align="left">Category</th>
 <th align="right">Animals</th>
@@ -516,32 +497,37 @@ data.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Total enteric emissions</span></span>
-<span><span class="va">total_enteric</span> <span class="op">&lt;-</span> <span class="va">enteric_cows</span><span class="op">$</span><span class="va">co2eq_kg</span> <span class="op">+</span> <span class="va">enteric_heifers</span><span class="op">$</span><span class="va">co2eq_kg</span> <span class="op">+</span> </span>
-<span>                <span class="va">enteric_calves</span><span class="op">$</span><span class="va">co2eq_kg</span> <span class="op">+</span> <span class="va">enteric_bulls</span><span class="op">$</span><span class="va">co2eq_kg</span></span></code></pre></div>
+<span><span class="va">total_enteric</span> <span class="op">&lt;-</span> <span class="va">enteric_summary</span><span class="op">$</span><span class="va">CO2eq_kg</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level4">
-<h4 id="manure-management-emissions">Manure Management Emissions<a class="anchor" aria-label="anchor" href="#manure-management-emissions"></a>
+<h4 id="manure-management">Manure management<a class="anchor" aria-label="anchor" href="#manure-management"></a>
 </h4>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate manure emissions for the entire herd</span></span>
-<span><span class="va">total_animals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">herd_data</span><span class="op">$</span><span class="va">dairy_cows_milking</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">dairy_cows_dry</span>,</span>
-<span>                    <span class="va">herd_data</span><span class="op">$</span><span class="va">heifers_total</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">calves_total</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">bulls_total</span><span class="op">)</span></span>
+<div class="section level5">
+<h5 id="key-arguments--1">Key arguments.<a class="anchor" aria-label="anchor" href="#key-arguments--1"></a>
+</h5>
+<pre><code>•   manure_system: a simplified representation of storage/handling
+•   include_indirect: whether to include indirect emissions</code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">total_animals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span></span>
+<span>  <span class="va">herd_data</span><span class="op">$</span><span class="va">dairy_cows_milking</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">dairy_cows_dry</span>,</span>
+<span>  <span class="va">herd_data</span><span class="op">$</span><span class="va">heifers_total</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">calves_total</span>, <span class="va">herd_data</span><span class="op">$</span><span class="va">bulls_total</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">manure_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_manure.html">calc_emissions_manure</a></span><span class="op">(</span></span>
 <span>  n_cows <span class="op">=</span> <span class="va">total_animals</span>,</span>
-<span>  manure_system <span class="op">=</span> <span class="st">"pasture"</span>,  <span class="co"># Extensive grazing system</span></span>
+<span>  manure_system <span class="op">=</span> <span class="st">"pasture"</span>,</span>
 <span>  tier <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  avg_body_weight <span class="op">=</span> <span class="fl">500</span>,  <span class="co"># Weighted average</span></span>
+<span>  avg_body_weight <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  diet_digestibility <span class="op">=</span> <span class="fl">0.67</span>,</span>
 <span>  climate <span class="op">=</span> <span class="st">"temperate"</span>,</span>
 <span>  include_indirect <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">manure_emissions</span><span class="op">)</span></span>
+<span><span class="va">manure_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "manure"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -633,12 +619,12 @@ data.</p>
 <span><span class="co">#&gt; $tier2_details$mcf_used</span></span>
 <span><span class="co">#&gt; [1] 1.5</span></span></code></pre></div>
 </div>
+</div>
 <div class="section level4">
 <h4 id="soil-n2o-emissions">Soil N2O Emissions<a class="anchor" aria-label="anchor" href="#soil-n2o-emissions"></a>
 </h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate soil emissions from all N sources</span></span>
-<span><span class="va">soil_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_soil.html">calc_emissions_soil</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">soil_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_soil.html">calc_emissions_soil</a></span><span class="op">(</span></span>
 <span>  n_fertilizer_synthetic <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">n_fertilizer_synthetic</span>,</span>
 <span>  n_fertilizer_organic <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">n_fertilizer_organic</span>,</span>
 <span>  n_excreta_pasture <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">n_excreta_pasture</span>,</span>
@@ -650,7 +636,7 @@ data.</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">soil_emissions</span><span class="op">)</span></span>
+<span><span class="va">soil_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "soil"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -761,20 +747,19 @@ data.</p>
 <div class="section level4">
 <h4 id="energy-related-emissions">Energy-Related Emissions<a class="anchor" aria-label="anchor" href="#energy-related-emissions"></a>
 </h4>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate emissions from energy use</span></span>
-<span><span class="va">energy_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_energy.html">calc_emissions_energy</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">energy_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_energy.html">calc_emissions_energy</a></span><span class="op">(</span></span>
 <span>  diesel_l <span class="op">=</span> <span class="va">energy_data</span><span class="op">$</span><span class="va">diesel_litres</span>,</span>
 <span>  petrol_l <span class="op">=</span> <span class="va">energy_data</span><span class="op">$</span><span class="va">petrol_litres</span>,</span>
 <span>  lpg_kg <span class="op">=</span> <span class="va">energy_data</span><span class="op">$</span><span class="va">lpg_kg</span>,</span>
 <span>  natural_gas_m3 <span class="op">=</span> <span class="va">energy_data</span><span class="op">$</span><span class="va">natural_gas_m3</span>,</span>
 <span>  electricity_kwh <span class="op">=</span> <span class="va">energy_data</span><span class="op">$</span><span class="va">electricity_kwh</span>,</span>
 <span>  country <span class="op">=</span> <span class="va">energy_data</span><span class="op">$</span><span class="va">country</span>,</span>
-<span>  include_upstream <span class="op">=</span> <span class="cn">FALSE</span>,  <span class="co"># Only direct emissions</span></span>
+<span>  include_upstream <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">energy_emissions</span><span class="op">)</span></span>
+<span><span class="va">energy_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "energy"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -866,9 +851,8 @@ data.</p>
 <div class="section level4">
 <h4 id="purchased-input-emissions">Purchased Input Emissions<a class="anchor" aria-label="anchor" href="#purchased-input-emissions"></a>
 </h4>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate emissions from purchased inputs</span></span>
-<span><span class="va">input_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs</a></span><span class="op">(</span></span>
 <span>  conc_kg <span class="op">=</span> <span class="va">feed_data</span><span class="op">$</span><span class="va">concentrate_kg</span>,</span>
 <span>  fert_n_kg <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">n_fertilizer_synthetic</span>,</span>
 <span>  plastic_kg <span class="op">=</span> <span class="va">other_inputs</span><span class="op">$</span><span class="va">plastic_kg</span>,</span>
@@ -884,7 +868,7 @@ data.</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">input_emissions</span><span class="op">)</span></span>
+<span><span class="va">input_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "inputs"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1095,19 +1079,14 @@ data.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-4-total-emissions-and-analysis">Step 4: Total Emissions and Analysis<a class="anchor" aria-label="anchor" href="#step-4-total-emissions-and-analysis"></a>
+<h3 id="step-4-total-emissions-and-hotspot-analysis">Step 4: Total emissions and hotspot analysis<a class="anchor" aria-label="anchor" href="#step-4-total-emissions-and-hotspot-analysis"></a>
 </h3>
-<div class="section level4">
-<h4 id="aggregate-all-emission-sources">Aggregate All Emission Sources<a class="anchor" aria-label="anchor" href="#aggregate-all-emission-sources"></a>
-</h4>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create combined enteric emissions object</span></span>
-<span><span class="va">enteric_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  source <span class="op">=</span> <span class="st">"enteric"</span>,</span>
-<span>  co2eq_kg <span class="op">=</span> <span class="va">total_enteric</span></span>
-<span><span class="op">)</span></span>
+<p><strong>Purpose</strong>. calc_total_emissions() aggregates multiple
+sources into a single result and provides a breakdown that is convenient
+for reporting and visualization.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">enteric_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>source <span class="op">=</span> <span class="st">"enteric"</span>, co2eq_kg <span class="op">=</span> <span class="va">total_enteric</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Calculate total emissions</span></span>
 <span><span class="va">total_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_total_emissions.html">calc_total_emissions</a></span><span class="op">(</span></span>
 <span>  <span class="va">enteric_combined</span>,</span>
 <span>  <span class="va">manure_emissions</span>,</span>
@@ -1130,45 +1109,44 @@ data.</p>
 <span><span class="co">#&gt;   soil : 112601.8 kg CO2eq</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Calculated on: 2025-12-30</span></span></code></pre></div>
-</div>
 <div class="section level4">
-<h4 id="visualize-emission-sources">Visualize Emission Sources<a class="anchor" aria-label="anchor" href="#visualize-emission-sources"></a>
+<h4 id="visualize-emission-sources-bar-chart">Visualize emission sources (bar chart)<a class="anchor" aria-label="anchor" href="#visualize-emission-sources-bar-chart"></a>
 </h4>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create detailed breakdown</span></span>
-<span><span class="va">emission_breakdown</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">emission_breakdown</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">breakdown</span><span class="op">)</span>,</span>
 <span>  Emissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">breakdown</span><span class="op">)</span>,</span>
-<span>  Percentage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">breakdown</span><span class="op">)</span> <span class="op">/</span> </span>
-<span>                    <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  Percentage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">breakdown</span><span class="op">)</span> <span class="op">/</span> <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Create bar chart</span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">emission_breakdown</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">Source</span>, <span class="va">Emissions</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">Emissions</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_col</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">Percentage</span>, <span class="st">"%"</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>            hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_col</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">Percentage</span>, <span class="st">"%"</span><span class="op">)</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Farm Emissions by Source"</span>,</span>
-<span>       subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Total:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>, </span>
-<span>                         big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>, <span class="st">"kg CO₂eq/year"</span><span class="op">)</span>,</span>
-<span>       x <span class="op">=</span> <span class="st">"Emission Source"</span>,</span>
-<span>       y <span class="op">=</span> <span class="st">"Emissions (kg CO₂eq/year)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Farm emissions by source"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Total:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>, <span class="st">"kg CO₂eq/year"</span><span class="op">)</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Emission source"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Emissions (kg CO₂eq/year)"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>        plot.subtitle <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="Figura generada por la viñeta; ver texto para detalles." width="768"></p>
+<p><img src="Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="Horizontal bar chart showing total farm emissions by source (enteric, manure, soil, energy, inputs) and each source's percentage of total CO2eq." width="768"></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-5-intensity-calculations">Step 5: Intensity Calculations<a class="anchor" aria-label="anchor" href="#step-5-intensity-calculations"></a>
+<h3 id="step-5-intensity-calculations">Step 5: Intensity calculations<a class="anchor" aria-label="anchor" href="#step-5-intensity-calculations"></a>
 </h3>
+<p><strong>Purpose</strong>. Intensity metrics normalize total emissions
+by production (milk) and land use (area). These are useful for
+comparison across farms and across scenarios, but should always be
+interpreted in context.</p>
 <div class="section level4">
-<h4 id="milk-intensity">Milk Intensity<a class="anchor" aria-label="anchor" href="#milk-intensity"></a>
+<h4 id="milk-intensity-kg-co₂eq-per-kg-fpcm">Milk Intensity (kg CO₂eq per kg FPCM)<a class="anchor" aria-label="anchor" href="#milk-intensity-kg-co%E2%82%82eq-per-kg-fpcm"></a>
 </h4>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate emissions per kg of FPCM</span></span>
-<span><span class="va">milk_intensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_intensity_litre.html">calc_intensity_litre</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">milk_intensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_intensity_litre.html">calc_intensity_litre</a></span><span class="op">(</span></span>
 <span>  total_emissions <span class="op">=</span> <span class="va">total_emissions</span>,</span>
 <span>  milk_litres <span class="op">=</span> <span class="va">herd_data</span><span class="op">$</span><span class="va">annual_milk_litres</span>,</span>
 <span>  fat <span class="op">=</span> <span class="va">herd_data</span><span class="op">$</span><span class="va">fat_percent</span>,</span>
@@ -1176,7 +1154,7 @@ data.</p>
 <span>  milk_density <span class="op">=</span> <span class="va">herd_data</span><span class="op">$</span><span class="va">milk_density</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">milk_intensity</span><span class="op">)</span></span>
+<span><span class="va">milk_intensity</span></span>
 <span><span class="co">#&gt; Carbon Footprint Intensity</span></span>
 <span><span class="co">#&gt; ==========================</span></span>
 <span><span class="co">#&gt; Intensity: 1.684 kg CO2eq/kg FPCM</span></span>
@@ -1192,11 +1170,10 @@ data.</p>
 <span><span class="co">#&gt; Calculated on: 2025-12-30</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="area-intensity">Area Intensity<a class="anchor" aria-label="anchor" href="#area-intensity"></a>
+<h4 id="area-intensity-kg-co₂eq-per-ha">Area Intensity (kg CO₂eq per ha)<a class="anchor" aria-label="anchor" href="#area-intensity-kg-co%E2%82%82eq-per-ha"></a>
 </h4>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate emissions per hectare</span></span>
-<span><span class="va">area_breakdown</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">area_breakdown</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  pasture_permanent <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">pasture_permanent</span>,</span>
 <span>  pasture_temporary <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">pasture_temporary</span>,</span>
 <span>  crops_feed <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">crops_feed</span>,</span>
@@ -1213,7 +1190,7 @@ data.</p>
 <span>  validate_area_sum <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">)</span></span>
+<span><span class="va">area_intensity</span></span>
 <span><span class="co">#&gt; Carbon Footprint Area Intensity</span></span>
 <span><span class="co">#&gt; ===============================</span></span>
 <span><span class="co">#&gt; Intensity (total area): 7951.47 kg CO2eq/ha</span></span>
@@ -1236,16 +1213,17 @@ data.</p>
 <span><span class="co">#&gt; Calculated on: 2025-12-30</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="benchmarking-against-regional-standards">Benchmarking Against Regional Standards<a class="anchor" aria-label="anchor" href="#benchmarking-against-regional-standards"></a>
+<h4 id="benchmarking-interpretation-note">Benchmarking (interpretation note)<a class="anchor" aria-label="anchor" href="#benchmarking-interpretation-note"></a>
 </h4>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Benchmark against Uruguayan standards</span></span>
-<span><span class="va">area_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/benchmark_area_intensity.html">benchmark_area_intensity</a></span><span class="op">(</span></span>
+<p>Benchmark values should be treated as indicative guidance and may
+vary by production system, region, and data quality.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">area_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/benchmark_area_intensity.html">benchmark_area_intensity</a></span><span class="op">(</span></span>
 <span>  cf_area_intensity <span class="op">=</span> <span class="va">area_intensity</span>,</span>
 <span>  region <span class="op">=</span> <span class="st">"uruguay"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">area_benchmark</span><span class="op">$</span><span class="va">benchmarking</span><span class="op">)</span></span>
+<span><span class="va">area_benchmark</span><span class="op">$</span><span class="va">benchmarking</span></span>
 <span><span class="co">#&gt; $region</span></span>
 <span><span class="co">#&gt; [1] "uruguay"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1266,137 +1244,16 @@ data.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-6-detailed-results-analysis">Step 6: Detailed Results Analysis<a class="anchor" aria-label="anchor" href="#step-6-detailed-results-analysis"></a>
+<h3 id="step-6-scenario-analysis-example">Step 6: Scenario analysis (example)<a class="anchor" aria-label="anchor" href="#step-6-scenario-analysis-example"></a>
 </h3>
-<div class="section level4">
-<h4 id="per-animal-emissions">Per-Animal Emissions<a class="anchor" aria-label="anchor" href="#per-animal-emissions"></a>
-</h4>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate emissions per animal category</span></span>
-<span><span class="va">per_animal_analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dairy Cows"</span>, <span class="st">"All Animals"</span><span class="op">)</span>,</span>
-<span>  Number <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="va">total_animals</span><span class="op">)</span>,</span>
-<span>  Total_Emissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span>, <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>,</span>
-<span>  Emissions_per_Head <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">/</span> <span class="fl">150</span>,</span>
-<span>    <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">/</span> <span class="va">total_animals</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Milk_per_Head <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">herd_data</span><span class="op">$</span><span class="va">annual_milk_litres</span> <span class="op">/</span> <span class="fl">150</span>, <span class="cn">NA</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">per_animal_analysis</span>, </span>
-<span>      digits <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>      caption <span class="op">=</span> <span class="st">"Per-Animal Emission Analysis"</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<caption>Per-Animal Emission Analysis</caption>
-<colgroup>
-<col width="17%">
-<col width="10%">
-<col width="23%">
-<col width="27%">
-<col width="20%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">Category</th>
-<th align="right">Number</th>
-<th align="right">Total_Emissions</th>
-<th align="right">Emissions_per_Head</th>
-<th align="right">Milk_per_Head</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Dairy Cows</td>
-<td align="right">150</td>
-<td align="right">1590294</td>
-<td align="right">10602</td>
-<td align="right">6333</td>
-</tr>
-<tr class="even">
-<td align="left">All Animals</td>
-<td align="right">233</td>
-<td align="right">1590294</td>
-<td align="right">6825</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level4">
-<h4 id="feed-efficiency-analysis">Feed Efficiency Analysis<a class="anchor" aria-label="anchor" href="#feed-efficiency-analysis"></a>
-</h4>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate feed-related metrics</span></span>
-<span><span class="va">total_purchased_feed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span></span>
-<span>  <span class="va">feed_data</span><span class="op">$</span><span class="va">concentrate_kg</span>,</span>
-<span>  <span class="va">feed_data</span><span class="op">$</span><span class="va">grain_dry_kg</span>,</span>
-<span>  <span class="va">feed_data</span><span class="op">$</span><span class="va">grain_wet_kg</span>,</span>
-<span>  <span class="va">feed_data</span><span class="op">$</span><span class="va">ration_kg</span>,</span>
-<span>  <span class="va">feed_data</span><span class="op">$</span><span class="va">byproducts_kg</span>,</span>
-<span>  <span class="va">feed_data</span><span class="op">$</span><span class="va">proteins_kg</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">feed_analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  Metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Total Feed Purchases"</span>, <span class="st">"Feed Emissions"</span>, <span class="st">"Feed CO2eq per kg DM"</span>,</span>
-<span>             <span class="st">"Feed Efficiency"</span>, <span class="st">"Milk from Feed"</span><span class="op">)</span>,</span>
-<span>  Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="va">total_purchased_feed</span>,</span>
-<span>    <span class="va">input_emissions</span><span class="op">$</span><span class="va">total_co2eq_kg</span>,</span>
-<span>    <span class="va">input_emissions</span><span class="op">$</span><span class="va">total_co2eq_kg</span> <span class="op">/</span> <span class="va">total_purchased_feed</span>,</span>
-<span>    <span class="va">herd_data</span><span class="op">$</span><span class="va">annual_milk_litres</span> <span class="op">/</span> <span class="va">total_purchased_feed</span>,</span>
-<span>    <span class="va">herd_data</span><span class="op">$</span><span class="va">annual_milk_litres</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kg DM"</span>, <span class="st">"kg CO₂eq"</span>, <span class="st">"kg CO₂eq/kg DM"</span>, <span class="st">"L milk/kg DM"</span>, <span class="st">"L"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">feed_analysis</span>, digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Feed Efficiency Analysis"</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<caption>Feed Efficiency Analysis</caption>
-<thead><tr class="header">
-<th align="left">Metric</th>
-<th align="right">Value</th>
-<th align="left">Unit</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Total Feed Purchases</td>
-<td align="right">465000.00</td>
-<td align="left">kg DM</td>
-</tr>
-<tr class="even">
-<td align="left">Feed Emissions</td>
-<td align="right">324795.00</td>
-<td align="left">kg CO₂eq</td>
-</tr>
-<tr class="odd">
-<td align="left">Feed CO2eq per kg DM</td>
-<td align="right">0.70</td>
-<td align="left">kg CO₂eq/kg DM</td>
-</tr>
-<tr class="even">
-<td align="left">Feed Efficiency</td>
-<td align="right">2.04</td>
-<td align="left">L milk/kg DM</td>
-</tr>
-<tr class="odd">
-<td align="left">Milk from Feed</td>
-<td align="right">950000.00</td>
-<td align="left">L</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="section level3">
-<h3 id="step-7-mitigation-scenario-analysis">Step 7: Mitigation Scenario Analysis<a class="anchor" aria-label="anchor" href="#step-7-mitigation-scenario-analysis"></a>
-</h3>
-<p>Let’s analyze potential mitigation strategies:</p>
-<div class="section level4">
-<h4 id="scenario-1-improved-feed-efficiency">Scenario 1: Improved Feed Efficiency<a class="anchor" aria-label="anchor" href="#scenario-1-improved-feed-efficiency"></a>
-</h4>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Scenario: 10% reduction in concentrate use with maintained production</span></span>
-<span><span class="va">improved_inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs</a></span><span class="op">(</span></span>
-<span>  conc_kg <span class="op">=</span> <span class="va">feed_data</span><span class="op">$</span><span class="va">concentrate_kg</span> <span class="op">*</span> <span class="fl">0.9</span>,  <span class="co"># 10% reduction</span></span>
+<p><strong>Purpose</strong>. Scenario comparisons help explore
+mitigation options by changing one driver at a time while keeping the
+rest constant.</p>
+<p><strong>Scenario 1: Improved feed efficiency (10% reduction in
+concentrate)</strong></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">improved_inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs</a></span><span class="op">(</span></span>
+<span>  conc_kg <span class="op">=</span> <span class="va">feed_data</span><span class="op">$</span><span class="va">concentrate_kg</span> <span class="op">*</span> <span class="fl">0.9</span>,</span>
 <span>  fert_n_kg <span class="op">=</span> <span class="va">land_data</span><span class="op">$</span><span class="va">n_fertilizer_synthetic</span>,</span>
 <span>  plastic_kg <span class="op">=</span> <span class="va">other_inputs</span><span class="op">$</span><span class="va">plastic_kg</span>,</span>
 <span>  feed_grain_dry_kg <span class="op">=</span> <span class="va">feed_data</span><span class="op">$</span><span class="va">grain_dry_kg</span>,</span>
@@ -1411,7 +1268,6 @@ data.</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Calculate total for improved scenario</span></span>
 <span><span class="va">total_improved</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_total_emissions.html">calc_total_emissions</a></span><span class="op">(</span></span>
 <span>  <span class="va">enteric_combined</span>,</span>
 <span>  <span class="va">manure_emissions</span>,</span>
@@ -1420,30 +1276,28 @@ data.</p>
 <span>  <span class="va">improved_inputs</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Compare scenarios</span></span>
 <span><span class="va">scenario_comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Improved Feed Efficiency"</span><span class="op">)</span>,</span>
 <span>  Total_Emissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span>, <span class="va">total_improved</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>,</span>
-<span>  Input_Emissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">input_emissions</span><span class="op">$</span><span class="va">total_co2eq_kg</span>, <span class="va">improved_inputs</span><span class="op">$</span><span class="va">total_co2eq_kg</span><span class="op">)</span>,</span>
 <span>  Reduction_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">-</span> <span class="va">total_improved</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>,</span>
-<span>  Reduction_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">-</span> <span class="va">total_improved</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span> <span class="op">/</span> </span>
-<span>                               <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  Reduction_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="fl">0</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">-</span> <span class="va">total_improved</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span> <span class="op">/</span> <span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">scenario_comparison</span>, caption <span class="op">=</span> <span class="st">"Mitigation Scenario Analysis"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">kable</span><span class="op">(</span><span class="va">scenario_comparison</span>, caption <span class="op">=</span> <span class="st">"Mitigation scenario analysis (illustrative)"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Mitigation Scenario Analysis</caption>
+<caption>Mitigation scenario analysis (illustrative)</caption>
 <colgroup>
-<col width="28%">
+<col width="34%">
+<col width="22%">
 <col width="18%">
-<col width="18%">
-<col width="14%">
-<col width="20%">
+<col width="25%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Scenario</th>
 <th align="right">Total_Emissions</th>
-<th align="right">Input_Emissions</th>
 <th align="right">Reduction_kg</th>
 <th align="right">Reduction_percent</th>
 </tr></thead>
@@ -1451,24 +1305,21 @@ data.</p>
 <tr class="odd">
 <td align="left">Baseline</td>
 <td align="right">1590294</td>
-<td align="right">324795</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">Improved Feed Efficiency</td>
 <td align="right">1574630</td>
-<td align="right">309131</td>
 <td align="right">15664</td>
 <td align="right">1</td>
 </tr>
 </tbody>
 </table>
-</div>
 <div class="section level4">
 <h4 id="scenario-2-enhanced-manure-management">Scenario 2: Enhanced Manure Management<a class="anchor" aria-label="anchor" href="#scenario-2-enhanced-manure-management"></a>
 </h4>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Scenario: Switch from pasture to anaerobic digester</span></span>
 <span><span class="va">improved_manure</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_manure.html">calc_emissions_manure</a></span><span class="op">(</span></span>
 <span>  n_cows <span class="op">=</span> <span class="va">total_animals</span>,</span>
@@ -1530,14 +1381,25 @@ data.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-8-comprehensive-results-visualization">Step 8: Comprehensive Results Visualization<a class="anchor" aria-label="anchor" href="#step-8-comprehensive-results-visualization"></a>
+<h3 id="step-7-two-complementary-visual-summaries">Step 7: Two complementary visual summaries<a class="anchor" aria-label="anchor" href="#step-7-two-complementary-visual-summaries"></a>
 </h3>
-<div class="section level4">
-<h4 id="multi-source-emissions-chart">Multi-Source Emissions Chart<a class="anchor" aria-label="anchor" href="#multi-source-emissions-chart"></a>
-</h4>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Prepare data for comprehensive visualization</span></span>
-<span><span class="va">detailed_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<p>This vignette includes two visual summaries on purpose:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Farm emissions by source (bar chart)</strong> uses
+<code>total_emissions$breakdown</code>, i.e., the aggregation returned
+by <code><a href="../reference/calc_total_emissions.html">calc_total_emissions()</a></code>.</li>
+<li>
+<strong>Multi-source breakdown (stacked bar)</strong> is a more
+detailed view that splits enteric emissions into cows vs. young stock
+and keeps other sources as separate blocks.</li>
+</ol>
+<p>These charts answer different questions: the first highlights the
+hotspot categories in the official aggregation; the second gives a more
+granular interpretation for communication.</p>
+<p><strong>Multi-source emissions chart (stacked bar)</strong></p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">detailed_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Enteric - Cows"</span>, <span class="st">"Enteric - Young Stock"</span>, <span class="st">"Manure Management"</span>,</span>
 <span>             <span class="st">"Soil N2O"</span>, <span class="st">"Energy Use"</span>, <span class="st">"Purchased Inputs"</span><span class="op">)</span>,</span>
 <span>  Emissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -1547,43 +1409,40 @@ data.</p>
 <span>    <span class="va">soil_emissions</span><span class="op">$</span><span class="va">co2eq_kg</span>,</span>
 <span>    <span class="va">energy_emissions</span><span class="op">$</span><span class="va">co2eq_kg</span>,</span>
 <span>    <span class="va">input_emissions</span><span class="op">$</span><span class="va">total_co2eq_kg</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Enteric"</span>, <span class="st">"Enteric"</span>, <span class="st">"Manure"</span>, <span class="st">"Soil"</span>, <span class="st">"Energy"</span>, <span class="st">"Inputs"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Create stacked bar chart</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">detailed_emissions</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Farm Emissions"</span>, y <span class="op">=</span> <span class="va">Emissions</span>, fill <span class="op">=</span> <span class="va">Source</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">detailed_emissions</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Farm emissions"</span>, y <span class="op">=</span> <span class="va">Emissions</span>, fill <span class="op">=</span> <span class="va">Source</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">Emissions</span> <span class="op">&gt;</span> <span class="fl">2000</span>, </span>
-<span>                              <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">Emissions</span><span class="op">/</span><span class="fl">1000</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"k"</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>            position <span class="op">=</span> <span class="fu">position_stack</span><span class="op">(</span>vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>            color <span class="op">=</span> <span class="st">"white"</span>, fontweight <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Estancia Las Flores - Carbon Footprint Breakdown"</span>,</span>
-<span>       subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Total:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>, </span>
-<span>                       big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>, <span class="st">"kg CO₂eq/year"</span><span class="op">)</span>,</span>
-<span>       x <span class="op">=</span> <span class="st">""</span>,</span>
-<span>       y <span class="op">=</span> <span class="st">"Emissions (kg CO₂eq/year)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Single farm carbon footprint breakdown (detailed view)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Total:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span><span class="op">)</span>, big.mark <span class="op">=</span> <span class="st">","</span><span class="op">)</span>, <span class="st">"kg CO₂eq/year"</span><span class="op">)</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">""</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Emissions (kg CO₂eq/year)"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>        plot.subtitle <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>        axis.text.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>        legend.position <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_fill_brewer</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"qual"</span>, palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="Figura generada por la viñeta; ver texto para detalles." width="960"></p>
+<span>        legend.position <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="Stacked bar chart with a detailed breakdown of farm emissions, splitting enteric emissions into cows vs young stock, plus manure, soil, energy, and purchased inputs." width="960"></p>
 </div>
-<div class="section level4">
-<h4 id="intensity-metrics-dashboard">Intensity Metrics Dashboard<a class="anchor" aria-label="anchor" href="#intensity-metrics-dashboard"></a>
-</h4>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate key performance indicators</span></span>
-<span><span class="va">kpi_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<div class="section level3">
+<h3 id="step-8-summary-table-kpi-style">Step 8: Summary table (KPI-style)<a class="anchor" aria-label="anchor" href="#step-8-summary-table-kpi-style"></a>
+</h3>
+<p><strong>Purpose</strong>. This table provides a compact summary of
+key metrics for reporting. At the moment, we build it explicitly as a
+data.frame to keep the workflow transparent; a dedicated helper function
+could be added in future versions if needed.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kpi_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"Milk Intensity (kg CO₂eq/kg FPCM)"</span>,</span>
-<span>    <span class="st">"Area Intensity - Total (kg CO₂eq/ha)"</span>,</span>
-<span>    <span class="st">"Area Intensity - Productive (kg CO₂eq/ha)"</span>,</span>
-<span>    <span class="st">"Land Use Efficiency (%)"</span>,</span>
-<span>    <span class="st">"Milk Yield (L/cow/year)"</span>,</span>
-<span>    <span class="st">"Stocking Rate (cows/ha)"</span></span>
+<span>    <span class="st">"Milk intensity (kg CO₂eq/kg FPCM)"</span>,</span>
+<span>    <span class="st">"Area intensity - total (kg CO₂eq/ha)"</span>,</span>
+<span>    <span class="st">"Area intensity - productive (kg CO₂eq/ha)"</span>,</span>
+<span>    <span class="st">"Land use efficiency (%)"</span>,</span>
+<span>    <span class="st">"Milk yield (L/cow/year)"</span>,</span>
+<span>    <span class="st">"Stocking rate (cows/ha)"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">milk_intensity</span><span class="op">$</span><span class="va">intensity_co2eq_per_kg_fpcm</span>, <span class="fl">3</span><span class="op">)</span>,</span>
@@ -1592,103 +1451,62 @@ data.</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">$</span><span class="va">land_use_efficiency</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">herd_data</span><span class="op">$</span><span class="va">annual_milk_litres</span> <span class="op">/</span> <span class="fl">150</span>, <span class="fl">0</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">150</span> <span class="op">/</span> <span class="va">land_data</span><span class="op">$</span><span class="va">area_total</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  Benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&lt; 1.2"</span>, <span class="st">"&lt; 8,000"</span>, <span class="st">"&lt; 8,500"</span>, <span class="st">"&gt; 85%"</span>, <span class="st">"&gt; 6,000"</span>, <span class="st">"0.5-1.2"</span><span class="op">)</span>,</span>
-<span>  Performance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">milk_intensity</span><span class="op">$</span><span class="va">intensity_co2eq_per_kg_fpcm</span> <span class="op">&lt;</span> <span class="fl">1.2</span>, <span class="st">"Good"</span>, <span class="st">"Needs Improvement"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">$</span><span class="va">intensity_per_total_ha</span> <span class="op">&lt;</span> <span class="fl">8000</span>, <span class="st">"Good"</span>, <span class="st">"Needs Improvement"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">$</span><span class="va">intensity_per_productive_ha</span> <span class="op">&lt;</span> <span class="fl">8500</span>, <span class="st">"Good"</span>, <span class="st">"Needs Improvement"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">$</span><span class="va">land_use_efficiency</span> <span class="op">&gt;</span> <span class="fl">0.85</span>, <span class="st">"Good"</span>, <span class="st">"Needs Improvement"</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">herd_data</span><span class="op">$</span><span class="va">annual_milk_litres</span> <span class="op">/</span> <span class="fl">150</span> <span class="op">&gt;</span> <span class="fl">6000</span>, <span class="st">"Good"</span>, <span class="st">"Needs Improvement"</span><span class="op">)</span>,</span>
-<span>    <span class="st">"Within Range"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">kpi_summary</span>, caption <span class="op">=</span> <span class="st">"Key Performance Indicators"</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<caption>Key Performance Indicators</caption>
-<colgroup>
-<col width="53%">
-<col width="11%">
-<col width="12%">
-<col width="22%">
-</colgroup>
+<span><span class="fu">kable</span><span class="op">(</span><span class="va">kpi_summary</span>, caption <span class="op">=</span> <span class="st">"Key performance indicators (illustrative)"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Key performance indicators (illustrative)</caption>
 <thead><tr class="header">
 <th align="left">Metric</th>
 <th align="right">Value</th>
-<th align="left">Benchmark</th>
-<th align="left">Performance</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Milk Intensity (kg CO₂eq/kg FPCM)</td>
+<td align="left">Milk intensity (kg CO₂eq/kg FPCM)</td>
 <td align="right">1.684</td>
-<td align="left">&lt; 1.2</td>
-<td align="left">Needs Improvement</td>
 </tr>
 <tr class="even">
-<td align="left">Area Intensity - Total (kg CO₂eq/ha)</td>
+<td align="left">Area intensity - total (kg CO₂eq/ha)</td>
 <td align="right">7951.000</td>
-<td align="left">&lt; 8,000</td>
-<td align="left">Good</td>
 </tr>
 <tr class="odd">
-<td align="left">Area Intensity - Productive (kg CO₂eq/ha)</td>
+<td align="left">Area intensity - productive (kg CO₂eq/ha)</td>
 <td align="right">8596.000</td>
-<td align="left">&lt; 8,500</td>
-<td align="left">Needs Improvement</td>
 </tr>
 <tr class="even">
-<td align="left">Land Use Efficiency (%)</td>
+<td align="left">Land use efficiency (%)</td>
 <td align="right">92.500</td>
-<td align="left">&gt; 85%</td>
-<td align="left">Good</td>
 </tr>
 <tr class="odd">
-<td align="left">Milk Yield (L/cow/year)</td>
+<td align="left">Milk yield (L/cow/year)</td>
 <td align="right">6333.000</td>
-<td align="left">&gt; 6,000</td>
-<td align="left">Good</td>
 </tr>
 <tr class="even">
-<td align="left">Stocking Rate (cows/ha)</td>
+<td align="left">Stocking rate (cows/ha)</td>
 <td align="right">0.750</td>
-<td align="left">0.5-1.2</td>
-<td align="left">Within Range</td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
 <div class="section level3">
 <h3 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h3>
-<p>This detailed single-farm analysis demonstrates the comprehensive
-capabilities of cowfootR for dairy farm carbon footprint assessment. The
-modular approach allows for detailed investigation of each emission
-source while maintaining consistency with international standards.</p>
-<p>Key takeaways from this analysis:</p>
+<p>This vignette demonstrated a complete single-farm workflow:</p>
 <ul>
-<li>
-<strong>Systematic approach</strong>: Following the step-by-step
-methodology ensures completeness and accuracy</li>
-<li>
-<strong>Data quality matters</strong>: More detailed farm-specific
-data leads to more accurate results</li>
-<li>
-<strong>Benchmarking provides context</strong>: Comparing results
-against regional standards helps identify improvement opportunities</li>
-<li>
-<strong>Scenario analysis</strong>: Testing mitigation strategies
-helps prioritize actions</li>
-<li>
-<strong>Uncertainty awareness</strong>: Understanding data
-limitations guides decision-making</li>
+<li>define boundaries</li>
+<li>provide farm inputs</li>
+<li>compute emissions by source</li>
+<li>aggregate totals and identify hotspots</li>
+<li>calculate intensity metrics</li>
+<li>explore simple mitigation scenarios</li>
+<li>summarize results with figures and a KPI table</li>
 </ul>
-<p>For processing multiple farms simultaneously, see the “Batch Farm
-Assessment” vignette. For methodology details, consult the “IPCC Tier
-Comparison” vignette.</p>
-<hr>
+</div>
+<div class="section level3">
+<h3 id="for-multi-farm-processing-see-the-batch-farm-assessment-vignette-">For multi-farm processing, see the Batch Farm Assessment
+vignette.<a class="anchor" aria-label="anchor" href="#for-multi-farm-processing-see-the-batch-farm-assessment-vignette-"></a>
+</h3>
 <p><em>This analysis used cowfootR version 0.1.1 following IDF 2022 and
 IPCC 2019 standards.</em></p>
 </div>

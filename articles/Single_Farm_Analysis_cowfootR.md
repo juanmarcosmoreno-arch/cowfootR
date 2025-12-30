@@ -1,18 +1,16 @@
-# Single_Farm_Analysis_cowfootR
-
-\`
+# Single Farm Analysis (cowfootR)
 
 ## Comprehensive Single Farm Carbon Footprint Analysis
 
-This vignette demonstrates how to conduct a detailed carbon footprint
-assessment for an individual dairy farm using all available functions in
-cowfootR. We’ll work through a realistic example with comprehensive data
-collection and analysis.
+This vignette shows a complete, end-to-end carbon footprint assessment
+for one dairy farm using cowfootR. The goal is to demonstrate how
+individual emission sources can be calculated, combined, visualized, and
+summarized into intensity metrics.
 
 ### Farm Profile: Estancia Las Flores
 
-For this analysis, we’ll assess a medium-sized dairy farm in Uruguay
-with the following characteristics:
+We will analyze a medium-sized dairy farm with a mixed grazing system
+and supplementation:
 
 - **Location**: Temperate climate, well-drained soils
 - **System**: Mixed grazing with supplementation
@@ -20,35 +18,42 @@ with the following characteristics:
 - **Area**: 200 hectares total
 - **Production**: 950,000 litres annually
 
-### Step 1: System Boundaries Definition
+### Step 1: Define system boundaries
 
-First, we define what emission sources to include in our assessment:
+**Purpose**. System boundaries specify which emission sources are
+included in the assessment (e.g., farm-gate vs cradle-to-farm-gate).
+This affects which functions are relevant and how totals are
+interpreted.
 
 ``` r
-# Define comprehensive farm-gate boundaries
+# Most common scope: farm-gate boundaries
 boundaries <- set_system_boundaries("farm_gate")
-print(boundaries)
+boundaries
 #> $scope
 #> [1] "farm_gate"
 #> 
 #> $include
 #> [1] "enteric" "manure"  "soil"    "energy"  "inputs"
+```
 
-# Alternative: cradle-to-farm-gate (includes upstream emissions)
+You can also explore other boundary configurations:
+
+``` r
+# Includes upstream emissions (e.g., purchased inputs)
 boundaries_extended <- set_system_boundaries("cradle_to_farm_gate")
-print(boundaries_extended)
+boundaries_extended
 #> $scope
 #> [1] "cradle_to_farm_gate"
 #> 
 #> $include
 #> [1] "feed"    "enteric" "manure"  "soil"    "energy"  "inputs"
 
-# Custom boundaries example
+# Custom selection of sources
 boundaries_partial <- set_system_boundaries(
   scope = "partial",
   include = c("enteric", "manure", "soil")
 )
-print(boundaries_partial)
+boundaries_partial
 #> $scope
 #> [1] "partial"
 #> 
@@ -56,40 +61,39 @@ print(boundaries_partial)
 #> [1] "enteric" "manure"  "soil"
 ```
 
-For this analysis, we’ll use farm-gate boundaries as they represent the
-most common assessment scope.
+For the rest of this vignette, we use farm-gate boundaries because it is
+a common scope in farm-level reporting.
 
-### Step 2: Detailed Farm Data Collection
+### Step 2: Provide farm data (inputs)
 
-#### Herd Composition and Management
+**Purpose**. cowfootR functions require inputs describing the herd,
+production, land use, energy consumption, and purchased inputs. In real
+applications, this information often comes from farm records, advisory
+systems, or templates.
+
+#### Herd Composition and production
 
 ``` r
-# Detailed herd data
 herd_data <- list(
-  # Main herd
   dairy_cows_milking = 120,
   dairy_cows_dry = 30,
-  
-  # Young stock
   heifers_total = 45,
   calves_total = 35,
   bulls_total = 3,
-  
-  # Animal characteristics (kg live weight)
+
   body_weight_cows = 580,
   body_weight_heifers = 380,
   body_weight_calves = 180,
   body_weight_bulls = 750,
-  
-  # Production parameters
-  milk_yield_per_cow = 6300,  # kg/cow/year
+
+  milk_yield_per_cow = 6300,
   annual_milk_litres = 950000,
   fat_percent = 3.7,
   protein_percent = 3.3,
   milk_density = 1.032
 )
 
-print(herd_data)
+herd_data
 #> $dairy_cows_milking
 #> [1] 120
 #> 
@@ -133,28 +137,25 @@ print(herd_data)
 #> [1] 1.032
 ```
 
-#### Feed and Nutrition Management
+#### Feed and nutrition
 
 ``` r
-# Feed inputs (all in kg dry matter per year)
 feed_data <- list(
-  # Purchased feeds
   concentrate_kg = 220000,
   grain_dry_kg = 80000,
   grain_wet_kg = 45000,
   ration_kg = 60000,
   byproducts_kg = 25000,
   proteins_kg = 35000,
-  
-  # Nutritional parameters
-  dry_matter_intake_cows = 19.5,  # kg DM/cow/day
+
+  dry_matter_intake_cows = 19.5,
   dry_matter_intake_heifers = 11.0,
   dry_matter_intake_calves = 6.0,
   dry_matter_intake_bulls = 14.0,
-  ym_percent = 6.3  # Methane conversion factor
+  ym_percent = 6.3
 )
 
-print(feed_data)
+feed_data
 #> $concentrate_kg
 #> [1] 220000
 #> 
@@ -189,36 +190,31 @@ print(feed_data)
 #> [1] 6.3
 ```
 
-#### Land Use and Soil Management
+#### Land use and soil management
 
 ``` r
-# Detailed land use breakdown
 land_data <- list(
-  # Total areas (hectares)
   area_total = 200,
   area_productive = 185,
   area_fertilized = 160,
-  
-  # Area breakdown
+
   pasture_permanent = 140,
   pasture_temporary = 30,
   crops_feed = 12,
   crops_cash = 3,
   infrastructure = 8,
   woodland = 7,
-  
-  # Soil and climate
+
   soil_type = "well_drained",
   climate_zone = "temperate",
-  
-  # Nitrogen inputs (kg N/year)
+
   n_fertilizer_synthetic = 2400,
   n_fertilizer_organic = 500,
-  n_excreta_pasture = 15000,  # Estimated from grazing
+  n_excreta_pasture = 15000,
   n_crop_residues = 800
 )
 
-print(land_data)
+land_data
 #> $area_total
 #> [1] 200
 #> 
@@ -265,25 +261,19 @@ print(land_data)
 #> [1] 800
 ```
 
-#### Energy Consumption
+#### Energy consumption
 
 ``` r
-# Energy use breakdown
 energy_data <- list(
-  # Fuel consumption (litres/year)
   diesel_litres = 12000,
   petrol_litres = 1800,
-  
-  # Other energy sources
   lpg_kg = 600,
   natural_gas_m3 = 0,
   electricity_kwh = 48000,
-  
-  # Country for electricity factors
   country = "UY"
 )
 
-print(energy_data)
+energy_data
 #> $diesel_litres
 #> [1] 12000
 #> 
@@ -303,26 +293,18 @@ print(energy_data)
 #> [1] "UY"
 ```
 
-#### Additional Inputs
+#### Additional purchased inputs
 
 ``` r
-# Other purchased inputs
 other_inputs <- list(
-  # Materials (kg/year)
   plastic_kg = 450,
-  
-  # Transport (optional)
-  transport_km = 120,  # Average transport distance for feeds
-  
-  # Fertilizer types
+  transport_km = 120,
   fert_type = "mixed",
   plastic_type = "mixed",
-  
-  # Regional factors
-  region = "global"  # Can be "EU", "US", "Brazil", etc.
+  region = "global"
 )
 
-print(other_inputs)
+other_inputs
 #> $plastic_kg
 #> [1] 450
 #> 
@@ -339,15 +321,20 @@ print(other_inputs)
 #> [1] "global"
 ```
 
-### Step 3: Emission Calculations by Source
+### Step 3: Calculate emissions by source
 
-Now we calculate emissions from each source using the detailed farm
-data.
+**Purpose**. Here we compute each emission source separately. This is
+useful for transparency, debugging, and hotspot analysis.
 
-#### Enteric Fermentation Emissions
+#### Enteric fermentation
+
+##### Key arguments.
+
+    -   n_animals, cattle_category: define the livestock group
+    -   Tier 2 options include avg_body_weight, dry_matter_intake, ym_percent
+    -   boundaries ensures calculations align with scope
 
 ``` r
-# Calculate enteric emissions for each animal category
 enteric_cows <- calc_emissions_enteric(
   n_animals = herd_data$dairy_cows_milking + herd_data$dairy_cows_dry,
   cattle_category = "dairy_cows",
@@ -387,17 +374,14 @@ enteric_bulls <- calc_emissions_enteric(
   boundaries = boundaries
 )
 
-# Summary of enteric emissions
 enteric_summary <- data.frame(
   Category = c("Dairy Cows", "Heifers", "Calves", "Bulls"),
   Animals = c(150, herd_data$heifers_total, herd_data$calves_total, herd_data$bulls_total),
-  CH4_kg = c(enteric_cows$ch4_kg, enteric_heifers$ch4_kg, 
-             enteric_calves$ch4_kg, enteric_bulls$ch4_kg),
-  CO2eq_kg = c(enteric_cows$co2eq_kg, enteric_heifers$co2eq_kg,
-               enteric_calves$co2eq_kg, enteric_bulls$co2eq_kg)
+  CH4_kg = c(enteric_cows$ch4_kg, enteric_heifers$ch4_kg, enteric_calves$ch4_kg, enteric_bulls$ch4_kg),
+  CO2eq_kg = c(enteric_cows$co2eq_kg, enteric_heifers$co2eq_kg, enteric_calves$co2eq_kg, enteric_bulls$co2eq_kg)
 )
 
-kable(enteric_summary, caption = "Enteric Emissions by Animal Category")
+kable(enteric_summary, caption = "Enteric emissions by animal category")
 ```
 
 | Category   | Animals |   CH4_kg |  CO2eq_kg |
@@ -407,34 +391,38 @@ kable(enteric_summary, caption = "Enteric Emissions by Animal Category")
 | Calves     |      35 |  1651.80 |  44928.88 |
 | Bulls      |       3 |   330.36 |   8985.78 |
 
-Enteric Emissions by Animal Category
+Enteric emissions by animal category
 
 ``` r
 
-# Total enteric emissions
-total_enteric <- enteric_cows$co2eq_kg + enteric_heifers$co2eq_kg + 
-                enteric_calves$co2eq_kg + enteric_bulls$co2eq_kg
+total_enteric <- enteric_summary$CO2eq_kg |> sum()
 ```
 
-#### Manure Management Emissions
+#### Manure management
+
+##### Key arguments.
+
+    •   manure_system: a simplified representation of storage/handling
+    •   include_indirect: whether to include indirect emissions
 
 ``` r
-# Calculate manure emissions for the entire herd
-total_animals <- sum(herd_data$dairy_cows_milking, herd_data$dairy_cows_dry,
-                    herd_data$heifers_total, herd_data$calves_total, herd_data$bulls_total)
+total_animals <- sum(
+  herd_data$dairy_cows_milking, herd_data$dairy_cows_dry,
+  herd_data$heifers_total, herd_data$calves_total, herd_data$bulls_total
+)
 
 manure_emissions <- calc_emissions_manure(
   n_cows = total_animals,
-  manure_system = "pasture",  # Extensive grazing system
+  manure_system = "pasture",
   tier = 2,
-  avg_body_weight = 500,  # Weighted average
+  avg_body_weight = 500,
   diet_digestibility = 0.67,
   climate = "temperate",
   include_indirect = TRUE,
   boundaries = boundaries
 )
 
-print(manure_emissions)
+manure_emissions
 #> $source
 #> [1] "manure"
 #> 
@@ -530,7 +518,6 @@ print(manure_emissions)
 #### Soil N2O Emissions
 
 ``` r
-# Calculate soil emissions from all N sources
 soil_emissions <- calc_emissions_soil(
   n_fertilizer_synthetic = land_data$n_fertilizer_synthetic,
   n_fertilizer_organic = land_data$n_fertilizer_organic,
@@ -543,7 +530,7 @@ soil_emissions <- calc_emissions_soil(
   boundaries = boundaries
 )
 
-print(soil_emissions)
+soil_emissions
 #> $source
 #> [1] "soil"
 #> 
@@ -655,7 +642,6 @@ print(soil_emissions)
 #### Energy-Related Emissions
 
 ``` r
-# Calculate emissions from energy use
 energy_emissions <- calc_emissions_energy(
   diesel_l = energy_data$diesel_litres,
   petrol_l = energy_data$petrol_litres,
@@ -663,11 +649,11 @@ energy_emissions <- calc_emissions_energy(
   natural_gas_m3 = energy_data$natural_gas_m3,
   electricity_kwh = energy_data$electricity_kwh,
   country = energy_data$country,
-  include_upstream = FALSE,  # Only direct emissions
+  include_upstream = FALSE,
   boundaries = boundaries
 )
 
-print(energy_emissions)
+energy_emissions
 #> $source
 #> [1] "energy"
 #> 
@@ -760,7 +746,6 @@ print(energy_emissions)
 #### Purchased Input Emissions
 
 ``` r
-# Calculate emissions from purchased inputs
 input_emissions <- calc_emissions_inputs(
   conc_kg = feed_data$concentrate_kg,
   fert_n_kg = land_data$n_fertilizer_synthetic,
@@ -777,7 +762,7 @@ input_emissions <- calc_emissions_inputs(
   boundaries = boundaries
 )
 
-print(input_emissions)
+input_emissions
 #> $source
 #> [1] "inputs"
 #> 
@@ -987,18 +972,15 @@ print(input_emissions)
 #> [1] "2025-12-30"
 ```
 
-### Step 4: Total Emissions and Analysis
+### Step 4: Total emissions and hotspot analysis
 
-#### Aggregate All Emission Sources
+**Purpose**. calc_total_emissions() aggregates multiple sources into a
+single result and provides a breakdown that is convenient for reporting
+and visualization.
 
 ``` r
-# Create combined enteric emissions object
-enteric_combined <- list(
-  source = "enteric",
-  co2eq_kg = total_enteric
-)
+enteric_combined <- list(source = "enteric", co2eq_kg = total_enteric)
 
-# Calculate total emissions
 total_emissions <- calc_total_emissions(
   enteric_combined,
   manure_emissions,
@@ -1023,42 +1005,43 @@ total_emissions
 #> Calculated on: 2025-12-30
 ```
 
-#### Visualize Emission Sources
+#### Visualize emission sources (bar chart)
 
 ``` r
-# Create detailed breakdown
 emission_breakdown <- data.frame(
   Source = names(total_emissions$breakdown),
   Emissions = as.numeric(total_emissions$breakdown),
-  Percentage = round(as.numeric(total_emissions$breakdown) / 
-                    total_emissions$total_co2eq * 100, 1)
+  Percentage = round(as.numeric(total_emissions$breakdown) / total_emissions$total_co2eq * 100, 1)
 )
 
-# Create bar chart
 ggplot(emission_breakdown, aes(x = reorder(Source, Emissions), y = Emissions)) +
-  geom_col(fill = "steelblue", alpha = 0.8) +
-  geom_text(aes(label = paste0(Percentage, "%")), 
-            hjust = -0.1, size = 3) +
+  geom_col(alpha = 0.8) +
+  geom_text(aes(label = paste0(Percentage, "%")), hjust = -0.1, size = 3) +
   coord_flip() +
-  labs(title = "Farm Emissions by Source",
-       subtitle = paste("Total:", format(round(total_emissions$total_co2eq), 
-                         big.mark = ","), "kg CO₂eq/year"),
-       x = "Emission Source",
-       y = "Emissions (kg CO₂eq/year)") +
+  labs(
+    title = "Farm emissions by source",
+    subtitle = paste("Total:", format(round(total_emissions$total_co2eq), big.mark = ","), "kg CO₂eq/year"),
+    x = "Emission source",
+    y = "Emissions (kg CO₂eq/year)"
+  ) +
   theme_minimal() +
   theme(plot.title = element_text(size = 14, hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5))
 ```
 
-![Figura generada por la viñeta; ver texto para
-detalles.](Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-13-1.png)
+![Horizontal bar chart showing total farm emissions by source (enteric,
+manure, soil, energy, inputs) and each source's percentage of total
+CO2eq.](Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-14-1.png)
 
-### Step 5: Intensity Calculations
+### Step 5: Intensity calculations
 
-#### Milk Intensity
+**Purpose**. Intensity metrics normalize total emissions by production
+(milk) and land use (area). These are useful for comparison across farms
+and across scenarios, but should always be interpreted in context.
+
+#### Milk Intensity (kg CO₂eq per kg FPCM)
 
 ``` r
-# Calculate emissions per kg of FPCM
 milk_intensity <- calc_intensity_litre(
   total_emissions = total_emissions,
   milk_litres = herd_data$annual_milk_litres,
@@ -1067,7 +1050,7 @@ milk_intensity <- calc_intensity_litre(
   milk_density = herd_data$milk_density
 )
 
-print(milk_intensity)
+milk_intensity
 #> Carbon Footprint Intensity
 #> ==========================
 #> Intensity: 1.684 kg CO2eq/kg FPCM
@@ -1083,10 +1066,9 @@ print(milk_intensity)
 #> Calculated on: 2025-12-30
 ```
 
-#### Area Intensity
+#### Area Intensity (kg CO₂eq per ha)
 
 ``` r
-# Calculate emissions per hectare
 area_breakdown <- list(
   pasture_permanent = land_data$pasture_permanent,
   pasture_temporary = land_data$pasture_temporary,
@@ -1104,7 +1086,7 @@ area_intensity <- calc_intensity_area(
   validate_area_sum = TRUE
 )
 
-print(area_intensity)
+area_intensity
 #> Carbon Footprint Area Intensity
 #> ===============================
 #> Intensity (total area): 7951.47 kg CO2eq/ha
@@ -1127,16 +1109,18 @@ print(area_intensity)
 #> Calculated on: 2025-12-30
 ```
 
-#### Benchmarking Against Regional Standards
+#### Benchmarking (interpretation note)
+
+Benchmark values should be treated as indicative guidance and may vary
+by production system, region, and data quality.
 
 ``` r
-# Benchmark against Uruguayan standards
 area_benchmark <- benchmark_area_intensity(
   cf_area_intensity = area_intensity,
   region = "uruguay"
 )
 
-print(area_benchmark$benchmarking)
+area_benchmark$benchmarking
 #> $region
 #> [1] "uruguay"
 #> 
@@ -1156,84 +1140,16 @@ print(area_benchmark$benchmarking)
 #> [1] "Above average (above typical range)"
 ```
 
-### Step 6: Detailed Results Analysis
+### Step 6: Scenario analysis (example)
 
-#### Per-Animal Emissions
+**Purpose**. Scenario comparisons help explore mitigation options by
+changing one driver at a time while keeping the rest constant.
 
-``` r
-# Calculate emissions per animal category
-per_animal_analysis <- data.frame(
-  Category = c("Dairy Cows", "All Animals"),
-  Number = c(150, total_animals),
-  Total_Emissions = c(total_emissions$total_co2eq, total_emissions$total_co2eq),
-  Emissions_per_Head = c(
-    total_emissions$total_co2eq / 150,
-    total_emissions$total_co2eq / total_animals
-  ),
-  Milk_per_Head = c(herd_data$annual_milk_litres / 150, NA)
-)
-
-kable(per_animal_analysis, 
-      digits = 0,
-      caption = "Per-Animal Emission Analysis")
-```
-
-| Category    | Number | Total_Emissions | Emissions_per_Head | Milk_per_Head |
-|:------------|-------:|----------------:|-------------------:|--------------:|
-| Dairy Cows  |    150 |         1590294 |              10602 |          6333 |
-| All Animals |    233 |         1590294 |               6825 |            NA |
-
-Per-Animal Emission Analysis
-
-#### Feed Efficiency Analysis
+**Scenario 1: Improved feed efficiency (10% reduction in concentrate)**
 
 ``` r
-# Calculate feed-related metrics
-total_purchased_feed <- sum(
-  feed_data$concentrate_kg,
-  feed_data$grain_dry_kg,
-  feed_data$grain_wet_kg,
-  feed_data$ration_kg,
-  feed_data$byproducts_kg,
-  feed_data$proteins_kg
-)
-
-feed_analysis <- data.frame(
-  Metric = c("Total Feed Purchases", "Feed Emissions", "Feed CO2eq per kg DM",
-             "Feed Efficiency", "Milk from Feed"),
-  Value = c(
-    total_purchased_feed,
-    input_emissions$total_co2eq_kg,
-    input_emissions$total_co2eq_kg / total_purchased_feed,
-    herd_data$annual_milk_litres / total_purchased_feed,
-    herd_data$annual_milk_litres
-  ),
-  Unit = c("kg DM", "kg CO₂eq", "kg CO₂eq/kg DM", "L milk/kg DM", "L")
-)
-
-kable(feed_analysis, digits = 2, caption = "Feed Efficiency Analysis")
-```
-
-| Metric               |     Value | Unit           |
-|:---------------------|----------:|:---------------|
-| Total Feed Purchases | 465000.00 | kg DM          |
-| Feed Emissions       | 324795.00 | kg CO₂eq       |
-| Feed CO2eq per kg DM |      0.70 | kg CO₂eq/kg DM |
-| Feed Efficiency      |      2.04 | L milk/kg DM   |
-| Milk from Feed       | 950000.00 | L              |
-
-Feed Efficiency Analysis
-
-### Step 7: Mitigation Scenario Analysis
-
-Let’s analyze potential mitigation strategies:
-
-#### Scenario 1: Improved Feed Efficiency
-
-``` r
-# Scenario: 10% reduction in concentrate use with maintained production
 improved_inputs <- calc_emissions_inputs(
-  conc_kg = feed_data$concentrate_kg * 0.9,  # 10% reduction
+  conc_kg = feed_data$concentrate_kg * 0.9,
   fert_n_kg = land_data$n_fertilizer_synthetic,
   plastic_kg = other_inputs$plastic_kg,
   feed_grain_dry_kg = feed_data$grain_dry_kg,
@@ -1248,7 +1164,6 @@ improved_inputs <- calc_emissions_inputs(
   boundaries = boundaries
 )
 
-# Calculate total for improved scenario
 total_improved <- calc_total_emissions(
   enteric_combined,
   manure_emissions,
@@ -1257,25 +1172,25 @@ total_improved <- calc_total_emissions(
   improved_inputs
 )
 
-# Compare scenarios
 scenario_comparison <- data.frame(
   Scenario = c("Baseline", "Improved Feed Efficiency"),
   Total_Emissions = c(total_emissions$total_co2eq, total_improved$total_co2eq),
-  Input_Emissions = c(input_emissions$total_co2eq_kg, improved_inputs$total_co2eq_kg),
   Reduction_kg = c(0, total_emissions$total_co2eq - total_improved$total_co2eq),
-  Reduction_percent = c(0, round((total_emissions$total_co2eq - total_improved$total_co2eq) / 
-                               total_emissions$total_co2eq * 100, 1))
+  Reduction_percent = c(
+    0,
+    round((total_emissions$total_co2eq - total_improved$total_co2eq) / total_emissions$total_co2eq * 100, 1)
+  )
 )
 
-kable(scenario_comparison, caption = "Mitigation Scenario Analysis")
+kable(scenario_comparison, caption = "Mitigation scenario analysis (illustrative)")
 ```
 
-| Scenario                 | Total_Emissions | Input_Emissions | Reduction_kg | Reduction_percent |
-|:-------------------------|----------------:|----------------:|-------------:|------------------:|
-| Baseline                 |         1590294 |          324795 |            0 |                 0 |
-| Improved Feed Efficiency |         1574630 |          309131 |        15664 |                 1 |
+| Scenario                 | Total_Emissions | Reduction_kg | Reduction_percent |
+|:-------------------------|----------------:|-------------:|------------------:|
+| Baseline                 |         1590294 |            0 |                 0 |
+| Improved Feed Efficiency |         1574630 |        15664 |                 1 |
 
-Mitigation Scenario Analysis
+Mitigation scenario analysis (illustrative)
 
 #### Scenario 2: Enhanced Manure Management
 
@@ -1321,12 +1236,24 @@ kable(manure_comparison, caption = "Manure Management Comparison")
 
 Manure Management Comparison
 
-### Step 8: Comprehensive Results Visualization
+### Step 7: Two complementary visual summaries
 
-#### Multi-Source Emissions Chart
+This vignette includes two visual summaries on purpose:
+
+1.  **Farm emissions by source (bar chart)** uses
+    `total_emissions$breakdown`, i.e., the aggregation returned by
+    [`calc_total_emissions()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_total_emissions.md).
+2.  **Multi-source breakdown (stacked bar)** is a more detailed view
+    that splits enteric emissions into cows vs. young stock and keeps
+    other sources as separate blocks.
+
+These charts answer different questions: the first highlights the
+hotspot categories in the official aggregation; the second gives a more
+granular interpretation for communication.
+
+**Multi-source emissions chart (stacked bar)**
 
 ``` r
-# Prepare data for comprehensive visualization
 detailed_emissions <- data.frame(
   Source = c("Enteric - Cows", "Enteric - Young Stock", "Manure Management",
              "Soil N2O", "Energy Use", "Purchased Inputs"),
@@ -1337,45 +1264,45 @@ detailed_emissions <- data.frame(
     soil_emissions$co2eq_kg,
     energy_emissions$co2eq_kg,
     input_emissions$total_co2eq_kg
-  ),
-  Category = c("Enteric", "Enteric", "Manure", "Soil", "Energy", "Inputs")
+  )
 )
 
-# Create stacked bar chart
-ggplot(detailed_emissions, aes(x = "Farm Emissions", y = Emissions, fill = Source)) +
+ggplot(detailed_emissions, aes(x = "Farm emissions", y = Emissions, fill = Source)) +
   geom_col() +
-  geom_text(aes(label = ifelse(Emissions > 2000, 
-                              paste0(round(Emissions/1000, 1), "k"), "")),
-            position = position_stack(vjust = 0.5),
-            color = "white", fontweight = "bold") +
-  labs(title = "Estancia Las Flores - Carbon Footprint Breakdown",
-       subtitle = paste("Total:", format(round(total_emissions$total_co2eq), 
-                       big.mark = ","), "kg CO₂eq/year"),
-       x = "",
-       y = "Emissions (kg CO₂eq/year)") +
+  labs(
+    title = "Single farm carbon footprint breakdown (detailed view)",
+    subtitle = paste("Total:", format(round(total_emissions$total_co2eq), big.mark = ","), "kg CO₂eq/year"),
+    x = "",
+    y = "Emissions (kg CO₂eq/year)"
+  ) +
   theme_minimal() +
   theme(plot.title = element_text(size = 14, hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5),
         axis.text.x = element_blank(),
-        legend.position = "right") +
-  scale_fill_brewer(type = "qual", palette = "Set2")
+        legend.position = "right")
 ```
 
-![Figura generada por la viñeta; ver texto para
-detalles.](Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-21-1.png)
+![Stacked bar chart with a detailed breakdown of farm emissions,
+splitting enteric emissions into cows vs young stock, plus manure, soil,
+energy, and purchased
+inputs.](Single_Farm_Analysis_cowfootR_files/figure-html/unnamed-chunk-20-1.png)
 
-#### Intensity Metrics Dashboard
+### Step 8: Summary table (KPI-style)
+
+**Purpose**. This table provides a compact summary of key metrics for
+reporting. At the moment, we build it explicitly as a data.frame to keep
+the workflow transparent; a dedicated helper function could be added in
+future versions if needed.
 
 ``` r
-# Calculate key performance indicators
 kpi_summary <- data.frame(
   Metric = c(
-    "Milk Intensity (kg CO₂eq/kg FPCM)",
-    "Area Intensity - Total (kg CO₂eq/ha)",
-    "Area Intensity - Productive (kg CO₂eq/ha)",
-    "Land Use Efficiency (%)",
-    "Milk Yield (L/cow/year)",
-    "Stocking Rate (cows/ha)"
+    "Milk intensity (kg CO₂eq/kg FPCM)",
+    "Area intensity - total (kg CO₂eq/ha)",
+    "Area intensity - productive (kg CO₂eq/ha)",
+    "Land use efficiency (%)",
+    "Milk yield (L/cow/year)",
+    "Stocking rate (cows/ha)"
   ),
   Value = c(
     round(milk_intensity$intensity_co2eq_per_kg_fpcm, 3),
@@ -1384,57 +1311,36 @@ kpi_summary <- data.frame(
     round(area_intensity$land_use_efficiency * 100, 1),
     round(herd_data$annual_milk_litres / 150, 0),
     round(150 / land_data$area_total, 2)
-  ),
-  Benchmark = c("< 1.2", "< 8,000", "< 8,500", "> 85%", "> 6,000", "0.5-1.2"),
-  Performance = c(
-    ifelse(milk_intensity$intensity_co2eq_per_kg_fpcm < 1.2, "Good", "Needs Improvement"),
-    ifelse(area_intensity$intensity_per_total_ha < 8000, "Good", "Needs Improvement"),
-    ifelse(area_intensity$intensity_per_productive_ha < 8500, "Good", "Needs Improvement"),
-    ifelse(area_intensity$land_use_efficiency > 0.85, "Good", "Needs Improvement"),
-    ifelse(herd_data$annual_milk_litres / 150 > 6000, "Good", "Needs Improvement"),
-    "Within Range"
   )
 )
 
-kable(kpi_summary, caption = "Key Performance Indicators")
+kable(kpi_summary, caption = "Key performance indicators (illustrative)")
 ```
 
-| Metric                                    |    Value | Benchmark | Performance       |
-|:------------------------------------------|---------:|:----------|:------------------|
-| Milk Intensity (kg CO₂eq/kg FPCM)         |    1.684 | \< 1.2    | Needs Improvement |
-| Area Intensity - Total (kg CO₂eq/ha)      | 7951.000 | \< 8,000  | Good              |
-| Area Intensity - Productive (kg CO₂eq/ha) | 8596.000 | \< 8,500  | Needs Improvement |
-| Land Use Efficiency (%)                   |   92.500 | \> 85%    | Good              |
-| Milk Yield (L/cow/year)                   | 6333.000 | \> 6,000  | Good              |
-| Stocking Rate (cows/ha)                   |    0.750 | 0.5-1.2   | Within Range      |
+| Metric                                    |    Value |
+|:------------------------------------------|---------:|
+| Milk intensity (kg CO₂eq/kg FPCM)         |    1.684 |
+| Area intensity - total (kg CO₂eq/ha)      | 7951.000 |
+| Area intensity - productive (kg CO₂eq/ha) | 8596.000 |
+| Land use efficiency (%)                   |   92.500 |
+| Milk yield (L/cow/year)                   | 6333.000 |
+| Stocking rate (cows/ha)                   |    0.750 |
 
-Key Performance Indicators
+Key performance indicators (illustrative)
 
 ### Conclusion
 
-This detailed single-farm analysis demonstrates the comprehensive
-capabilities of cowfootR for dairy farm carbon footprint assessment. The
-modular approach allows for detailed investigation of each emission
-source while maintaining consistency with international standards.
+This vignette demonstrated a complete single-farm workflow:
 
-Key takeaways from this analysis:
+- define boundaries
+- provide farm inputs
+- compute emissions by source
+- aggregate totals and identify hotspots
+- calculate intensity metrics
+- explore simple mitigation scenarios
+- summarize results with figures and a KPI table
 
-- **Systematic approach**: Following the step-by-step methodology
-  ensures completeness and accuracy
-- **Data quality matters**: More detailed farm-specific data leads to
-  more accurate results
-- **Benchmarking provides context**: Comparing results against regional
-  standards helps identify improvement opportunities
-- **Scenario analysis**: Testing mitigation strategies helps prioritize
-  actions
-- **Uncertainty awareness**: Understanding data limitations guides
-  decision-making
-
-For processing multiple farms simultaneously, see the “Batch Farm
-Assessment” vignette. For methodology details, consult the “IPCC Tier
-Comparison” vignette.
-
-------------------------------------------------------------------------
+### For multi-farm processing, see the Batch Farm Assessment vignette.
 
 *This analysis used cowfootR version 0.1.1 following IDF 2022 and IPCC
 2019 standards.*
