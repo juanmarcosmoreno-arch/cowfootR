@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Introduction_to_Dairy_LCA_cowfootR • cowfootR</title>
+<title>Introduction to Dairy Life Cycle Assessment with cowfootR • cowfootR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction_to_Dairy_LCA_cowfootR">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to Dairy Life Cycle Assessment with cowfootR">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -39,7 +39,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Complete_Parameter_Reference_Guide.html">Complete_Parameter_Reference_Guide</a></li>
-    <li><a class="dropdown-item" href="../articles/Introduction_to_Dairy_LCA_cowfootR.html">Introduction_to_Dairy_LCA_cowfootR</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction_to_Dairy_LCA_cowfootR.html">Introduction to Dairy Life Cycle Assessment with cowfootR</a></li>
     <li><a class="dropdown-item" href="../articles/IPCC_Methodology_Tiers_cowfootR.html">IPCC_Methodology_Tiers_cowfootR</a></li>
     <li><a class="dropdown-item" href="../articles/Single_Farm_Analysis_cowfootR.html">Single_Farm_Analysis_cowfootR</a></li>
     <li><a class="dropdown-item" href="../articles/workflow.html">cowfootR Workflow</a></li>
@@ -65,7 +65,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Introduction_to_Dairy_LCA_cowfootR</h1>
+      <h1>Introduction to Dairy Life Cycle Assessment with cowfootR</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/juanmarcosmoreno-arch/cowfootR/blob/main/vignettes/Introduction_to_Dairy_LCA_cowfootR.Rmd" class="external-link"><code>vignettes/Introduction_to_Dairy_LCA_cowfootR.Rmd</code></a></small>
@@ -89,6 +89,19 @@ mitigation.</p>
 toolkit for calculating dairy farm carbon footprints following
 internationally recognized standards, specifically the International
 Dairy Federation (IDF) 2022 guidelines and IPCC 2019 methodologies.</p>
+</div>
+<div class="section level3">
+<h3 id="how-to-use-this-vignette">How to Use This Vignette<a class="anchor" aria-label="anchor" href="#how-to-use-this-vignette"></a>
+</h3>
+<p>This vignette is designed as a step-by-step tutorial for new users of
+<strong>cowfootR</strong>. It introduces the concepts of dairy life
+cycle assessment (LCA) and demonstrates how to calculate greenhouse gas
+emissions for a single farm.</p>
+<p>You can: - Read it sequentially as a guided example, or - Jump
+directly to the sections of interest (e.g., emissions, intensities, or
+visualization).</p>
+<p>All examples use simplified, hypothetical data intended for learning
+purposes.</p>
 </div>
 <div class="section level3">
 <h3 id="theoretical-background">Theoretical Background<a class="anchor" aria-label="anchor" href="#theoretical-background"></a>
@@ -175,6 +188,20 @@ CO₂eq per year</li>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/juanmarcosmoreno-arch/cowfootR" class="external-link">cowfootR</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
+<h4 id="input-data-structure">Input Data Structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
+</h4>
+<p>Most <code>cowfootR</code> functions expect farm information either
+as: - Individual numeric arguments (e.g. number of animals, litres of
+milk), or - A structured list containing farm characteristics.</p>
+<p>In this vignette, we use a simple list (<code>farm_data</code>) to
+keep all farm-related information together. This approach improves
+readability and makes it easier to reuse the same data across multiple
+calculation steps.</p>
+<p>Most emission functions return a <strong>list</strong> containing: -
+Total emissions for that source (kg CO₂eq) - A breakdown by gas or
+process - Metadata describing the calculation method</p>
+</div>
+<div class="section level4">
 <h4 id="basic-workflow">Basic Workflow<a class="anchor" aria-label="anchor" href="#basic-workflow"></a>
 </h4>
 <p>The typical cowfootR workflow involves four main steps:</p>
@@ -184,6 +211,39 @@ CO₂eq per year</li>
 <li><strong>Aggregate total emissions</strong></li>
 <li><strong>Calculate intensity metrics</strong></li>
 </ol>
+</div>
+</div>
+<div class="section level3">
+<h3 id="data-requirements-required-vs-optional">Data Requirements: Required vs Optional<a class="anchor" aria-label="anchor" href="#data-requirements-required-vs-optional"></a>
+</h3>
+<div class="section level4">
+<h4 id="required-data">Required Data<a class="anchor" aria-label="anchor" href="#required-data"></a>
+</h4>
+<p>The following information is required to run the core cowfootR
+functions and perform a basic farm-level carbon footprint
+assessment:</p>
+<ul>
+<li>Herd size and composition</li>
+<li>Annual milk production</li>
+<li>Total farm area</li>
+<li>Major nitrogen inputs (fertilizer or excreta)</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="optional-but-recommended-data">Optional but Recommended Data<a class="anchor" aria-label="anchor" href="#optional-but-recommended-data"></a>
+</h4>
+<p>Providing additional farm-specific information improves the accuracy
+and interpretability of results:</p>
+<ul>
+<li>Detailed feed quantities and composition</li>
+<li>Animal productivity parameters (e.g. milk yield per cow)</li>
+<li>Energy use disaggregated by source</li>
+<li>Soil type and climate characteristics</li>
+<li>Allocation of land use by category</li>
+</ul>
+<p>If some optional data are not available, cowfootR applies default
+values based on IPCC and IDF guidance. However, users are encouraged to
+provide farm-specific data whenever possible.</p>
 <p>Let’s walk through a simple example:</p>
 </div>
 </div>
@@ -196,7 +256,7 @@ CO₂eq per year</li>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define farm-gate boundaries (most common approach)</span></span>
 <span><span class="va">boundaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"farm_gate"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">boundaries</span><span class="op">)</span></span>
+<span><span class="va">boundaries</span></span>
 <span><span class="co">#&gt; $scope</span></span>
 <span><span class="co">#&gt; [1] "farm_gate"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -230,7 +290,7 @@ CO₂eq per year</li>
 <span>  electricity_kwh <span class="op">=</span> <span class="fl">35000</span>   <span class="co"># Annual electricity use</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">farm_data</span><span class="op">)</span></span>
+<span><span class="va">farm_data</span></span>
 <span><span class="co">#&gt; $dairy_cows</span></span>
 <span><span class="co">#&gt; [1] 100</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -272,6 +332,12 @@ calculation functions:</p>
 <div class="section level5">
 <h5 id="enteric-fermentation">Enteric Fermentation<a class="anchor" aria-label="anchor" href="#enteric-fermentation"></a>
 </h5>
+<p>Enteric fermentation is typically the largest source of emissions in
+dairy systems. The function <code><a href="../reference/calc_emissions_enteric.html">calc_emissions_enteric()</a></code>
+estimates methane emissions from ruminal fermentation based on animal
+numbers, productivity, and the selected IPCC Tier.</p>
+<p>In this example, we use Tier 2 to incorporate milk yield into the
+calculation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate enteric methane emissions</span></span>
 <span><span class="va">enteric_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_enteric.html">calc_emissions_enteric</a></span><span class="op">(</span></span>
@@ -282,7 +348,7 @@ calculation functions:</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">enteric_emissions</span><span class="op">)</span></span>
+<span><span class="va">enteric_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "enteric"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -354,6 +420,13 @@ calculation functions:</p>
 <div class="section level5">
 <h5 id="manure-management">Manure Management<a class="anchor" aria-label="anchor" href="#manure-management"></a>
 </h5>
+<p>Manure management emissions include both methane (CH₄) and nitrous
+oxide (N₂O) released during manure storage, handling, and application.
+The function <code><a href="../reference/calc_emissions_manure.html">calc_emissions_manure()</a></code> estimates these
+emissions based on the number of animals, manure management system, and
+the selected IPCC Tier.</p>
+<p>Here, a pasture-based manure system is assumed, which is common in
+extensive and mixed dairy systems.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate manure management emissions</span></span>
 <span><span class="va">manure_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_manure.html">calc_emissions_manure</a></span><span class="op">(</span></span>
@@ -364,7 +437,7 @@ calculation functions:</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">manure_emissions</span><span class="op">)</span></span>
+<span><span class="va">manure_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "manure"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -459,6 +532,13 @@ calculation functions:</p>
 <div class="section level5">
 <h5 id="soil-emissions">Soil Emissions<a class="anchor" aria-label="anchor" href="#soil-emissions"></a>
 </h5>
+<p>Soil-related emissions are mainly associated with nitrous oxide (N₂O)
+released from nitrogen inputs to agricultural soils. The function
+<code><a href="../reference/calc_emissions_soil.html">calc_emissions_soil()</a></code> estimates direct and indirect soil
+N₂O emissions resulting from synthetic fertilizers and animal excreta
+deposited on pasture.</p>
+<p>This example uses generalized assumptions for soil type and climate,
+which can be refined when site-specific information is available.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate soil N2O emissions</span></span>
 <span><span class="va">soil_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_soil.html">calc_emissions_soil</a></span><span class="op">(</span></span>
@@ -471,7 +551,7 @@ calculation functions:</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">soil_emissions</span><span class="op">)</span></span>
+<span><span class="va">soil_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "soil"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -582,6 +662,13 @@ calculation functions:</p>
 <div class="section level5">
 <h5 id="energy-use">Energy Use<a class="anchor" aria-label="anchor" href="#energy-use"></a>
 </h5>
+<p>Energy-related emissions originate from the combustion of fossil
+fuels and the use of electricity on the farm. The function
+<code><a href="../reference/calc_emissions_energy.html">calc_emissions_energy()</a></code> estimates carbon dioxide (CO₂)
+emissions from diesel and electricity consumption, using country- or
+region-specific emission factors when available.</p>
+<p>In this example, electricity emissions are calculated using national
+grid factors for Uruguay.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate energy-related emissions</span></span>
 <span><span class="va">energy_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_energy.html">calc_emissions_energy</a></span><span class="op">(</span></span>
@@ -591,7 +678,7 @@ calculation functions:</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">energy_emissions</span><span class="op">)</span></span>
+<span><span class="va">energy_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "energy"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -683,6 +770,12 @@ calculation functions:</p>
 <div class="section level5">
 <h5 id="purchased-inputs">Purchased Inputs<a class="anchor" aria-label="anchor" href="#purchased-inputs"></a>
 </h5>
+<p>Purchased inputs include emissions embodied in externally produced
+goods such as concentrates, fertilizers, and other materials used on the
+farm. The function <code><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs()</a></code> accounts for
+these upstream emissions using average emission factors.</p>
+<p>This component is particularly relevant when system boundaries extend
+beyond the farm gate to include upstream processes.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate emissions from purchased inputs</span></span>
 <span><span class="va">input_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs</a></span><span class="op">(</span></span>
@@ -692,7 +785,7 @@ calculation functions:</p>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">input_emissions</span><span class="op">)</span></span>
+<span><span class="va">input_emissions</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "inputs"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -905,6 +998,11 @@ calculation functions:</p>
 <div class="section level4">
 <h4 id="step-4-aggregate-total-emissions">Step 4: Aggregate Total Emissions<a class="anchor" aria-label="anchor" href="#step-4-aggregate-total-emissions"></a>
 </h4>
+<p>After calculating emissions for each individual source, the function
+<code><a href="../reference/calc_total_emissions.html">calc_total_emissions()</a></code> aggregates all components into a
+single result. The output includes total farm emissions and a breakdown
+by source, which is useful for identifying the main contributors to the
+carbon footprint.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine all emission sources</span></span>
 <span><span class="va">total_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_total_emissions.html">calc_total_emissions</a></span><span class="op">(</span></span>
@@ -933,6 +1031,10 @@ calculation functions:</p>
 <div class="section level4">
 <h4 id="step-5-calculate-intensity-metrics">Step 5: Calculate Intensity Metrics<a class="anchor" aria-label="anchor" href="#step-5-calculate-intensity-metrics"></a>
 </h4>
+<p>While absolute emissions provide information on the total
+environmental impact of a farm, intensity metrics relate emissions to
+production or land use. These metrics allow comparisons between farms of
+different sizes or production levels.</p>
 <div class="section level5">
 <h5 id="milk-intensity">Milk Intensity<a class="anchor" aria-label="anchor" href="#milk-intensity"></a>
 </h5>
@@ -945,7 +1047,7 @@ calculation functions:</p>
 <span>  protein <span class="op">=</span> <span class="fl">3.2</span>   <span class="co"># Typical protein content</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">milk_intensity</span><span class="op">)</span></span>
+<span><span class="va">milk_intensity</span></span>
 <span><span class="co">#&gt; Carbon Footprint Intensity</span></span>
 <span><span class="co">#&gt; ==========================</span></span>
 <span><span class="co">#&gt; Intensity: 1.08 kg CO2eq/kg FPCM</span></span>
@@ -977,7 +1079,7 @@ calculation functions:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">)</span></span>
+<span><span class="va">area_intensity</span></span>
 <span><span class="co">#&gt; Carbon Footprint Area Intensity</span></span>
 <span><span class="co">#&gt; ===============================</span></span>
 <span><span class="co">#&gt; Intensity (total area): 5382.9 kg CO2eq/ha</span></span>
@@ -1002,6 +1104,17 @@ calculation functions:</p>
 <div class="section level3">
 <h3 id="visualizing-results">Visualizing Results<a class="anchor" aria-label="anchor" href="#visualizing-results"></a>
 </h3>
+<p>The primary goal of <strong>cowfootR</strong> is to calculate
+greenhouse gas emissions and intensity metrics following standardized
+methodologies. The package does not aim to provide a comprehensive
+visualization framework.</p>
+<p>Instead, cowfootR outputs are designed to be easily extracted and
+converted into standard R objects (such as numeric vectors, lists, or
+data frames), which can then be visualized using external packages like
+<strong>ggplot2</strong>.</p>
+<p>The examples below illustrate how users can manually transform
+cowfootR results into data frames for exploratory visualization and
+reporting.</p>
 <div class="section level4">
 <h4 id="emission-source-breakdown">Emission Source Breakdown<a class="anchor" aria-label="anchor" href="#emission-source-breakdown"></a>
 </h4>
@@ -1087,19 +1200,6 @@ FPCM</li>
 <strong>Poor performance</strong>: &gt; 2.0 kg CO₂eq/kg FPCM</li>
 </ul>
 </div>
-</div>
-<div class="section level3">
-<h3 id="data-quality-considerations">Data Quality Considerations<a class="anchor" aria-label="anchor" href="#data-quality-considerations"></a>
-</h3>
-<div class="section level4">
-<h4 id="required-vs-optional-data">Required vs Optional Data<a class="anchor" aria-label="anchor" href="#required-vs-optional-data"></a>
-</h4>
-<p><strong>Essential data:</strong> - Herd size and composition - Milk
-production - Farm area - Major input quantities</p>
-<p><strong>Optional but recommended:</strong> - Detailed feed
-composition - Animal weights and productivity - Energy breakdown by use
-- Soil and climate characteristics</p>
-</div>
 <div class="section level4">
 <h4 id="common-issues">Common Issues<a class="anchor" aria-label="anchor" href="#common-issues"></a>
 </h4>
@@ -1122,26 +1222,27 @@ comparisons</li>
 <div class="section level3">
 <h3 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h3>
-<p>This introduction covered the basics of using cowfootR for single
-farm assessments. For more advanced topics, see:</p>
+<p>This vignette introduced the basic concepts of dairy life cycle
+assessment and demonstrated a complete single-farm workflow using
+<strong>cowfootR</strong>.</p>
+<p>To continue exploring the package, users may refer to the following
+vignettes and functions:</p>
 <ul>
-<li>
-<strong>Single Farm Analysis</strong>: Detailed exploration of
-individual calculation functions</li>
-<li>
-<strong>Batch Farm Assessment</strong>: Processing multiple farms
-simultaneously</li>
-<li>
-<strong>Methodology Comparison</strong>: Understanding Tier 1 vs
-Tier 2 approaches</li>
-<li>
-<strong>Regional Factors</strong>: Using location-specific emission
-factors</li>
+<li><p><strong>Single Farm Analysis</strong><br>
+A detailed walkthrough of individual emission calculation functions
+(<code>calc_emissions_*()</code>), including assumptions and optional
+arguments.</p></li>
+<li><p><strong>Batch Processing Workflow</strong><br>
+How to process multiple farms simultaneously using structured input data
+and Excel templates.</p></li>
+<li><p><strong>Understanding IPCC Methodology Tiers</strong><br>
+Guidance on choosing between Tier 1 and Tier 2 approaches and
+understanding their implications for data requirements and
+accuracy.</p></li>
+<li><p><strong>Complete Parameter Reference Guide</strong><br>
+A comprehensive overview of all available functions, arguments, and
+default values used throughout the package. ## Key Takeaways</p></li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="key-takeaways">Key Takeaways<a class="anchor" aria-label="anchor" href="#key-takeaways"></a>
-</h3>
 <ol style="list-style-type: decimal">
 <li>
 <strong>cowfootR</strong> follows internationally recognized LCA

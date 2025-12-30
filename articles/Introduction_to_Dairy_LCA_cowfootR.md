@@ -1,4 +1,4 @@
-# Introduction_to_Dairy_LCA_cowfootR
+# Introduction to Dairy Life Cycle Assessment with cowfootR
 
 ## Introduction to Dairy Life Cycle Assessment
 
@@ -14,6 +14,20 @@ The **cowfootR** package provides a comprehensive toolkit for
 calculating dairy farm carbon footprints following internationally
 recognized standards, specifically the International Dairy Federation
 (IDF) 2022 guidelines and IPCC 2019 methodologies.
+
+### How to Use This Vignette
+
+This vignette is designed as a step-by-step tutorial for new users of
+**cowfootR**. It introduces the concepts of dairy life cycle assessment
+(LCA) and demonstrates how to calculate greenhouse gas emissions for a
+single farm.
+
+You can: - Read it sequentially as a guided example, or - Jump directly
+to the sections of interest (e.g., emissions, intensities, or
+visualization).
+
+All examples use simplified, hypothetical data intended for learning
+purposes.
 
 ### Theoretical Background
 
@@ -74,6 +88,21 @@ install.packages("cowfootR")
 library(cowfootR)
 ```
 
+#### Input Data Structure
+
+Most `cowfootR` functions expect farm information either as: -
+Individual numeric arguments (e.g. number of animals, litres of milk),
+or - A structured list containing farm characteristics.
+
+In this vignette, we use a simple list (`farm_data`) to keep all
+farm-related information together. This approach improves readability
+and makes it easier to reuse the same data across multiple calculation
+steps.
+
+Most emission functions return a **list** containing: - Total emissions
+for that source (kg CO₂eq) - A breakdown by gas or process - Metadata
+describing the calculation method
+
 #### Basic Workflow
 
 The typical cowfootR workflow involves four main steps:
@@ -82,6 +111,33 @@ The typical cowfootR workflow involves four main steps:
 2.  **Calculate emissions by source**
 3.  **Aggregate total emissions**
 4.  **Calculate intensity metrics**
+
+### Data Requirements: Required vs Optional
+
+#### Required Data
+
+The following information is required to run the core cowfootR functions
+and perform a basic farm-level carbon footprint assessment:
+
+- Herd size and composition
+- Annual milk production
+- Total farm area
+- Major nitrogen inputs (fertilizer or excreta)
+
+#### Optional but Recommended Data
+
+Providing additional farm-specific information improves the accuracy and
+interpretability of results:
+
+- Detailed feed quantities and composition
+- Animal productivity parameters (e.g. milk yield per cow)
+- Energy use disaggregated by source
+- Soil type and climate characteristics
+- Allocation of land use by category
+
+If some optional data are not available, cowfootR applies default values
+based on IPCC and IDF guidance. However, users are encouraged to provide
+farm-specific data whenever possible.
 
 Let’s walk through a simple example:
 
@@ -92,7 +148,7 @@ Let’s walk through a simple example:
 ``` r
 # Define farm-gate boundaries (most common approach)
 boundaries <- set_system_boundaries("farm_gate")
-print(boundaries)
+boundaries
 #> $scope
 #> [1] "farm_gate"
 #> 
@@ -127,7 +183,7 @@ farm_data <- list(
   electricity_kwh = 35000   # Annual electricity use
 )
 
-print(farm_data)
+farm_data
 #> $dairy_cows
 #> [1] 100
 #> 
@@ -169,6 +225,15 @@ calculation functions:
 
 ##### Enteric Fermentation
 
+Enteric fermentation is typically the largest source of emissions in
+dairy systems. The function
+[`calc_emissions_enteric()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_emissions_enteric.md)
+estimates methane emissions from ruminal fermentation based on animal
+numbers, productivity, and the selected IPCC Tier.
+
+In this example, we use Tier 2 to incorporate milk yield into the
+calculation.
+
 ``` r
 # Calculate enteric methane emissions
 enteric_emissions <- calc_emissions_enteric(
@@ -179,7 +244,7 @@ enteric_emissions <- calc_emissions_enteric(
   boundaries = boundaries
 )
 
-print(enteric_emissions)
+enteric_emissions
 #> $source
 #> [1] "enteric"
 #> 
@@ -251,6 +316,16 @@ print(enteric_emissions)
 
 ##### Manure Management
 
+Manure management emissions include both methane (CH₄) and nitrous oxide
+(N₂O) released during manure storage, handling, and application. The
+function
+[`calc_emissions_manure()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_emissions_manure.md)
+estimates these emissions based on the number of animals, manure
+management system, and the selected IPCC Tier.
+
+Here, a pasture-based manure system is assumed, which is common in
+extensive and mixed dairy systems.
+
 ``` r
 # Calculate manure management emissions
 manure_emissions <- calc_emissions_manure(
@@ -261,7 +336,7 @@ manure_emissions <- calc_emissions_manure(
   boundaries = boundaries
 )
 
-print(manure_emissions)
+manure_emissions
 #> $source
 #> [1] "manure"
 #> 
@@ -356,6 +431,15 @@ print(manure_emissions)
 
 ##### Soil Emissions
 
+Soil-related emissions are mainly associated with nitrous oxide (N₂O)
+released from nitrogen inputs to agricultural soils. The function
+[`calc_emissions_soil()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_emissions_soil.md)
+estimates direct and indirect soil N₂O emissions resulting from
+synthetic fertilizers and animal excreta deposited on pasture.
+
+This example uses generalized assumptions for soil type and climate,
+which can be refined when site-specific information is available.
+
 ``` r
 # Calculate soil N2O emissions
 soil_emissions <- calc_emissions_soil(
@@ -368,7 +452,7 @@ soil_emissions <- calc_emissions_soil(
   boundaries = boundaries
 )
 
-print(soil_emissions)
+soil_emissions
 #> $source
 #> [1] "soil"
 #> 
@@ -479,6 +563,16 @@ print(soil_emissions)
 
 ##### Energy Use
 
+Energy-related emissions originate from the combustion of fossil fuels
+and the use of electricity on the farm. The function
+[`calc_emissions_energy()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_emissions_energy.md)
+estimates carbon dioxide (CO₂) emissions from diesel and electricity
+consumption, using country- or region-specific emission factors when
+available.
+
+In this example, electricity emissions are calculated using national
+grid factors for Uruguay.
+
 ``` r
 # Calculate energy-related emissions
 energy_emissions <- calc_emissions_energy(
@@ -488,7 +582,7 @@ energy_emissions <- calc_emissions_energy(
   boundaries = boundaries
 )
 
-print(energy_emissions)
+energy_emissions
 #> $source
 #> [1] "energy"
 #> 
@@ -580,6 +674,15 @@ print(energy_emissions)
 
 ##### Purchased Inputs
 
+Purchased inputs include emissions embodied in externally produced goods
+such as concentrates, fertilizers, and other materials used on the farm.
+The function
+[`calc_emissions_inputs()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_emissions_inputs.md)
+accounts for these upstream emissions using average emission factors.
+
+This component is particularly relevant when system boundaries extend
+beyond the farm gate to include upstream processes.
+
 ``` r
 # Calculate emissions from purchased inputs
 input_emissions <- calc_emissions_inputs(
@@ -589,7 +692,7 @@ input_emissions <- calc_emissions_inputs(
   boundaries = boundaries
 )
 
-print(input_emissions)
+input_emissions
 #> $source
 #> [1] "inputs"
 #> 
@@ -801,6 +904,12 @@ print(input_emissions)
 
 #### Step 4: Aggregate Total Emissions
 
+After calculating emissions for each individual source, the function
+[`calc_total_emissions()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_total_emissions.md)
+aggregates all components into a single result. The output includes
+total farm emissions and a breakdown by source, which is useful for
+identifying the main contributors to the carbon footprint.
+
 ``` r
 # Combine all emission sources
 total_emissions <- calc_total_emissions(
@@ -829,6 +938,11 @@ total_emissions
 
 #### Step 5: Calculate Intensity Metrics
 
+While absolute emissions provide information on the total environmental
+impact of a farm, intensity metrics relate emissions to production or
+land use. These metrics allow comparisons between farms of different
+sizes or production levels.
+
 ##### Milk Intensity
 
 ``` r
@@ -840,7 +954,7 @@ milk_intensity <- calc_intensity_litre(
   protein = 3.2   # Typical protein content
 )
 
-print(milk_intensity)
+milk_intensity
 #> Carbon Footprint Intensity
 #> ==========================
 #> Intensity: 1.08 kg CO2eq/kg FPCM
@@ -872,7 +986,7 @@ area_intensity <- calc_intensity_area(
   )
 )
 
-print(area_intensity)
+area_intensity
 #> Carbon Footprint Area Intensity
 #> ===============================
 #> Intensity (total area): 5382.9 kg CO2eq/ha
@@ -894,6 +1008,19 @@ print(area_intensity)
 ```
 
 ### Visualizing Results
+
+The primary goal of **cowfootR** is to calculate greenhouse gas
+emissions and intensity metrics following standardized methodologies.
+The package does not aim to provide a comprehensive visualization
+framework.
+
+Instead, cowfootR outputs are designed to be easily extracted and
+converted into standard R objects (such as numeric vectors, lists, or
+data frames), which can then be visualized using external packages like
+**ggplot2**.
+
+The examples below illustrate how users can manually transform cowfootR
+results into data frames for exploratory visualization and reporting.
 
 #### Emission Source Breakdown
 
@@ -965,17 +1092,6 @@ benchmarks:
 - **Average performance**: 1.3-2.0 kg CO₂eq/kg FPCM
 - **Poor performance**: \> 2.0 kg CO₂eq/kg FPCM
 
-### Data Quality Considerations
-
-#### Required vs Optional Data
-
-**Essential data:** - Herd size and composition - Milk production - Farm
-area - Major input quantities
-
-**Optional but recommended:** - Detailed feed composition - Animal
-weights and productivity - Energy breakdown by use - Soil and climate
-characteristics
-
 #### Common Issues
 
 1.  **Missing data**: The package provides reasonable defaults, but
@@ -987,16 +1103,28 @@ characteristics
 
 ### Next Steps
 
-This introduction covered the basics of using cowfootR for single farm
-assessments. For more advanced topics, see:
+This vignette introduced the basic concepts of dairy life cycle
+assessment and demonstrated a complete single-farm workflow using
+**cowfootR**.
 
-- **Single Farm Analysis**: Detailed exploration of individual
-  calculation functions
-- **Batch Farm Assessment**: Processing multiple farms simultaneously
-- **Methodology Comparison**: Understanding Tier 1 vs Tier 2 approaches
-- **Regional Factors**: Using location-specific emission factors
+To continue exploring the package, users may refer to the following
+vignettes and functions:
 
-### Key Takeaways
+- **Single Farm Analysis**  
+  A detailed walkthrough of individual emission calculation functions
+  (`calc_emissions_*()`), including assumptions and optional arguments.
+
+- **Batch Processing Workflow**  
+  How to process multiple farms simultaneously using structured input
+  data and Excel templates.
+
+- **Understanding IPCC Methodology Tiers**  
+  Guidance on choosing between Tier 1 and Tier 2 approaches and
+  understanding their implications for data requirements and accuracy.
+
+- **Complete Parameter Reference Guide**  
+  A comprehensive overview of all available functions, arguments, and
+  default values used throughout the package. \## Key Takeaways
 
 1.  **cowfootR** follows internationally recognized LCA standards (IDF
     2022, IPCC 2019)
