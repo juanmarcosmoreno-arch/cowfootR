@@ -43,6 +43,6 @@ See our guide on [how to create a great issue](https://code-review.tidyverse.org
 
 ## Code of Conduct
 
-Please note that the cowfootR project is released with a
-[Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this
-project you agree to abide by its terms.
+Please note that the cowfootR project follows the rOpenSci Code of Conduct.
+By contributing to this project you agree to abide by its terms.
+The full Code of Conduct is available at: https://ropensci.org/code-of-conduct/
