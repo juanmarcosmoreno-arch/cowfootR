@@ -2,7 +2,7 @@
 title: "Complete_Parameter_Reference_Guide"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Complete_Parameter_Reference_Guide}
+  %\VignetteIndexEntry{04 - Complete Parameter Reference Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
