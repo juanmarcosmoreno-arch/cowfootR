@@ -179,7 +179,7 @@ calc_emissions_manure(n_cows = 120, manure_system = "liquid_storage")
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2025-11-10"
+#> [1] "2025-12-30"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -263,7 +263,7 @@ calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_ind
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2025-11-10"
+#> [1] "2025-12-30"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -351,7 +351,7 @@ calc_emissions_manure(
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2025-11-10"
+#> [1] "2025-12-30"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg

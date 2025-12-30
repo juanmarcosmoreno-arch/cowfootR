@@ -151,7 +151,7 @@ calc_emissions_enteric(n_animals = 100)
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2025-11-10"
+#> [1] "2025-12-30"
 #> 
 #> $per_animal
 #> $per_animal$ch4_kg
@@ -225,7 +225,7 @@ calc_emissions_enteric(
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2025-11-10"
+#> [1] "2025-12-30"
 #> 
 #> $per_animal
 #> $per_animal$ch4_kg

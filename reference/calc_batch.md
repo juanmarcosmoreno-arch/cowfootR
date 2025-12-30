@@ -67,6 +67,6 @@ str(res$summary)
 #>   ..$ scope  : chr "farm_gate"
 #>   ..$ include: chr [1:5] "enteric" "manure" "soil" "energy" ...
 #>  $ benchmark_region   : chr "uruguay"
-#>  $ processing_date    : Date[1:1], format: "2025-11-10"
+#>  $ processing_date    : Date[1:1], format: "2025-12-30"
 # }
 ```

@@ -1,9 +1,9 @@
 # Contributing to cowfootR
 
-This outlines how to propose a change to cowfootR. For a detailed
-discussion on contributing to this and other tidyverse packages, please
-see the [development contributing guide](https://rstd.io/tidy-contrib)
-and our [code review principles](https://code-review.tidyverse.org/).
+This section outlines how to propose a change to cowfootR.
+
+This contributing guide is inspired by the tidyverse contributing
+guidelines and adapted to the scope and needs of this package.
 
 ## Fixing typos
 

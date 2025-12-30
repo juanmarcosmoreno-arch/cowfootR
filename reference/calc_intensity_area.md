@@ -76,7 +76,7 @@ calc_intensity_area(total_emissions = 85000, area_total_ha = 120)
 #>  Land use efficiency: 100%
 #> 
 #> Total emissions: 85,000 kg CO2eq
-#> Calculated on: 2025-11-10 
+#> Calculated on: 2025-12-30 
 
 # With productive area distinction
 calc_intensity_area(
@@ -95,7 +95,7 @@ calc_intensity_area(
 #>  Land use efficiency: 90%
 #> 
 #> Total emissions: 95,000 kg CO2eq
-#> Calculated on: 2025-11-10 
+#> Calculated on: 2025-12-30 
 
 # With area breakdown
 area_detail <- list(
@@ -128,7 +128,7 @@ calc_intensity_area(
 #>  woodland: 7.0 ha (5.2%) -> 4563 kg CO2eq
 #> 
 #> Total emissions: 88,000 kg CO2eq
-#> Calculated on: 2025-11-10 
+#> Calculated on: 2025-12-30 
 
 # Using with calc_total_emissions output
 # \donttest{
