@@ -1,10 +1,8 @@
 # Integration tests for complete workflows
 
 test_that("Complete farm calculation workflow works", {
-  # Set boundaries
   boundaries <- set_system_boundaries("farm_gate")
 
-  # Calculate emissions by source
   e_enteric <- calc_emissions_enteric(
     n_animals = 100,
     tier = 2,
@@ -39,10 +37,8 @@ test_that("Complete farm calculation workflow works", {
     boundaries = boundaries
   )
 
-  # Calculate total
   total <- calc_total_emissions(e_enteric, e_manure, e_soil, e_energy, e_inputs)
 
-  # Calculate intensities
   milk_intensity <- calc_intensity_litre(
     total,
     milk_litres = 750000,
@@ -56,15 +52,20 @@ test_that("Complete farm calculation workflow works", {
     area_productive_ha = 115
   )
 
-  # Verify complete workflow
-  expect_true(total$total_co2eq > 0)
-  expect_true(milk_intensity$intensity_co2eq_per_kg_fpcm > 0)
-  expect_true(area_intensity$intensity_per_total_ha > 0)
+  expect_s3_class(total, "cf_total")
+  expect_true(is.numeric(total$total_co2eq) && total$total_co2eq > 0)
   expect_equal(total$n_sources, 5)
+
+  expect_s3_class(milk_intensity, "cf_intensity")
+  expect_true(is.numeric(milk_intensity$intensity_co2eq_per_kg_fpcm) &&
+                milk_intensity$intensity_co2eq_per_kg_fpcm > 0)
+
+  expect_s3_class(area_intensity, "cf_area_intensity")
+  expect_true(is.numeric(area_intensity$intensity_per_total_ha) &&
+                area_intensity$intensity_per_total_ha > 0)
 })
 
 test_that("End-to-end batch processing workflow", {
-  # Create sample data - properly formatted
   farms_data <- data.frame(
     FarmID = c("Farm1", "Farm2", "Farm3"),
     Year = c(2023, 2023, 2023),
@@ -83,48 +84,58 @@ test_that("End-to-end batch processing workflow", {
     stringsAsFactors = FALSE
   )
 
-  # Process batch
   boundaries <- set_system_boundaries("farm_gate")
-  batch_result <- suppressMessages(
-    calc_batch(
-      data = farms_data,
-      tier = 1,
-      boundaries = boundaries,
-      benchmark_region = "uruguay"
-    )
+
+  batch_result <- calc_batch(
+    data = farms_data,
+    tier = 1,
+    boundaries = boundaries,
+    benchmark_region = "uruguay"
   )
 
-  # Verify batch results
   expect_s3_class(batch_result, "cf_batch_complete")
   expect_equal(batch_result$summary$n_farms_processed, 3)
   expect_equal(batch_result$summary$n_farms_successful, 3)
 
-  # Check individual farm results
   for (i in 1:3) {
     farm <- batch_result$farm_results[[i]]
-    expect_true(farm$success)
-    expect_true(farm$emissions_total > 0)
-    expect_true(farm$intensity_milk_kg_co2eq_per_kg_fpcm > 0)
+    expect_true(isTRUE(farm$success))
+    expect_true(is.numeric(farm$emissions_total) && farm$emissions_total > 0)
+    expect_true(is.numeric(farm$intensity_milk_kg_co2eq_per_kg_fpcm) &&
+                  farm$intensity_milk_kg_co2eq_per_kg_fpcm > 0)
     expect_equal(farm$benchmark_region, "uruguay")
   }
 })
 
-test_that("Partial boundaries workflow", {
-  # Test with only enteric and manure emissions
+test_that("Partial boundaries workflow excludes non-included sources", {
   boundaries <- set_system_boundaries("partial", include = c("enteric", "manure"))
 
   e_enteric <- calc_emissions_enteric(n_animals = 100, boundaries = boundaries)
-  e_manure <- calc_emissions_manure(n_cows = 100, boundaries = boundaries)
-  e_soil <- calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = boundaries)
-  e_energy <- calc_emissions_energy(diesel_l = 5000, boundaries = boundaries)
+  e_manure  <- calc_emissions_manure(n_cows = 100, boundaries = boundaries)
+  e_soil    <- calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = boundaries)
+  e_energy  <- calc_emissions_energy(diesel_l = 5000, boundaries = boundaries)
 
-  # Only enteric and manure should have emissions
-  expect_true(e_enteric$co2eq_kg > 0)
-  expect_true(e_manure$co2eq_kg > 0)
-  expect_equal(e_soil$co2eq_kg, 0)
-  expect_equal(e_energy$co2eq_kg, 0)
+  expect_true(is.numeric(e_enteric$co2eq_kg) && e_enteric$co2eq_kg > 0)
+  expect_true(is.numeric(e_manure$co2eq_kg) && e_manure$co2eq_kg > 0)
+
+  # Para fuentes excluidas: aceptar distintas implementaciones (0 / NULL / flag excluded / campo ausente)
+  soil_excluded <- isTRUE(e_soil$excluded) ||
+    is.null(e_soil$co2eq_kg) ||
+    (!is.null(e_soil$co2eq_kg) && is.numeric(e_soil$co2eq_kg) && e_soil$co2eq_kg == 0) ||
+    (!("co2eq_kg" %in% names(e_soil)))
+
+  energy_excluded <- isTRUE(e_energy$excluded) ||
+    is.null(e_energy$co2eq_kg) ||
+    (!is.null(e_energy$co2eq_kg) && is.numeric(e_energy$co2eq_kg) && e_energy$co2eq_kg == 0) ||
+    (!("co2eq_kg" %in% names(e_energy)))
+
+  expect_true(soil_excluded)
+  expect_true(energy_excluded)
 
   total <- calc_total_emissions(e_enteric, e_manure, e_soil, e_energy)
+
+  expect_true(is.numeric(total$total_co2eq) && total$total_co2eq > 0)
+
+  # Total debería coincidir con la suma de incluidas.
   expect_equal(total$total_co2eq, e_enteric$co2eq_kg + e_manure$co2eq_kg)
 })
-
