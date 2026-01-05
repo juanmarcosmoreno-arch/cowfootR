@@ -110,5 +110,5 @@ safe_call <- function(fn, canonical_args = list(), positional_args = list(), df_
     }
   }
 
-  stop("Could not adapt test call to the function signature (tests helper).")
+  stop("safe_call(): could not adapt test call to the function signature.")
 }
