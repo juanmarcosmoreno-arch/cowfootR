@@ -1,4 +1,35 @@
 url: https://juanmarcosmoreno-arch.github.io/cowfootR/
 template:
   bootstrap: 5
+  reference:
+  - title: "Emission calculations"
+    desc: "Functions to calculate greenhouse gas emissions by source."
+    contents:
+      - calc_emissions_enteric
+      - calc_emissions_manure
+      - calc_emissions_soil
+      - calc_emissions_energy
+      - calc_emissions_inputs
+
+  - title: "Aggregation"
+    desc: "Functions to aggregate emissions across sources."
+    contents:
+      - calc_total_emissions
+
+  - title: "Intensity metrics"
+    desc: "Functions to compute emission intensities."
+    contents:
+      - calc_intensity_litre
+      - calc_intensity_area
+
+  - title: "Batch processing"
+    desc: "Functions for multi-farm analysis."
+    contents:
+      - calc_batch
+
+  - title: "Templates and reporting"
+    desc: "Helpers for templates and report export."
+    contents:
+      - cf_download_template
+      - export_hdc_report
 
