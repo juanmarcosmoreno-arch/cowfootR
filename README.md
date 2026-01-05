@@ -1,4 +1,5 @@
 
+
 # cowfootR <img src="man/figures/logo.png" align="right" width="120" />
 
 Tools to estimate the carbon footprint of dairy farms.  
@@ -37,20 +38,20 @@ The package includes:
 
 ## Installation
 
-You can install the development version of cowfootR from GitHub:
+``` r
+install.packages("cowfootR")
+```
+
+Or install the development version:
 
 ``` r
-# Install development version from GitHub
-# install.packages("devtools")
 devtools::install_github("juanmarcosmoreno-arch/cowfootR")
 ```
 
 ## Quick Start
 
-### Single Farm Analysis
-
-This is a basic example of how to calculate the carbon footprint of a
-single farm:
+Below is a minimal, end-to-end example showing the core workflow of
+`cowfootR` for a single dairy farm.
 
 ``` r
 library(cowfootR)
@@ -60,115 +61,92 @@ boundaries <- set_system_boundaries("farm_gate")
 
 # 2. Calculate emissions by source
 enteric <- calc_emissions_enteric(
-  n_animals = 100, 
+  n_animals = 100,
   cattle_category = "dairy_cows",
   boundaries = boundaries
 )
 
 manure <- calc_emissions_manure(
-  n_cows = 100, 
+  n_cows = 100,
   boundaries = boundaries
 )
 
 soil <- calc_emissions_soil(
-  n_fertilizer_synthetic = 1500, 
-  n_excreta_pasture = 5000, 
+  n_fertilizer_synthetic = 1500,
+  n_excreta_pasture = 5000,
   area_ha = 120,
   boundaries = boundaries
 )
 
 energy <- calc_emissions_energy(
-  diesel_l = 2000, 
-  electricity_kwh = 5000, 
+  diesel_l = 2000,
+  electricity_kwh = 5000,
   boundaries = boundaries
 )
 
 inputs <- calc_emissions_inputs(
-  conc_kg = 1000, 
-  fert_n_kg = 500, 
+  conc_kg = 1000,
+  fert_n_kg = 500,
   boundaries = boundaries
 )
 
-# 3. Calculate total emissions
+# 3. Aggregate total emissions
 total_emissions <- calc_total_emissions(enteric, manure, soil, energy, inputs)
-print(paste("Total emissions:", round(total_emissions$total_co2eq, 1), "kg CO2eq"))
+total_emissions
+#> Carbon Footprint - Total Emissions
+#> ==================================
+#> Total CO2eq: 451512.6 kg
+#> Number of sources: 5 
+#> 
+#> Breakdown by source:
+#>   energy : 5740 kg CO2eq
+#>   enteric : 312800 kg CO2eq
+#>   inputs : 4000 kg CO2eq
+#>   manure : 89880 kg CO2eq
+#>   soil : 39092.62 kg CO2eq
+#> 
+#> Calculated on: 2026-01-05
 
-# 4. Calculate intensity metrics
+# 4. Intensity metrics
 milk_intensity <- calc_intensity_litre(
   total_emissions = total_emissions,
   milk_litres = 750000,
   fat = 4.0,
   protein = 3.3
 )
-print(paste("Milk intensity:", round(milk_intensity$intensity_co2eq_per_kg_fpcm, 2), 
-            "kg CO2eq/kg FPCM"))
+milk_intensity
+#> Carbon Footprint Intensity
+#> ==========================
+#> Intensity: 0.585 kg CO2eq/kg FPCM
+#> 
+#> Production data:
+#>  Raw milk (L): 750,000 L
+#>  Raw milk (kg): 772,500 kg
+#>  FPCM (kg): 772,407 kg
+#>  Fat content: 4 %
+#>  Protein content: 3.3 %
+#> 
+#> Total emissions: 451,513 kg CO2eq
+#> Calculated on: 2026-01-05
 
 area_intensity <- calc_intensity_area(
   total_emissions = total_emissions,
   area_total_ha = 120
 )
-print(paste("Area intensity:", round(area_intensity$intensity_per_total_ha, 1), 
-            "kg CO2eq/ha"))
+area_intensity
+#> Carbon Footprint Area Intensity
+#> ===============================
+#> Intensity (total area): 3762.61 kg CO2eq/ha
+#> Intensity (productive area): 3762.61 kg CO2eq/ha
+#> 
+#> Area summary:
+#>  Total area: 120 ha
+#>  Productive area: 120 ha
+#>  Land use efficiency: 100%
+#> 
+#> Total emissions: 451,513 kg CO2eq
+#> Calculated on: 2026-01-05
 ```
-
-### Batch Processing Workflow
-
-For analyzing multiple farms, use the Excel template approach:
-
-``` r
-# 1. Download and fill template
-cf_download_template("my_farms_template.xlsx")
-# Open the file, fill with your farm data, and save
-
-# 2. Read data and process multiple farms
-farm_data <- readxl::read_excel("my_farms_data.xlsx")
-results <- calc_batch(
-  data = farm_data,
-  tier = 2,
-  benchmark_region = "uruguay"  # optional
-)
-
-# 3. View processing summary
-print(results$summary)
-
-# 4. Export comprehensive results to Excel
-export_hdc_report(results, "carbon_footprint_results.xlsx")
-```
-
-### Working with Data Frames
-
-You can also work directly with data frames:
-
-``` r
-# Example farm data
-farm_data <- data.frame(
-  FarmID = c("Farm_A", "Farm_B", "Farm_C"),
-  Year = c("2023", "2023", "2023"),
-  Milk_litres = c(500000, 750000, 300000),
-  Fat_percent = c(4.0, 3.8, 4.2),
-  Protein_percent = c(3.3, 3.2, 3.4),
-  Cows_milking = c(100, 150, 60),
-  Area_total_ha = c(200, 300, 120),
-  N_fertilizer_kg = c(2000, 3000, 1200),
-  Diesel_litres = c(4000, 6000, 2400),
-  Electricity_kWh = c(10000, 15000, 6000)
-)
-
-# Process all farms
-results <- calc_batch(farm_data, tier = 2)
-
-# Check results for each farm
-for (i in seq_along(results$farm_results)) {
-  farm <- results$farm_results[[i]]
-  if (farm$success) {
-    cat("Farm", farm$farm_id, ":", round(farm$emissions_total, 1), "kg CO2eq\n")
-  } else {
-    cat("Farm", farm$farm_id, ": ERROR -", farm$error, "\n")
-  }
-}
-```
-
-## Key Features
 
 ### Emission Sources Covered
 
@@ -181,14 +159,8 @@ for (i in seq_along(results$farm_results)) {
 ### System Boundaries
 
 ``` r
-# Farm gate (direct on-farm emissions only)
 boundaries_fg <- set_system_boundaries("farm_gate")
-
-# Cradle to farm gate (includes upstream production)
 boundaries_cfg <- set_system_boundaries("cradle_to_farm_gate")
-
-# Use in calculations
-results <- calc_batch(farm_data, boundaries = boundaries_cfg)
 ```
 
 ### Intensity Metrics
@@ -227,21 +199,8 @@ Use `cf_download_template()` to get the complete column structure.
 
 The package includes robust error handling for batch processing:
 
-``` r
-# Process with error handling
-results <- calc_batch(farm_data)
-
-# Check for processing errors
-if (results$summary$n_farms_with_errors > 0) {
-  error_farms <- results$farm_results[
-    sapply(results$farm_results, function(x) !x$success)
-  ]
-  
-  for (farm in error_farms) {
-    cat("Farm", farm$farm_id, "failed:", farm$error, "\n")
-  }
-}
-```
+For batch processing, Excel templates, reporting, and error handling,
+please see the package vignettes and the documentation website.
 
 ## Contributing
 
@@ -253,9 +212,12 @@ suggest improvements on
 
 - IPCC 2019 Refinement to the 2006 IPCC Guidelines for National
   Greenhouse Gas Inventories
-- International Dairy Federation (IDF). 2022. A common carbon footprint
-  approach for the dairy sector
+  <https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html>
+- International Dairy Federation (IDF). 2022. The IDF global Carbon
+  Footprint standard for the dairy sector
+  <https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&_sid=8a3f414f8&_ss=r>
 - FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector
+  <https://www.fao.org/4/k7930e/k7930e00.pdf>
 
 ## License
 
