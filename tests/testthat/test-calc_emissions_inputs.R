@@ -1,4 +1,4 @@
-# Tests for purchased inputs emissions
+# Tests for purchased inputs emissions --------------------------------------
 
 test_that("calc_emissions_inputs calculates basic emissions", {
   result <- calc_emissions_inputs(
@@ -30,5 +30,9 @@ test_that("calc_emissions_inputs handles regional factors", {
 })
 
 test_that("calc_emissions_inputs validates plastic types", {
-  expect_error(calc_emissions_inputs(plastic_kg = 100, plastic_type = "invalid"))
+  expect_error(
+    calc_emissions_inputs(plastic_kg = 100, plastic_type = "invalid"),
+    regexp = "plastic_type|invalid|allowed|must be one of|LDPE|HDPE|PP|mixed",
+    ignore.case = TRUE
+  )
 })
