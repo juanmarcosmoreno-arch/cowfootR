@@ -1,0 +1,230 @@
+---
+title: "Get started with cowfootR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{00 - Get started with cowfootR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## Get started with cowfootR
+
+This vignette provides a practical, end-to-end introduction to **cowfootR**.
+It is intended for new users who want to understand the core workflow of the
+package and obtain a first carbon footprint estimate for a dairy farm.
+
+The focus is on:
+	-	understanding the workflow
+	-	knowing which functions to call and in what order
+	-	seeing actual outputs produced by the package
+
+More detailed explanations of parameters, methodological choices, and advanced
+use cases are covered in the other vignettes.
+
+
+### What does cowfootR do?
+
+cowfootR estimates greenhouse gas (GHG) emissions from dairy farms following
+IPCC (2019) and IDF (2022) guidelines.
+
+The package:
+	-	calculates emissions by source
+	-	aggregates them into total farm emissions
+	-	computes intensity metrics per unit of milk or land
+	-	supports single-farm and batch (multi-farm) analysis
+
+The standard workflow is:
+	1-	Define system boundaries
+	2-	Calculate emissions by source
+	3-	Aggregate total emissions
+	4-	Calculate intensity metrics
+
+This vignette walks through these steps using a minimal example.
+
+### Installation and loading the package
+
+```{r eval=FALSE}
+install.packages("cowfootR")
+```
+Or install the development version:
+```{r eval=FALSE}
+devtools::install_github("juanmarcosmoreno-arch/cowfootR")
+```
+Load the package:
+```{r}
+library(cowfootR)
+```
+
+### Step 1: Define system boundaries
+
+System boundaries determine which emission sources are included in the
+assessment.
+
+The most common option is "farm_gate", which includes on-farm emissions only.
+
+```{r}
+boundaries <- set_system_boundaries("farm_gate")
+boundaries
+```
+Other options (e.g. "cradle_to_farm_gate") are described in the
+Workflow overview vignette.
+
+
+### Step 2: Calculate emissions by source
+
+Each emission source is calculated using a dedicated function.
+All functions return structured objects with emissions expressed in kg CO₂eq.
+
+#### Enteric fermentation
+
+Enteric fermentation accounts for methane (CH₄) produced during ruminal digestion.
+
+```{r}
+enteric <- calc_emissions_enteric(
+  n_animals = 100,
+  cattle_category = "dairy_cows",
+  boundaries = boundaries
+)
+enteric
+```
+
+#### Manure management
+
+This includes CH₄ and N₂O emissions from manure handling systems.
+
+```{r}
+manure <- calc_emissions_manure(
+  n_cows = 100,
+  boundaries = boundaries
+)
+manure
+```
+
+
+#### Soil emissions
+
+Soil emissions mainly originate from nitrogen inputs such as fertilizers and
+excreta deposited during grazing.
+
+```{r}
+soil <- calc_emissions_soil(
+  n_fertilizer_synthetic = 1500,
+  n_excreta_pasture = 5000,
+  area_ha = 120,
+  boundaries = boundaries
+)
+soil
+```
+
+#### Energy use
+
+Energy-related emissions come from fuel combustion and electricity consumption.
+
+```{r}
+energy <- calc_emissions_energy(
+  diesel_l = 2000,
+  electricity_kwh = 5000,
+  boundaries = boundaries
+)
+energy
+```
+
+#### Purchased inputs
+
+This category includes emissions embodied in feeds, fertilizers, and materials.
+
+```{r}
+inputs <- calc_emissions_inputs(
+  conc_kg = 1000,
+  fert_n_kg = 500,
+  boundaries = boundaries
+)
+inputs
+```
+
+### Step 3: Aggregate total emissions
+
+All emission sources are combined using calc_total_emissions().
+
+```{r}
+total_emissions <- calc_total_emissions(
+  enteric,
+  manure,
+  soil,
+  energy,
+  inputs
+)
+total_emissions
+```
+
+### Step 4: Calculate intensity metrics
+Intensity metrics relate total emissions to production or land use.
+
+#### Milk intensity
+
+Emissions per unit of milk are expressed as kg CO₂eq per kg of
+fat- and protein-corrected milk (FPCM).
+
+```{r}
+milk_intensity <- calc_intensity_litre(
+  total_emissions = total_emissions,
+  milk_litres = 750000,
+  fat = 4.0,
+  protein = 3.3
+)
+milk_intensity
+```
+
+#### Area intensity
+
+Emissions per hectare are useful for land-based comparisons.
+
+```{r}
+area_intensity <- calc_intensity_area(
+  total_emissions = total_emissions,
+  area_total_ha = 120
+)
+area_intensity
+```
+
+### Interpreting results
+
+In most dairy systems:
+	-	Enteric fermentation is the largest emission source
+	-	Inputs and soils are often the second-largest contributors
+	-	Energy use typically represents a smaller share
+
+Results should always be interpreted considering:
+	-	data quality
+	-	system boundaries
+	-	production system characteristics
+
+
+### What’s next?
+
+This vignette covered the minimum workflow needed to use cowfootR.
+
+Next steps:
+	-	See Introduction to Dairy Life Cycle Assessment for conceptual background
+	-	See Single Farm Analysis for a more detailed example
+	-	See Complete Parameter Reference Guide for full parameter documentation
+	-	See Workflow overview for batch processing and reporting
+
+
+### Summary
+	-	cowfootR follows a modular, step-by-step workflow
+	-	Each emission source is calculated independently
+	-	Results can be expressed as total emissions or intensities
+	-	This vignette provides a starting point; advanced topics are covered elsewhere
+	
+	
+	
