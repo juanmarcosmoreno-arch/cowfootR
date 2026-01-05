@@ -1,4 +1,4 @@
-# Tests for soil emissions
+# Tests for soil emissions -----------------------------------------------------
 
 test_that("calc_emissions_soil calculates direct emissions correctly", {
   result <- calc_emissions_soil(
@@ -9,7 +9,8 @@ test_that("calc_emissions_soil calculates direct emissions correctly", {
 
   expect_type(result, "list")
   expect_equal(result$source, "soil")
-  expect_true(result$co2eq_kg > 0)
+  expect_true(is.numeric(result$co2eq_kg))
+  expect_gt(result$co2eq_kg, 0)
 })
 
 test_that("calc_emissions_soil calculates indirect emissions", {
@@ -21,10 +22,23 @@ test_that("calc_emissions_soil calculates indirect emissions", {
     include_indirect = TRUE
   )
 
-  expect_true(result$emissions_breakdown$total_indirect_n2o_kg > 0)
+  # Indirect emissions should be > 0 when include_indirect = TRUE and N inputs exist
+  expect_true("emissions_breakdown" %in% names(result))
+  expect_true("total_indirect_n2o_kg" %in% names(result$emissions_breakdown))
+  expect_true(is.numeric(result$emissions_breakdown$total_indirect_n2o_kg))
+  expect_gt(result$emissions_breakdown$total_indirect_n2o_kg, 0)
 })
 
 test_that("calc_emissions_soil validates inputs", {
-  expect_error(calc_emissions_soil(n_fertilizer_synthetic = -100))
-  expect_error(calc_emissions_soil(soil_type = "invalid"))
+  expect_error(
+    calc_emissions_soil(n_fertilizer_synthetic = -100),
+    regexp = "n_fertilizer_synthetic|non-?negative|>=|positive|must be",
+    ignore.case = TRUE
+  )
+
+  expect_error(
+    calc_emissions_soil(soil_type = "invalid"),
+    regexp = "soil_type|invalid|allowed|must be one of|drain|well|poor",
+    ignore.case = TRUE
+  )
 })
