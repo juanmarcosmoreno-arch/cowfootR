@@ -21,8 +21,12 @@ coverage](https://codecov.io/gh/juanmarcosmoreno-arch/cowfootR/graph/badge.svg)]
 ## Overview
 
 `cowfootR` provides a comprehensive toolkit for calculating carbon
-footprints of dairy farms following IPCC guidelines. The package
-includes:
+footprints of dairy farms following IPCC guidelines ([IPCC 2019
+Refinement](https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html))
+and International Dairy Federation guidance for the dairy sector ([IDF
+Bulletin
+520](https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&_sid=8a3f414f8&_ss=r)).
+The package includes:
 
 - **Individual emission calculations** from enteric fermentation,
   manure, soil, energy, and inputs
@@ -33,11 +37,11 @@ includes:
 
 ## Installation
 
-You can install the latest version of cowfootR from GitHub or CRAN:
+You can install the development version of cowfootR from GitHub:
 
 ``` r
-# Install from CRAN or Github
-install.packages("cowfootR")
+# Install development version from GitHub
+# install.packages("devtools")
 devtools::install_github("juanmarcosmoreno-arch/cowfootR")
 ```
 
@@ -249,7 +253,7 @@ suggest improvements on
 
 - IPCC 2019 Refinement to the 2006 IPCC Guidelines for National
   Greenhouse Gas Inventories
-- International Dairy Federation (IDF). 2015. A common carbon footprint
+- International Dairy Federation (IDF). 2022. A common carbon footprint
   approach for the dairy sector
 - FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector
 
