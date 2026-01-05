@@ -1,84 +1,94 @@
-testthat::test_that("setup: manure function exists", {
-  testthat::skip_if_not(exists("calc_emissions_manure"))
-})
+# Tests for manure management emissions (API-aligned, strong expectations)
 
-# -------------------------------------------------------------------------
-# calc_emissions_manure tests
-# -------------------------------------------------------------------------
-
-testthat::test_that("manure: minimal structure contains expected components", {
-  fn <- calc_emissions_manure
-
-  out <- try(safe_call(fn,
-                       canonical_args = list(storage = "lagoon", digestor_eff = 0.0, n_excreted_kg = 50, days_storage = 90),
-                       positional_args = list("lagoon", 0.0, 50, 90),
-                       df_args = list(storage = "lagoon", digestor_eff = 0.0, n_excreted_kg = 50, days_storage = 90)
-  ), silent = TRUE)
-
-  if (inherits(out, "try-error")) testthat::skip("Function signature incompatible — skipping test.")
-
-  testthat::expect_true(is.list(out) || is.data.frame(out))
-  nm <- names(out)
-  testthat::expect_true(any(grepl("CH4",   nm, ignore.case = TRUE)))
-  testthat::expect_true(any(grepl("N2O",   nm, ignore.case = TRUE)))
-  testthat::expect_true(any(grepl("total", nm, ignore.case = TRUE)))
-})
-
-testthat::test_that("manure: different storage types and digester reduce emissions", {
-  fn <- calc_emissions_manure
-
-  storages <- c("lagoon", "solid_stack", "compost")
-  res <- lapply(storages, function(s) {
-    try(safe_call(fn,
-                  canonical_args = list(storage = s, digestor_eff = 0.0, n_excreted_kg = 50, days_storage = 90),
-                  positional_args = list(s, 0.0, 50, 90),
-                  df_args = list(storage = s, digestor_eff = 0.0, n_excreted_kg = 50, days_storage = 90)
-    ), silent = TRUE)
-  })
-
-  if (any(vapply(res, inherits, logical(1), "try-error"))) testthat::skip("Signature incompatible — skipping storage test.")
-
-  totals <- vapply(res, function(x) pick_named_numeric(x, patterns = c("total"))[1], numeric(1))
-  testthat::expect_true(all(is.finite(totals)))
-
-  sin_dig <- safe_call(fn,
-                       canonical_args = list(storage = "lagoon", digestor_eff = 0.0, n_excreted_kg = 50, days_storage = 90),
-                       positional_args = list("lagoon", 0.0, 50, 90),
-                       df_args = list(storage = "lagoon", digestor_eff = 0.0, n_excreted_kg = 50, days_storage = 90)
-  )
-  con_dig <- safe_call(fn,
-                       canonical_args = list(storage = "lagoon", digestor_eff = 0.7, n_excreted_kg = 50, days_storage = 90),
-                       positional_args = list("lagoon", 0.7, 50, 90),
-                       df_args = list(storage = "lagoon", digestor_eff = 0.7, n_excreted_kg = 50, days_storage = 90)
+test_that("calc_emissions_manure returns expected basic structure (Tier 1)", {
+  res <- calc_emissions_manure(
+    n_cows = 100,
+    manure_system = "pasture",
+    tier = 1
   )
 
-  t0 <- pick_named_numeric(sin_dig, patterns = c("total"))[1]
-  t1 <- pick_named_numeric(con_dig, patterns = c("total"))[1]
-  testthat::expect_true(is.finite(t0) && is.finite(t1))
-  testthat::expect_lt(t1, t0)
+  expect_type(res, "list")
+  expect_equal(res$source, "manure")
+  expect_equal(res$system, "pasture")
+
+  # Core fields
+  expect_true(is.numeric(res$co2eq_kg))
+  expect_true(is.numeric(res$ch4_kg))
+  expect_true(is.finite(res$co2eq_kg))
+  expect_true(is.finite(res$ch4_kg))
+  expect_gte(res$co2eq_kg, 0)
+  expect_gte(res$ch4_kg, 0)
 })
 
-testthat::test_that("manure: zero excretion leads to near-zero emissions", {
-  fn <- calc_emissions_manure
-  out <- try(safe_call(fn,
-                       canonical_args = list(storage = "lagoon", digestor_eff = 0.0, n_excreted_kg = 0, days_storage = 90),
-                       positional_args = list("lagoon", 0.0, 0, 90),
-                       df_args = list(storage = "lagoon", digestor_eff = 0.0, n_excreted_kg = 0, days_storage = 90)
-  ), silent = TRUE)
+test_that("calc_emissions_manure supports all manure systems", {
+  systems <- c("pasture", "solid_storage", "liquid_storage", "anaerobic_digester")
 
-  if (inherits(out, "try-error")) testthat::skip("Signature incompatible — skipping zero excretion case.")
-  tot <- pick_named_numeric(out, patterns = c("total"))[1]
-  testthat::expect_true(is.na(tot) || tot <= 1e-8)
+  vals <- vapply(systems, function(sys) {
+    res <- calc_emissions_manure(n_cows = 50, manure_system = sys, tier = 1)
+    expect_equal(res$system, sys)
+    res$co2eq_kg
+  }, numeric(1))
+
+  expect_true(all(is.finite(vals)))
+  expect_true(all(vals >= 0))
 })
 
-testthat::test_that("manure: snapshot test ensures output structure is stable", {
-  fn <- calc_emissions_manure
-  out <- try(safe_call(fn,
-                       canonical_args = list(storage = "lagoon", digestor_eff = 0.25, n_excreted_kg = 40, days_storage = 60),
-                       positional_args = list("lagoon", 0.25, 40, 60),
-                       df_args = list(storage = "lagoon", digestor_eff = 0.25, n_excreted_kg = 40, days_storage = 60)
-  ), silent = TRUE)
+test_that("calc_emissions_manure Tier 2 works with detailed parameters", {
+  res <- calc_emissions_manure(
+    n_cows = 100,
+    manure_system = "liquid_storage",
+    tier = 2,
+    avg_body_weight = 580,
+    diet_digestibility = 0.68,
+    climate = "temperate",
+    retention_days = 90,
+    system_temperature = 20
+  )
 
-  if (inherits(out, "try-error")) testthat::skip("Signature incompatible — skipping snapshot.")
-  withr::with_seed(123, testthat::expect_snapshot(str(as.list(out))))
+  expect_type(res, "list")
+  expect_equal(res$source, "manure")
+  expect_equal(res$system, "liquid_storage")
+  expect_true(is.numeric(res$co2eq_kg))
+  expect_true(is.finite(res$co2eq_kg))
+  expect_gte(res$co2eq_kg, 0)
+})
+
+test_that("calc_emissions_manure validates inputs with specific errors", {
+  expect_error(
+    calc_emissions_manure(n_cows = -1, manure_system = "pasture", tier = 1),
+    regexp = "n_cows|number|positive|>=\\s*0|>\\s*0",
+    ignore.case = TRUE
+  )
+
+  expect_error(
+    calc_emissions_manure(n_cows = 100, manure_system = "invalid", tier = 1),
+    regexp = "manure_system|system|valid|pasture|storage|digester",
+    ignore.case = TRUE
+  )
+
+  expect_error(
+    calc_emissions_manure(n_cows = 100, manure_system = "pasture", tier = 3),
+    regexp = "tier|1|2|valid",
+    ignore.case = TRUE
+  )
+})
+
+test_that("calc_emissions_manure respects system boundaries (manure excluded)", {
+  b <- set_system_boundaries(include = c("enteric", "soil", "energy", "inputs")) # exclude manure
+
+  res <- calc_emissions_manure(
+    n_cows = 100,
+    manure_system = "pasture",
+    tier = 1,
+    boundaries = b
+  )
+
+  # depending on your implementation: excluded flag OR co2eq_kg forced to 0
+  excl_flag <- isTRUE(res$excluded)
+  zero_ok <- is.numeric(res$co2eq_kg) && identical(as.numeric(res$co2eq_kg), 0)
+
+  expect_true(excl_flag || zero_ok)
+
+  if (!is.null(res$ch4_kg)) expect_identical(as.numeric(res$ch4_kg), 0)
+  if (!is.null(res$n2o_total_kg)) expect_identical(as.numeric(res$n2o_total_kg), 0)
 })
