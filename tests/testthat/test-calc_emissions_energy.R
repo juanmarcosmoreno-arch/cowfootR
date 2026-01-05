@@ -1,4 +1,4 @@
-# Tests for energy emissions
+# Tests for energy emissions -----------------------------------------------
 
 test_that("calc_emissions_energy calcula emisiones por combustible y electricidad", {
   res <- calc_emissions_energy(
@@ -36,8 +36,17 @@ test_that("calc_emissions_energy usa factores país para electricidad", {
 })
 
 test_that("calc_emissions_energy valida entradas no negativas", {
-  expect_error(calc_emissions_energy(diesel_l = -100))
-  expect_error(calc_emissions_energy(electricity_kwh = -1000))
+  expect_error(
+    calc_emissions_energy(diesel_l = -100),
+    regexp = "diesel|must be.*(>=|non-?negative)|negative",
+    ignore.case = TRUE
+  )
+
+  expect_error(
+    calc_emissions_energy(electricity_kwh = -1000),
+    regexp = "electricity|kwh|must be.*(>=|non-?negative)|negative",
+    ignore.case = TRUE
+  )
 })
 
 test_that("calc_emissions_energy respeta límites del sistema (energy excluido)", {
@@ -45,7 +54,10 @@ test_that("calc_emissions_energy respeta límites del sistema (energy excluido)"
   b <- set_system_boundaries(include = c("enteric", "manure", "soil", "inputs"))
 
   res <- calc_emissions_energy(
-    diesel_l = 10, electricity_kwh = 100, country = "UY", boundaries = b
+    diesel_l = 10,
+    electricity_kwh = 100,
+    country = "UY",
+    boundaries = b
   )
 
   # Debe marcarse como excluido y NO contribuir; la función hoy puede devolver NULL o 0
@@ -56,6 +68,10 @@ test_that("calc_emissions_energy respeta límites del sistema (energy excluido)"
   expect_true(excl_flag || null_ok || zero_ok)
 
   # Y si existiese 'direct_co2eq_kg' u otros, que sean 0 cuando esté excluido
-  if (!is.null(res$direct_co2eq_kg))  expect_identical(as.numeric(res$direct_co2eq_kg), 0)
-  if (!is.null(res$upstream_co2eq_kg)) expect_identical(as.numeric(res$upstream_co2eq_kg), 0)
+  if (!is.null(res$direct_co2eq_kg)) {
+    expect_identical(as.numeric(res$direct_co2eq_kg), 0)
+  }
+  if (!is.null(res$upstream_co2eq_kg)) {
+    expect_identical(as.numeric(res$upstream_co2eq_kg), 0)
+  }
 })
