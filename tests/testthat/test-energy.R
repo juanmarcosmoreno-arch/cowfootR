@@ -1,46 +1,45 @@
-testthat::test_that("energy: each fuel contributes when present; near-zero when all missing/zero", {
-  fn <- calc_emissions_energy
+test_that("energy: each source contributes when present; zero when all are zero", {
+  # 1) Caso base: todo 0
+  none <- calc_emissions_energy(
+    diesel_l = 0,
+    petrol_l = 0,
+    electricity_kwh = 0,
+    include_upstream = FALSE
+  )
 
-  # Use larger magnitudes to avoid rounding-to-zero, but still allow equality on one path
-  e_only <- try(safe_call(fn,
-                          canonical_args = list(diesel_l = 0, electricity_kwh = 20000, grid_factor = 0.50),
-                          positional_args = list(0, 20000, 0.50),
-                          df_args = list(diesel_l = 0, electricity_kwh = 20000, grid_factor = 0.50)
-  ), silent = TRUE)
+  # Algunos paquetes devuelven 0, otros NULL; aceptamos ambos
+  tn <- none$co2eq_kg
+  expect_true(is.null(tn) || (is.numeric(tn) && is.finite(tn) && tn >= 0))
+  if (!is.null(tn)) expect_equal(as.numeric(tn), 0)
 
-  d_only <- try(safe_call(fn,
-                          canonical_args = list(diesel_l = 1000, electricity_kwh = 0, grid_factor = 0.00),
-                          positional_args = list(1000, 0, 0.00),
-                          df_args = list(diesel_l = 1000, electricity_kwh = 0, grid_factor = 0.00)
-  ), silent = TRUE)
+  # 2) Solo electricidad (fijamos factor para evitar depender de "country")
+  e_only <- calc_emissions_energy(
+    diesel_l = 0,
+    petrol_l = 0,
+    electricity_kwh = 20000,
+    ef_electricity = 0.50,      # fija el factor (kg CO2/kWh)
+    include_upstream = FALSE
+  )
 
-  none <- try(safe_call(fn,
-                        canonical_args = list(diesel_l = 0, electricity_kwh = 0, grid_factor = 0.00),
-                        positional_args = list(0, 0, 0.00),
-                        df_args = list(diesel_l = 0, electricity_kwh = 0, grid_factor = 0.00)
-  ), silent = TRUE)
+  te <- e_only$co2eq_kg
+  expect_true(is.numeric(te) && is.finite(te) && te >= 0)
+  expect_gt(te, 0)
 
-  if (any(vapply(list(e_only, d_only, none), inherits, logical(1), "try-error"))) {
-    testthat::skip("Incompatible signature — skipping fuel contribution checks.")
+  # 3) Solo diesel
+  d_only <- calc_emissions_energy(
+    diesel_l = 1000,
+    petrol_l = 0,
+    electricity_kwh = 0,
+    include_upstream = FALSE
+  )
+
+  td <- d_only$co2eq_kg
+  expect_true(is.numeric(td) && is.finite(td) && td >= 0)
+  expect_gt(td, 0)
+
+  # 4) Comparaciones contra el "none"
+  if (!is.null(tn)) {
+    expect_gte(te, tn)
+    expect_gte(td, tn)
   }
-
-  # Prefer a total-like field; fall back to any numeric
-  te <- pick_named_numeric(e_only, patterns = c("total", "co2", "emiss"))[1]
-  td <- pick_named_numeric(d_only, patterns = c("total", "co2", "emiss"))[1]
-  tn <- pick_named_numeric(none,   patterns = c("total", "co2", "emiss"))[1]
-  if (any(is.na(c(te, td, tn)))) {
-    te <- pluck_numeric(e_only)[1]
-    td <- pluck_numeric(d_only)[1]
-    tn <- pluck_numeric(none)[1]
-  }
-
-  testthat::expect_true(is.finite(te) && te >= 0)
-  testthat::expect_true(is.finite(td) && td >= 0)
-  testthat::expect_true(is.finite(tn) && tn >= 0)
-
-  # Allow equality on one path due to rounding or allocation rules,
-  # but require that at least one fuel strictly increases emissions.
-  testthat::expect_gte(te, tn)
-  testthat::expect_gte(td, tn)
-  testthat::expect_true( (te > tn) || (td > tn) )
 })
