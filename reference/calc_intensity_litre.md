@@ -70,7 +70,7 @@ calc_intensity_litre(total_emissions = 85000, milk_litres = 750000)
 #>  Protein content: 3.3 %
 #> 
 #> Total emissions: 85,000 kg CO2eq
-#> Calculated on: 2025-12-30 
+#> Calculated on: 2026-01-08 
 
 # If you have a cf_total object 'tot' (e.g., from calc_total_emissions):
 # calc_intensity_litre(tot, milk_litres = 750000)

@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,16 +37,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/Complete_Parameter_Reference_Guide.html">Complete_Parameter_Reference_Guide</a></li>
-    <li><a class="dropdown-item" href="articles/Introduction_to_Dairy_LCA_cowfootR.html">Introduction to Dairy Life Cycle Assessment with cowfootR</a></li>
-    <li><a class="dropdown-item" href="articles/IPCC_Methodology_Tiers_cowfootR.html">IPCC_Methodology_Tiers_cowfootR</a></li>
-    <li><a class="dropdown-item" href="articles/Single_Farm_Analysis_cowfootR.html">Single Farm Analysis (cowfootR)</a></li>
-    <li><a class="dropdown-item" href="articles/workflow.html">cowfootR Workflow</a></li>
-  </ul>
-</li>
+<li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -72,7 +63,7 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>cowfootR</code> provides a comprehensive toolkit for calculating carbon footprints of dairy farms following IPCC guidelines. The package includes:</p>
+<p><code>cowfootR</code> provides a comprehensive toolkit for calculating carbon footprints of dairy farms following IPCC guidelines (<a href="https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html" class="external-link">IPCC 2019 Refinement</a>) and International Dairy Federation guidance for the dairy sector (<a href="https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&amp;_sid=8a3f414f8&amp;_ss=r" class="external-link">IDF Bulletin 520</a>). The package includes:</p>
 <ul>
 <li>
 <strong>Individual emission calculations</strong> from enteric fermentation, manure, soil, energy, and inputs</li>
@@ -89,20 +80,17 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the latest version of cowfootR from GitHub or CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install from CRAN or Github</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cowfootR"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"juanmarcosmoreno-arch/cowfootR"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cowfootR"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install the development version:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"juanmarcosmoreno-arch/cowfootR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="section level3">
-<h3 id="single-farm-analysis">Single Farm Analysis<a class="anchor" aria-label="anchor" href="#single-farm-analysis"></a>
-</h3>
-<p>This is a basic example of how to calculate the carbon footprint of a single farm:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>Below is a minimal, end-to-end example showing the core workflow of <code>cowfootR</code> for a single dairy farm.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/juanmarcosmoreno-arch/cowfootR" class="external-link">cowfootR</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1. Define system boundaries</span></span>
@@ -110,115 +98,306 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span></span>
 <span><span class="co"># 2. Calculate emissions by source</span></span>
 <span><span class="va">enteric</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_emissions_enteric.html">calc_emissions_enteric</a></span><span class="op">(</span></span>
-<span>  n_animals <span class="op">=</span> <span class="fl">100</span>, </span>
+<span>  n_animals <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  cattle_category <span class="op">=</span> <span class="st">"dairy_cows"</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">manure</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_emissions_manure.html">calc_emissions_manure</a></span><span class="op">(</span></span>
-<span>  n_cows <span class="op">=</span> <span class="fl">100</span>, </span>
+<span>  n_cows <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">soil</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_emissions_soil.html">calc_emissions_soil</a></span><span class="op">(</span></span>
-<span>  n_fertilizer_synthetic <span class="op">=</span> <span class="fl">1500</span>, </span>
-<span>  n_excreta_pasture <span class="op">=</span> <span class="fl">5000</span>, </span>
+<span>  n_fertilizer_synthetic <span class="op">=</span> <span class="fl">1500</span>,</span>
+<span>  n_excreta_pasture <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  area_ha <span class="op">=</span> <span class="fl">120</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">energy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_emissions_energy.html">calc_emissions_energy</a></span><span class="op">(</span></span>
-<span>  diesel_l <span class="op">=</span> <span class="fl">2000</span>, </span>
-<span>  electricity_kwh <span class="op">=</span> <span class="fl">5000</span>, </span>
+<span>  diesel_l <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  electricity_kwh <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">inputs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_emissions_inputs.html">calc_emissions_inputs</a></span><span class="op">(</span></span>
-<span>  conc_kg <span class="op">=</span> <span class="fl">1000</span>, </span>
-<span>  fert_n_kg <span class="op">=</span> <span class="fl">500</span>, </span>
+<span>  conc_kg <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  fert_n_kg <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  boundaries <span class="op">=</span> <span class="va">boundaries</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># 3. Calculate total emissions</span></span>
+<span><span class="co"># 3. Aggregate total emissions</span></span>
 <span><span class="va">total_emissions</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_total_emissions.html">calc_total_emissions</a></span><span class="op">(</span><span class="va">enteric</span>, <span class="va">manure</span>, <span class="va">soil</span>, <span class="va">energy</span>, <span class="va">inputs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Total emissions:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total_emissions</span><span class="op">$</span><span class="va">total_co2eq</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"kg CO2eq"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">total_emissions</span></span>
+<span><span class="co">#&gt; Carbon Footprint - Total Emissions</span></span>
+<span><span class="co">#&gt; ==================================</span></span>
+<span><span class="co">#&gt; Total CO2eq: 451512.6 kg</span></span>
+<span><span class="co">#&gt; Number of sources: 5 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Breakdown by source:</span></span>
+<span><span class="co">#&gt;   energy : 5740 kg CO2eq</span></span>
+<span><span class="co">#&gt;   enteric : 312800 kg CO2eq</span></span>
+<span><span class="co">#&gt;   inputs : 4000 kg CO2eq</span></span>
+<span><span class="co">#&gt;   manure : 89880 kg CO2eq</span></span>
+<span><span class="co">#&gt;   soil : 39092.62 kg CO2eq</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Calculated on: 2026-01-08</span></span>
 <span></span>
-<span><span class="co"># 4. Calculate intensity metrics</span></span>
+<span><span class="co"># 4. Intensity metrics</span></span>
 <span><span class="va">milk_intensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_intensity_litre.html">calc_intensity_litre</a></span><span class="op">(</span></span>
 <span>  total_emissions <span class="op">=</span> <span class="va">total_emissions</span>,</span>
 <span>  milk_litres <span class="op">=</span> <span class="fl">750000</span>,</span>
 <span>  fat <span class="op">=</span> <span class="fl">4.0</span>,</span>
 <span>  protein <span class="op">=</span> <span class="fl">3.3</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Milk intensity:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">milk_intensity</span><span class="op">$</span><span class="va">intensity_co2eq_per_kg_fpcm</span>, <span class="fl">2</span><span class="op">)</span>, </span>
-<span>            <span class="st">"kg CO2eq/kg FPCM"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">milk_intensity</span></span>
+<span><span class="co">#&gt; Carbon Footprint Intensity</span></span>
+<span><span class="co">#&gt; ==========================</span></span>
+<span><span class="co">#&gt; Intensity: 0.585 kg CO2eq/kg FPCM</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Production data:</span></span>
+<span><span class="co">#&gt;  Raw milk (L): 750,000 L</span></span>
+<span><span class="co">#&gt;  Raw milk (kg): 772,500 kg</span></span>
+<span><span class="co">#&gt;  FPCM (kg): 772,407 kg</span></span>
+<span><span class="co">#&gt;  Fat content: 4 %</span></span>
+<span><span class="co">#&gt;  Protein content: 3.3 %</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
+<span><span class="co">#&gt; Calculated on: 2026-01-08</span></span>
 <span></span>
 <span><span class="va">area_intensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_intensity_area.html">calc_intensity_area</a></span><span class="op">(</span></span>
 <span>  total_emissions <span class="op">=</span> <span class="va">total_emissions</span>,</span>
 <span>  area_total_ha <span class="op">=</span> <span class="fl">120</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Area intensity:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">area_intensity</span><span class="op">$</span><span class="va">intensity_per_total_ha</span>, <span class="fl">1</span><span class="op">)</span>, </span>
-<span>            <span class="st">"kg CO2eq/ha"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="batch-processing-workflow">Batch Processing Workflow<a class="anchor" aria-label="anchor" href="#batch-processing-workflow"></a>
-</h3>
-<p>For analyzing multiple farms, use the Excel template approach:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 1. Download and fill template</span></span>
-<span><span class="fu"><a href="reference/cf_download_template.html">cf_download_template</a></span><span class="op">(</span><span class="st">"my_farms_template.xlsx"</span><span class="op">)</span></span>
-<span><span class="co"># Open the file, fill with your farm data, and save</span></span>
-<span></span>
-<span><span class="co"># 2. Read data and process multiple farms</span></span>
-<span><span class="va">farm_data</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="st">"my_farms_data.xlsx"</span><span class="op">)</span></span>
-<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_batch.html">calc_batch</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">farm_data</span>,</span>
-<span>  tier <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  benchmark_region <span class="op">=</span> <span class="st">"uruguay"</span>  <span class="co"># optional</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 3. View processing summary</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">summary</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 4. Export comprehensive results to Excel</span></span>
-<span><span class="fu"><a href="reference/export_hdc_report.html">export_hdc_report</a></span><span class="op">(</span><span class="va">results</span>, <span class="st">"carbon_footprint_results.xlsx"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="working-with-data-frames">Working with Data Frames<a class="anchor" aria-label="anchor" href="#working-with-data-frames"></a>
-</h3>
-<p>You can also work directly with data frames:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example farm data</span></span>
-<span><span class="va">farm_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  FarmID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Farm_A"</span>, <span class="st">"Farm_B"</span>, <span class="st">"Farm_C"</span><span class="op">)</span>,</span>
-<span>  Year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2023"</span>, <span class="st">"2023"</span>, <span class="st">"2023"</span><span class="op">)</span>,</span>
-<span>  Milk_litres <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">500000</span>, <span class="fl">750000</span>, <span class="fl">300000</span><span class="op">)</span>,</span>
-<span>  Fat_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">3.8</span>, <span class="fl">4.2</span><span class="op">)</span>,</span>
-<span>  Protein_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.3</span>, <span class="fl">3.2</span>, <span class="fl">3.4</span><span class="op">)</span>,</span>
-<span>  Cows_milking <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">60</span><span class="op">)</span>,</span>
-<span>  Area_total_ha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">120</span><span class="op">)</span>,</span>
-<span>  N_fertilizer_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">3000</span>, <span class="fl">1200</span><span class="op">)</span>,</span>
-<span>  Diesel_litres <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4000</span>, <span class="fl">6000</span>, <span class="fl">2400</span><span class="op">)</span>,</span>
-<span>  Electricity_kWh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">15000</span>, <span class="fl">6000</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Process all farms</span></span>
-<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_batch.html">calc_batch</a></span><span class="op">(</span><span class="va">farm_data</span>, tier <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Check results for each farm</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">farm_results</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">farm</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">farm_results</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">farm</span><span class="op">$</span><span class="va">success</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Farm"</span>, <span class="va">farm</span><span class="op">$</span><span class="va">farm_id</span>, <span class="st">":"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">farm</span><span class="op">$</span><span class="va">emissions_total</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"kg CO2eq\n"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Farm"</span>, <span class="va">farm</span><span class="op">$</span><span class="va">farm_id</span>, <span class="st">": ERROR -"</span>, <span class="va">farm</span><span class="op">$</span><span class="va">error</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</div>
+<span><span class="va">area_intensity</span></span>
+<span><span class="co">#&gt; Carbon Footprint Area Intensity</span></span>
+<span><span class="co">#&gt; ===============================</span></span>
+<span><span class="co">#&gt; Intensity (total area): 3762.61 kg CO2eq/ha</span></span>
+<span><span class="co">#&gt; Intensity (productive area): 3762.61 kg CO2eq/ha</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Area summary:</span></span>
+<span><span class="co">#&gt;  Total area: 120 ha</span></span>
+<span><span class="co">#&gt;  Productive area: 120 ha</span></span>
+<span><span class="co">#&gt;  Land use efficiency: 100%</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
+<span><span class="co">#&gt; Calculated on: 2026-01-08</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+<h2 id="batch-processing-typical-real-world-use">Batch processing (typical real-world use)<a class="anchor" aria-label="anchor" href="#batch-processing-typical-real-world-use"></a>
 </h2>
+<p>In practical applications, <code>cowfootR</code> is most often used to process data from multiple farms simultaneously. This is handled through the <code><a href="reference/calc_batch.html">calc_batch()</a></code> function, which applies the same methodological workflow across all farms in a structured dataset.</p>
+<p>Below is a minimal example illustrating batch processing for multiple farms.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/juanmarcosmoreno-arch/cowfootR" class="external-link">cowfootR</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Example dataset with two farms</span></span>
+<span><span class="va">farms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  FarmID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Farm_A"</span>, <span class="st">"Farm_B"</span><span class="op">)</span>,</span>
+<span>  Year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2023</span>, <span class="fl">2023</span><span class="op">)</span>,</span>
+<span>  Milk_litres <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">500000</span>, <span class="fl">750000</span><span class="op">)</span>,</span>
+<span>  Cows_milking <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">130</span><span class="op">)</span>,</span>
+<span>  Area_total_ha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">160</span><span class="op">)</span>,</span>
+<span>  Diesel_litres <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4000</span>, <span class="fl">6500</span><span class="op">)</span>,</span>
+<span>  Electricity_kWh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18000</span>, <span class="fl">26000</span><span class="op">)</span>,</span>
+<span>  Concentrate_feed_kg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120000</span>, <span class="fl">180000</span><span class="op">)</span>,</span>
+<span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Define system boundaries</span></span>
+<span><span class="va">boundaries</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"farm_gate"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run batch carbon footprint calculation</span></span>
+<span><span class="va">batch_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_batch.html">calc_batch</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">farms</span>,</span>
+<span>  tier <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  boundaries <span class="op">=</span> <span class="va">boundaries</span>,</span>
+<span>  benchmark_region <span class="op">=</span> <span class="st">"uruguay"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Batch: 2 rows; tier=2 ...</span></span>
+<span></span>
+<span><span class="co"># Summary of batch processing</span></span>
+<span><span class="va">batch_results</span><span class="op">$</span><span class="va">summary</span></span>
+<span><span class="co">#&gt; $n_farms_processed</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $n_farms_successful</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $n_farms_with_errors</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $boundaries_used</span></span>
+<span><span class="co">#&gt; $boundaries_used$scope</span></span>
+<span><span class="co">#&gt; [1] "farm_gate"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $boundaries_used$include</span></span>
+<span><span class="co">#&gt; [1] "enteric" "manure"  "soil"    "energy"  "inputs" </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $benchmark_region</span></span>
+<span><span class="co">#&gt; [1] "uruguay"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $processing_date</span></span>
+<span><span class="co">#&gt; [1] "2026-01-08"</span></span>
+<span></span>
+<span><span class="co"># Farm-level results</span></span>
+<span><span class="va">batch_results</span><span class="op">$</span><span class="va">farm_results</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [[1]]$success</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$farm_id</span></span>
+<span><span class="co">#&gt; [1] "Farm_A"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$year</span></span>
+<span><span class="co">#&gt; [1] "2023"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$emissions_enteric</span></span>
+<span><span class="co">#&gt; [1] 230826.6</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$emissions_manure</span></span>
+<span><span class="co">#&gt; [1] 183066.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$emissions_soil</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$emissions_energy</span></span>
+<span><span class="co">#&gt; [1] 13794</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$emissions_inputs</span></span>
+<span><span class="co">#&gt; [1] 84000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$emissions_total</span></span>
+<span><span class="co">#&gt; [1] 511686.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$intensity_milk_kg_co2eq_per_kg_fpcm</span></span>
+<span><span class="co">#&gt; [1] 0.9936858</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$intensity_area_kg_co2eq_per_ha_total</span></span>
+<span><span class="co">#&gt; [1] 4651.7</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$intensity_area_kg_co2eq_per_ha_productive</span></span>
+<span><span class="co">#&gt; [1] 4651.7</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$fpcm_production_kg</span></span>
+<span><span class="co">#&gt; [1] 514938.2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$milk_production_kg</span></span>
+<span><span class="co">#&gt; [1] 515000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$milk_production_litres</span></span>
+<span><span class="co">#&gt; [1] 5e+05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$land_use_efficiency</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$total_animals</span></span>
+<span><span class="co">#&gt; [1] 90</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$dairy_cows</span></span>
+<span><span class="co">#&gt; [1] 90</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$benchmark_region</span></span>
+<span><span class="co">#&gt; [1] "uruguay"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$benchmark_performance</span></span>
+<span><span class="co">#&gt; [1] "Excellent (below typical range)"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$processing_date</span></span>
+<span><span class="co">#&gt; [1] "2026-01-08"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$boundaries_used</span></span>
+<span><span class="co">#&gt; [1] "farm_gate"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$tier_used</span></span>
+<span><span class="co">#&gt; [1] "tier_2"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$detailed_objects</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [[2]]$success</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$farm_id</span></span>
+<span><span class="co">#&gt; [1] "Farm_B"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$year</span></span>
+<span><span class="co">#&gt; [1] "2023"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$emissions_enteric</span></span>
+<span><span class="co">#&gt; [1] 333416.3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$emissions_manure</span></span>
+<span><span class="co">#&gt; [1] 264428.9</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$emissions_soil</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$emissions_energy</span></span>
+<span><span class="co">#&gt; [1] 22142.25</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$emissions_inputs</span></span>
+<span><span class="co">#&gt; [1] 126000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$emissions_total</span></span>
+<span><span class="co">#&gt; [1] 745987.4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$intensity_milk_kg_co2eq_per_kg_fpcm</span></span>
+<span><span class="co">#&gt; [1] 0.9657954</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$intensity_area_kg_co2eq_per_ha_total</span></span>
+<span><span class="co">#&gt; [1] 4662.42</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$intensity_area_kg_co2eq_per_ha_productive</span></span>
+<span><span class="co">#&gt; [1] 4662.42</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$fpcm_production_kg</span></span>
+<span><span class="co">#&gt; [1] 772407.3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$milk_production_kg</span></span>
+<span><span class="co">#&gt; [1] 772500</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$milk_production_litres</span></span>
+<span><span class="co">#&gt; [1] 750000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$land_use_efficiency</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$total_animals</span></span>
+<span><span class="co">#&gt; [1] 130</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$dairy_cows</span></span>
+<span><span class="co">#&gt; [1] 130</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$benchmark_region</span></span>
+<span><span class="co">#&gt; [1] "uruguay"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$benchmark_performance</span></span>
+<span><span class="co">#&gt; [1] "Excellent (below typical range)"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$processing_date</span></span>
+<span><span class="co">#&gt; [1] "2026-01-08"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$boundaries_used</span></span>
+<span><span class="co">#&gt; [1] "farm_gate"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$tier_used</span></span>
+<span><span class="co">#&gt; [1] "tier_2"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$detailed_objects</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="co"># Export results to Excel</span></span>
+<span><span class="fu"><a href="reference/export_hdc_report.html">export_hdc_report</a></span><span class="op">(</span></span>
+<span>  <span class="va">batch_results</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"cowfootR_batch_report.xlsx"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Batch report saved to: cowfootR_batch_report.xlsx</span></span></code></pre></div>
+<p>Batch results can be directly exported to an Excel report using <code><a href="reference/export_hdc_report.html">export_hdc_report()</a></code>, facilitating integration with reporting workflows commonly used by consultants, researchers, and stakeholders.</p>
 <div class="section level3">
 <h3 id="emission-sources-covered">Emission Sources Covered<a class="anchor" aria-label="anchor" href="#emission-sources-covered"></a>
 </h3>
@@ -239,14 +418,8 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <h3 id="system-boundaries">System Boundaries<a class="anchor" aria-label="anchor" href="#system-boundaries"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Farm gate (direct on-farm emissions only)</span></span>
-<span><span class="va">boundaries_fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"farm_gate"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Cradle to farm gate (includes upstream production)</span></span>
-<span><span class="va">boundaries_cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"cradle_to_farm_gate"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Use in calculations</span></span>
-<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_batch.html">calc_batch</a></span><span class="op">(</span><span class="va">farm_data</span>, boundaries <span class="op">=</span> <span class="va">boundaries_cfg</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">boundaries_fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"farm_gate"</span><span class="op">)</span></span>
+<span><span class="va">boundaries_cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_system_boundaries.html">set_system_boundaries</a></span><span class="op">(</span><span class="st">"cradle_to_farm_gate"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="intensity-metrics">Intensity Metrics<a class="anchor" aria-label="anchor" href="#intensity-metrics"></a>
@@ -308,20 +481,7 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <h2 id="error-handling">Error Handling<a class="anchor" aria-label="anchor" href="#error-handling"></a>
 </h2>
 <p>The package includes robust error handling for batch processing:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Process with error handling</span></span>
-<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_batch.html">calc_batch</a></span><span class="op">(</span><span class="va">farm_data</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Check for processing errors</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">summary</span><span class="op">$</span><span class="va">n_farms_with_errors</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">error_farms</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">farm_results</span><span class="op">[</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">farm_results</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!</span><span class="va">x</span><span class="op">$</span><span class="va">success</span><span class="op">)</span></span>
-<span>  <span class="op">]</span></span>
-<span>  </span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">farm</span> <span class="kw">in</span> <span class="va">error_farms</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Farm"</span>, <span class="va">farm</span><span class="op">$</span><span class="va">farm_id</span>, <span class="st">"failed:"</span>, <span class="va">farm</span><span class="op">$</span><span class="va">error</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<p>For batch processing, Excel templates, reporting, and error handling, please see the package vignettes and the documentation website.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
@@ -332,9 +492,12 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li>IPCC 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories</li>
-<li>International Dairy Federation (IDF). 2015. A common carbon footprint approach for the dairy sector</li>
-<li>FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector</li>
+<li>IPCC 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories <a href="https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html" class="external-link uri">https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html</a>
+</li>
+<li>International Dairy Federation (IDF). 2022. The IDF global Carbon Footprint standard for the dairy sector <a href="https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&amp;_sid=8a3f414f8&amp;_ss=r" class="external-link uri">https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&amp;_sid=8a3f414f8&amp;_ss=r</a>
+</li>
+<li>FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector <a href="https://www.fao.org/4/k7930e/k7930e00.pdf" class="external-link uri">https://www.fao.org/4/k7930e/k7930e00.pdf</a>
+</li>
 </ul>
 </div>
 <div class="section level2">

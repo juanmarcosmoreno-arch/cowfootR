@@ -2,12 +2,14 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  Complete_Parameter_Reference_Guide: Complete_Parameter_Reference_Guide.html
-  Introduction_to_Dairy_LCA_cowfootR: Introduction_to_Dairy_LCA_cowfootR.html
-  IPCC_Methodology_Tiers_cowfootR: IPCC_Methodology_Tiers_cowfootR.html
-  Single_Farm_Analysis_cowfootR: Single_Farm_Analysis_cowfootR.html
+  00 - Get started with cowfootR: 00 - Get started with cowfootR.html
+  01 - Introduction to Dairy Life Cycle Assessment: 01 - Introduction to Dairy Life
+    Cycle Assessment.html
+  02 - Single Farm Analysis (cowfootR): 02 - Single Farm Analysis (cowfootR).html
+  03 - IPCC Methodology Tiers cowfootR: 03 - IPCC Methodology Tiers cowfootR.html
+  04 - Complete Parameter Reference Guide: 04 - Complete Parameter Reference Guide.html
   workflow: workflow.html
-last_built: 2025-12-30T14:34Z
+last_built: 2026-01-08T12:17Z
 urls:
   reference: https://juanmarcosmoreno-arch.github.io/cowfootR/reference
   article: https://juanmarcosmoreno-arch.github.io/cowfootR/articles

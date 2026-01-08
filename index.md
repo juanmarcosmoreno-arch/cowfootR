@@ -7,8 +7,12 @@ and IPCC guidelines for greenhouse gas accounting.
 ## Overview
 
 `cowfootR` provides a comprehensive toolkit for calculating carbon
-footprints of dairy farms following IPCC guidelines. The package
-includes:
+footprints of dairy farms following IPCC guidelines ([IPCC 2019
+Refinement](https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html))
+and International Dairy Federation guidance for the dairy sector ([IDF
+Bulletin
+520](https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&_sid=8a3f414f8&_ss=r)).
+The package includes:
 
 - **Individual emission calculations** from enteric fermentation,
   manure, soil, energy, and inputs
@@ -19,20 +23,20 @@ includes:
 
 ## Installation
 
-You can install the latest version of cowfootR from GitHub or CRAN:
+``` r
+install.packages("cowfootR")
+```
+
+Or install the development version:
 
 ``` r
-# Install from CRAN or Github
-install.packages("cowfootR")
 devtools::install_github("juanmarcosmoreno-arch/cowfootR")
 ```
 
 ## Quick Start
 
-### Single Farm Analysis
-
-This is a basic example of how to calculate the carbon footprint of a
-single farm:
+Below is a minimal, end-to-end example showing the core workflow of
+`cowfootR` for a single dairy farm.
 
 ``` r
 library(cowfootR)
@@ -42,115 +46,318 @@ boundaries <- set_system_boundaries("farm_gate")
 
 # 2. Calculate emissions by source
 enteric <- calc_emissions_enteric(
-  n_animals = 100, 
+  n_animals = 100,
   cattle_category = "dairy_cows",
   boundaries = boundaries
 )
 
 manure <- calc_emissions_manure(
-  n_cows = 100, 
+  n_cows = 100,
   boundaries = boundaries
 )
 
 soil <- calc_emissions_soil(
-  n_fertilizer_synthetic = 1500, 
-  n_excreta_pasture = 5000, 
+  n_fertilizer_synthetic = 1500,
+  n_excreta_pasture = 5000,
   area_ha = 120,
   boundaries = boundaries
 )
 
 energy <- calc_emissions_energy(
-  diesel_l = 2000, 
-  electricity_kwh = 5000, 
+  diesel_l = 2000,
+  electricity_kwh = 5000,
   boundaries = boundaries
 )
 
 inputs <- calc_emissions_inputs(
-  conc_kg = 1000, 
-  fert_n_kg = 500, 
+  conc_kg = 1000,
+  fert_n_kg = 500,
   boundaries = boundaries
 )
 
-# 3. Calculate total emissions
+# 3. Aggregate total emissions
 total_emissions <- calc_total_emissions(enteric, manure, soil, energy, inputs)
-print(paste("Total emissions:", round(total_emissions$total_co2eq, 1), "kg CO2eq"))
+total_emissions
+#> Carbon Footprint - Total Emissions
+#> ==================================
+#> Total CO2eq: 451512.6 kg
+#> Number of sources: 5 
+#> 
+#> Breakdown by source:
+#>   energy : 5740 kg CO2eq
+#>   enteric : 312800 kg CO2eq
+#>   inputs : 4000 kg CO2eq
+#>   manure : 89880 kg CO2eq
+#>   soil : 39092.62 kg CO2eq
+#> 
+#> Calculated on: 2026-01-08
 
-# 4. Calculate intensity metrics
+# 4. Intensity metrics
 milk_intensity <- calc_intensity_litre(
   total_emissions = total_emissions,
   milk_litres = 750000,
   fat = 4.0,
   protein = 3.3
 )
-print(paste("Milk intensity:", round(milk_intensity$intensity_co2eq_per_kg_fpcm, 2), 
-            "kg CO2eq/kg FPCM"))
+milk_intensity
+#> Carbon Footprint Intensity
+#> ==========================
+#> Intensity: 0.585 kg CO2eq/kg FPCM
+#> 
+#> Production data:
+#>  Raw milk (L): 750,000 L
+#>  Raw milk (kg): 772,500 kg
+#>  FPCM (kg): 772,407 kg
+#>  Fat content: 4 %
+#>  Protein content: 3.3 %
+#> 
+#> Total emissions: 451,513 kg CO2eq
+#> Calculated on: 2026-01-08
 
 area_intensity <- calc_intensity_area(
   total_emissions = total_emissions,
   area_total_ha = 120
 )
-print(paste("Area intensity:", round(area_intensity$intensity_per_total_ha, 1), 
-            "kg CO2eq/ha"))
+area_intensity
+#> Carbon Footprint Area Intensity
+#> ===============================
+#> Intensity (total area): 3762.61 kg CO2eq/ha
+#> Intensity (productive area): 3762.61 kg CO2eq/ha
+#> 
+#> Area summary:
+#>  Total area: 120 ha
+#>  Productive area: 120 ha
+#>  Land use efficiency: 100%
+#> 
+#> Total emissions: 451,513 kg CO2eq
+#> Calculated on: 2026-01-08
 ```
 
-### Batch Processing Workflow
+## Batch processing (typical real-world use)
 
-For analyzing multiple farms, use the Excel template approach:
+In practical applications, `cowfootR` is most often used to process data
+from multiple farms simultaneously. This is handled through the
+[`calc_batch()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_batch.md)
+function, which applies the same methodological workflow across all
+farms in a structured dataset.
+
+Below is a minimal example illustrating batch processing for multiple
+farms.
 
 ``` r
-# 1. Download and fill template
-cf_download_template("my_farms_template.xlsx")
-# Open the file, fill with your farm data, and save
+library(cowfootR)
 
-# 2. Read data and process multiple farms
-farm_data <- readxl::read_excel("my_farms_data.xlsx")
-results <- calc_batch(
-  data = farm_data,
+# Example dataset with two farms
+farms <- data.frame(
+  FarmID = c("Farm_A", "Farm_B"),
+  Year = c(2023, 2023),
+  Milk_litres = c(500000, 750000),
+  Cows_milking = c(90, 130),
+  Area_total_ha = c(110, 160),
+  Diesel_litres = c(4000, 6500),
+  Electricity_kWh = c(18000, 26000),
+  Concentrate_feed_kg = c(120000, 180000),
+  stringsAsFactors = FALSE
+)
+
+# Define system boundaries
+boundaries <- set_system_boundaries("farm_gate")
+
+# Run batch carbon footprint calculation
+batch_results <- calc_batch(
+  data = farms,
   tier = 2,
-  benchmark_region = "uruguay"  # optional
+  boundaries = boundaries,
+  benchmark_region = "uruguay"
 )
+#> Batch: 2 rows; tier=2 ...
 
-# 3. View processing summary
-print(results$summary)
+# Summary of batch processing
+batch_results$summary
+#> $n_farms_processed
+#> [1] 2
+#> 
+#> $n_farms_successful
+#> [1] 2
+#> 
+#> $n_farms_with_errors
+#> [1] 0
+#> 
+#> $boundaries_used
+#> $boundaries_used$scope
+#> [1] "farm_gate"
+#> 
+#> $boundaries_used$include
+#> [1] "enteric" "manure"  "soil"    "energy"  "inputs" 
+#> 
+#> 
+#> $benchmark_region
+#> [1] "uruguay"
+#> 
+#> $processing_date
+#> [1] "2026-01-08"
 
-# 4. Export comprehensive results to Excel
-export_hdc_report(results, "carbon_footprint_results.xlsx")
+# Farm-level results
+batch_results$farm_results
+#> [[1]]
+#> [[1]]$success
+#> [1] TRUE
+#> 
+#> [[1]]$farm_id
+#> [1] "Farm_A"
+#> 
+#> [[1]]$year
+#> [1] "2023"
+#> 
+#> [[1]]$emissions_enteric
+#> [1] 230826.6
+#> 
+#> [[1]]$emissions_manure
+#> [1] 183066.1
+#> 
+#> [[1]]$emissions_soil
+#> [1] 0
+#> 
+#> [[1]]$emissions_energy
+#> [1] 13794
+#> 
+#> [[1]]$emissions_inputs
+#> [1] 84000
+#> 
+#> [[1]]$emissions_total
+#> [1] 511686.8
+#> 
+#> [[1]]$intensity_milk_kg_co2eq_per_kg_fpcm
+#> [1] 0.9936858
+#> 
+#> [[1]]$intensity_area_kg_co2eq_per_ha_total
+#> [1] 4651.7
+#> 
+#> [[1]]$intensity_area_kg_co2eq_per_ha_productive
+#> [1] 4651.7
+#> 
+#> [[1]]$fpcm_production_kg
+#> [1] 514938.2
+#> 
+#> [[1]]$milk_production_kg
+#> [1] 515000
+#> 
+#> [[1]]$milk_production_litres
+#> [1] 5e+05
+#> 
+#> [[1]]$land_use_efficiency
+#> [1] 1
+#> 
+#> [[1]]$total_animals
+#> [1] 90
+#> 
+#> [[1]]$dairy_cows
+#> [1] 90
+#> 
+#> [[1]]$benchmark_region
+#> [1] "uruguay"
+#> 
+#> [[1]]$benchmark_performance
+#> [1] "Excellent (below typical range)"
+#> 
+#> [[1]]$processing_date
+#> [1] "2026-01-08"
+#> 
+#> [[1]]$boundaries_used
+#> [1] "farm_gate"
+#> 
+#> [[1]]$tier_used
+#> [1] "tier_2"
+#> 
+#> [[1]]$detailed_objects
+#> NULL
+#> 
+#> 
+#> [[2]]
+#> [[2]]$success
+#> [1] TRUE
+#> 
+#> [[2]]$farm_id
+#> [1] "Farm_B"
+#> 
+#> [[2]]$year
+#> [1] "2023"
+#> 
+#> [[2]]$emissions_enteric
+#> [1] 333416.3
+#> 
+#> [[2]]$emissions_manure
+#> [1] 264428.9
+#> 
+#> [[2]]$emissions_soil
+#> [1] 0
+#> 
+#> [[2]]$emissions_energy
+#> [1] 22142.25
+#> 
+#> [[2]]$emissions_inputs
+#> [1] 126000
+#> 
+#> [[2]]$emissions_total
+#> [1] 745987.4
+#> 
+#> [[2]]$intensity_milk_kg_co2eq_per_kg_fpcm
+#> [1] 0.9657954
+#> 
+#> [[2]]$intensity_area_kg_co2eq_per_ha_total
+#> [1] 4662.42
+#> 
+#> [[2]]$intensity_area_kg_co2eq_per_ha_productive
+#> [1] 4662.42
+#> 
+#> [[2]]$fpcm_production_kg
+#> [1] 772407.3
+#> 
+#> [[2]]$milk_production_kg
+#> [1] 772500
+#> 
+#> [[2]]$milk_production_litres
+#> [1] 750000
+#> 
+#> [[2]]$land_use_efficiency
+#> [1] 1
+#> 
+#> [[2]]$total_animals
+#> [1] 130
+#> 
+#> [[2]]$dairy_cows
+#> [1] 130
+#> 
+#> [[2]]$benchmark_region
+#> [1] "uruguay"
+#> 
+#> [[2]]$benchmark_performance
+#> [1] "Excellent (below typical range)"
+#> 
+#> [[2]]$processing_date
+#> [1] "2026-01-08"
+#> 
+#> [[2]]$boundaries_used
+#> [1] "farm_gate"
+#> 
+#> [[2]]$tier_used
+#> [1] "tier_2"
+#> 
+#> [[2]]$detailed_objects
+#> NULL
+
+# Export results to Excel
+export_hdc_report(
+  batch_results,
+  file = "cowfootR_batch_report.xlsx"
+)
+#> Batch report saved to: cowfootR_batch_report.xlsx
 ```
 
-### Working with Data Frames
-
-You can also work directly with data frames:
-
-``` r
-# Example farm data
-farm_data <- data.frame(
-  FarmID = c("Farm_A", "Farm_B", "Farm_C"),
-  Year = c("2023", "2023", "2023"),
-  Milk_litres = c(500000, 750000, 300000),
-  Fat_percent = c(4.0, 3.8, 4.2),
-  Protein_percent = c(3.3, 3.2, 3.4),
-  Cows_milking = c(100, 150, 60),
-  Area_total_ha = c(200, 300, 120),
-  N_fertilizer_kg = c(2000, 3000, 1200),
-  Diesel_litres = c(4000, 6000, 2400),
-  Electricity_kWh = c(10000, 15000, 6000)
-)
-
-# Process all farms
-results <- calc_batch(farm_data, tier = 2)
-
-# Check results for each farm
-for (i in seq_along(results$farm_results)) {
-  farm <- results$farm_results[[i]]
-  if (farm$success) {
-    cat("Farm", farm$farm_id, ":", round(farm$emissions_total, 1), "kg CO2eq\n")
-  } else {
-    cat("Farm", farm$farm_id, ": ERROR -", farm$error, "\n")
-  }
-}
-```
-
-## Key Features
+Batch results can be directly exported to an Excel report using
+[`export_hdc_report()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/export_hdc_report.md),
+facilitating integration with reporting workflows commonly used by
+consultants, researchers, and stakeholders.
 
 ### Emission Sources Covered
 
@@ -163,14 +370,8 @@ for (i in seq_along(results$farm_results)) {
 ### System Boundaries
 
 ``` r
-# Farm gate (direct on-farm emissions only)
 boundaries_fg <- set_system_boundaries("farm_gate")
-
-# Cradle to farm gate (includes upstream production)
 boundaries_cfg <- set_system_boundaries("cradle_to_farm_gate")
-
-# Use in calculations
-results <- calc_batch(farm_data, boundaries = boundaries_cfg)
 ```
 
 ### Intensity Metrics
@@ -211,21 +412,8 @@ to get the complete column structure.
 
 The package includes robust error handling for batch processing:
 
-``` r
-# Process with error handling
-results <- calc_batch(farm_data)
-
-# Check for processing errors
-if (results$summary$n_farms_with_errors > 0) {
-  error_farms <- results$farm_results[
-    sapply(results$farm_results, function(x) !x$success)
-  ]
-  
-  for (farm in error_farms) {
-    cat("Farm", farm$farm_id, "failed:", farm$error, "\n")
-  }
-}
-```
+For batch processing, Excel templates, reporting, and error handling,
+please see the package vignettes and the documentation website.
 
 ## Contributing
 
@@ -237,9 +425,12 @@ suggest improvements on
 
 - IPCC 2019 Refinement to the 2006 IPCC Guidelines for National
   Greenhouse Gas Inventories
-- International Dairy Federation (IDF). 2015. A common carbon footprint
-  approach for the dairy sector
+  <https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html>
+- International Dairy Federation (IDF). 2022. The IDF global Carbon
+  Footprint standard for the dairy sector
+  <https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&_sid=8a3f414f8&_ss=r>
 - FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector
+  <https://www.fao.org/4/k7930e/k7930e00.pdf>
 
 ## License
 
