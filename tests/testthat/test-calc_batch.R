@@ -21,21 +21,26 @@ test_that("calc_batch processes multiple farms", {
 })
 
 test_that("calc_batch validates tier input", {
+  # Use a minimal but valid 1-row dataset so the function reaches tier validation
   farms <- data.frame(
     FarmID = "A",
+    Year = "2025",
     Milk_litres = 500000,
+    Cows_milking = 100,
     stringsAsFactors = FALSE
   )
 
   expect_error(
     calc_batch(data = farms, tier = 3),
-    regexp = "tier.*(1|2)|invalid.*tier|must be.*(1|2)",
+    regexp = "`tier` must be 1 or 2|tier.*(1|2)",
     ignore.case = TRUE
   )
+})
 
+test_that("calc_batch validates empty input", {
   expect_error(
     calc_batch(data = data.frame()),
-    regexp = "data.*(empty|no rows)|nrow\\(data\\).*0|must contain",
+    regexp = "zero rows|nrow\\(data\\) == 0|empty|must.*contain",
     ignore.case = TRUE
   )
 })
