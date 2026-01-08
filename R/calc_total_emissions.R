@@ -12,9 +12,9 @@
 #' \donttest{
 #' # hipotético: totales ya agregados por fuente
 #' enteric <- list(co2eq_kg = 45000, source = "enteric")
-#' manure  <- list(co2eq_kg = 12000, source = "manure")
-#' soil    <- list(co2eq_kg = 18000, source = "soil")
-#' energy  <- list(co2eq_kg =  8000, source = "energy")
+#' manure <- list(co2eq_kg = 12000, source = "manure")
+#' soil <- list(co2eq_kg = 18000, source = "soil")
+#' energy <- list(co2eq_kg = 8000, source = "energy")
 #'
 #' tot <- calc_total_emissions(enteric = enteric, manure = manure, soil = soil, energy = energy)
 #' # print(tot)
@@ -29,16 +29,22 @@ calc_total_emissions <- function(...) {
   # internal helpers -------------------------
   .first_non_null <- function(...) {
     x <- list(...)
-    for (v in x) if (!is.null(v)) return(v)
+    for (v in x) if (!is.null(v)) {
+      return(v)
+    }
     NULL
   }
   .num_or_null <- function(x) {
-    if (is.null(x)) return(NULL)
+    if (is.null(x)) {
+      return(NULL)
+    }
     x <- suppressWarnings(as.numeric(x))
     if (length(x) == 1L && is.finite(x)) x else NULL
   }
   .sum_breakdown <- function(bd) {
-    if (is.null(bd)) return(NULL)
+    if (is.null(bd)) {
+      return(NULL)
+    }
 
     if (is.numeric(bd) && is.null(dim(bd))) {
       return(sum(bd, na.rm = TRUE))
@@ -50,14 +56,16 @@ calc_total_emissions <- function(...) {
     }
 
     if (is.data.frame(bd)) {
-      cand <- c("co2eq_kg","CO2eq_kg","co2eq","kg_co2eq","emissions_kg","value","valor")
+      cand <- c("co2eq_kg", "CO2eq_kg", "co2eq", "kg_co2eq", "emissions_kg", "value", "valor")
       col_ok <- intersect(cand, names(bd))
       if (length(col_ok) > 0) {
         v <- suppressWarnings(as.numeric(bd[[col_ok[1]]]))
         return(sum(v, na.rm = TRUE))
       }
       nums <- unlist(bd[vapply(bd, is.numeric, logical(1))], use.names = FALSE)
-      if (length(nums)) return(sum(nums, na.rm = TRUE))
+      if (length(nums)) {
+        return(sum(nums, na.rm = TRUE))
+      }
     }
 
     NULL
@@ -82,16 +90,22 @@ calc_total_emissions <- function(...) {
       .num_or_null(x$total),
       .num_or_null(x$emissions_total_kg)
     )
-    if (!is.null(tot)) return(tot)
+    if (!is.null(tot)) {
+      return(tot)
+    }
 
     bd <- .first_non_null(x$breakdown, x$emissions_breakdown, x$summary)
     tot_bd <- .sum_breakdown(bd)
-    if (!is.null(tot_bd)) return(tot_bd)
+    if (!is.null(tot_bd)) {
+      return(tot_bd)
+    }
 
     flat <- suppressWarnings(as.numeric(unlist(x, use.names = FALSE)))
     if (length(flat)) {
       s <- sum(flat, na.rm = TRUE)
-      if (is.finite(s) && s > 0) return(s)
+      if (is.finite(s) && s > 0) {
+        return(s)
+      }
     }
 
     NA_real_
@@ -99,7 +113,7 @@ calc_total_emissions <- function(...) {
   # ------------------------------------------
 
   src_names <- character(length(sources))
-  values    <- numeric(length(sources))
+  values <- numeric(length(sources))
 
   for (i in seq_along(sources)) {
     x <- sources[[i]]
@@ -107,7 +121,7 @@ calc_total_emissions <- function(...) {
       stop("All arguments must be results from calc_emissions_*() functions (got a non-list).")
     }
     src_names[i] <- .infer_source_name(x, i, dot_nm = dot_names[i])
-    values[i]    <- .extract_total(x)
+    values[i] <- .extract_total(x)
     if (!is.finite(values[i])) {
       stop(sprintf("Could not extract a numeric total from source '%s'.", src_names[i]))
     }
@@ -115,7 +129,8 @@ calc_total_emissions <- function(...) {
 
   breakdown <- tapply(values, src_names, sum, na.rm = TRUE)
   # asegurar vector named puro (no array) por si tapply devuelve 'array'
-  breakdown <- as.numeric(breakdown); names(breakdown) <- names(tapply(values, src_names, sum, na.rm = TRUE))
+  breakdown <- as.numeric(breakdown)
+  names(breakdown) <- names(tapply(values, src_names, sum, na.rm = TRUE))
 
   total <- sum(breakdown, na.rm = TRUE)
 

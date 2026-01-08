@@ -18,7 +18,9 @@ num_close <- function(x, y, tol = 1e-8) {
 # Extract all finite numeric values from a list/data.frame/atomic vector.
 # This is a fallback when the output structure is not strictly specified.
 pluck_numeric <- function(x) {
-  if (is.null(x)) return(numeric())
+  if (is.null(x)) {
+    return(numeric())
+  }
   v <- if (is.data.frame(x)) unlist(as.list(x)) else unlist(x, use.names = TRUE)
   v <- suppressWarnings(as.numeric(v))
   v[is.finite(v)]
@@ -28,22 +30,34 @@ pluck_numeric <- function(x) {
 # Example patterns for intensities: c("per_ha", "intens", "ha") or c("per_litre","intens","milk")
 # If nothing matches, returns numeric(0) and the calling test can skip gracefully.
 pick_named_numeric <- function(x, patterns = c("intens", "per_")) {
-  if (is.null(x)) return(numeric(0))
+  if (is.null(x)) {
+    return(numeric(0))
+  }
 
   # data.frame case
   if (is.data.frame(x)) {
-    nm <- names(x); if (is.null(nm)) return(numeric(0))
+    nm <- names(x)
+    if (is.null(nm)) {
+      return(numeric(0))
+    }
     hits <- which(Reduce(`|`, lapply(patterns, function(p) grepl(p, nm, ignore.case = TRUE))))
-    if (length(hits) == 0) return(numeric(0))
+    if (length(hits) == 0) {
+      return(numeric(0))
+    }
     v <- suppressWarnings(as.numeric(x[[hits[1]]]))
     return(v[is.finite(v)])
   }
 
   # list case
   if (is.list(x)) {
-    nm <- names(x); if (is.null(nm)) return(numeric(0))
+    nm <- names(x)
+    if (is.null(nm)) {
+      return(numeric(0))
+    }
     hits <- which(Reduce(`|`, lapply(patterns, function(p) grepl(p, nm, ignore.case = TRUE))))
-    if (length(hits) == 0) return(numeric(0))
+    if (length(hits) == 0) {
+      return(numeric(0))
+    }
     v <- suppressWarnings(as.numeric(x[[hits[1]]]))
     return(v[is.finite(v)])
   }
@@ -61,9 +75,13 @@ pick_named_numeric <- function(x, patterns = c("intens", "per_")) {
 # Returns FALSE if formals() cannot be retrieved.
 fn_accepts <- function(fn, names_vec) {
   fml <- try(formals(fn), silent = TRUE)
-  if (inherits(fml, "try-error") || is.null(fml)) return(FALSE)
+  if (inherits(fml, "try-error") || is.null(fml)) {
+    return(FALSE)
+  }
   fm_names <- names(fml)
-  if (is.null(fm_names)) return(FALSE)
+  if (is.null(fm_names)) {
+    return(FALSE)
+  }
   all(names_vec %in% fm_names)
 }
 

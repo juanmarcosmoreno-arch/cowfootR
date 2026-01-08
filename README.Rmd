@@ -111,8 +111,60 @@ area_intensity <- calc_intensity_area(
   area_total_ha = 120
 )
 area_intensity
+```
+
+## Batch processing (typical real-world use)
+
+In practical applications, `cowfootR` is most often used to process data from
+multiple farms simultaneously. This is handled through the `calc_batch()`
+function, which applies the same methodological workflow across all farms in a
+structured dataset.
+
+Below is a minimal example illustrating batch processing for multiple farms.
+
+```{r example_batch}
+library(cowfootR)
+
+# Example dataset with two farms
+farms <- data.frame(
+  FarmID = c("Farm_A", "Farm_B"),
+  Year = c(2023, 2023),
+  Milk_litres = c(500000, 750000),
+  Cows_milking = c(90, 130),
+  Area_total_ha = c(110, 160),
+  Diesel_litres = c(4000, 6500),
+  Electricity_kWh = c(18000, 26000),
+  Concentrate_feed_kg = c(120000, 180000),
+  stringsAsFactors = FALSE
+)
+
+# Define system boundaries
+boundaries <- set_system_boundaries("farm_gate")
+
+# Run batch carbon footprint calculation
+batch_results <- calc_batch(
+  data = farms,
+  tier = 2,
+  boundaries = boundaries,
+  benchmark_region = "uruguay"
+)
+
+# Summary of batch processing
+batch_results$summary
+
+# Farm-level results
+batch_results$farm_results
+
+# Export results to Excel
+export_hdc_report(
+  batch_results,
+  file = "cowfootR_batch_report.xlsx"
+)
 
 ```
+Batch results can be directly exported to an Excel report using
+`export_hdc_report()`, facilitating integration with reporting workflows
+commonly used by consultants, researchers, and stakeholders.
 
 ### Emission Sources Covered
 

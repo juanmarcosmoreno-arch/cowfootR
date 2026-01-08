@@ -3,7 +3,7 @@
 test_that("calc_total_emissions aggregates correctly", {
   e1 <- list(source = "enteric", co2eq_kg = 1000)
   e2 <- list(source = "manure", co2eq_kg = 500)
-  e3 <- list(source = "soil",   co2eq_kg = 300)
+  e3 <- list(source = "soil", co2eq_kg = 300)
 
   result <- calc_total_emissions(e1, e2, e3)
 
@@ -18,8 +18,8 @@ test_that("calc_total_emissions aggregates correctly", {
 
 test_that("calc_total_emissions handles different field names", {
   e1 <- list(source = "enteric", co2eq_kg = 1000)
-  e2 <- list(source = "manure",  total_co2eq_kg = 500)
-  e3 <- list(source = "soil",    total_co2eq = 300)
+  e2 <- list(source = "manure", total_co2eq_kg = 500)
+  e3 <- list(source = "soil", total_co2eq = 300)
 
   result <- calc_total_emissions(e1, e2, e3)
 

@@ -13,7 +13,7 @@
 #' on.exit(unlink(tf, force = TRUE), add = TRUE)
 #' cf_download_template(tf)
 cf_download_template <- function(file = "cowfootR_template.xlsx",
-                              include_examples = FALSE) {
+                                 include_examples = FALSE) {
   if (!requireNamespace("writexl", quietly = TRUE)) {
     stop("Package 'writexl' is required. Please install it with install.packages('writexl').")
   }
@@ -70,11 +70,11 @@ cf_download_template <- function(file = "cowfootR_template.xlsx",
       MS_intake_calves_kg_day = c(5, 4),
       MS_intake_bulls_kg_day = c(12, 11),
       Ym_percent = c(6.5, 6.5),
-      Feed_grain_dry_kg   = c(120000, 80000),
-      Feed_grain_wet_kg   = c(60000, 40000),
-      Feed_ration_kg      = c(100000, 70000),
-      Feed_byproducts_kg  = c(30000, 20000),
-      Feed_proteins_kg    = c(25000, 15000),
+      Feed_grain_dry_kg = c(120000, 80000),
+      Feed_grain_wet_kg = c(60000, 40000),
+      Feed_ration_kg = c(100000, 70000),
+      Feed_byproducts_kg = c(30000, 20000),
+      Feed_proteins_kg = c(25000, 15000),
       Area_total_ha = c(150, 95),
       Area_productive_ha = c(140, 90),
       Pasture_permanent_ha = c(100, 60),

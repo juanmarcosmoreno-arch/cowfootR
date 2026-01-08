@@ -17,7 +17,7 @@ test_that("energy: each source contributes when present; zero when all are zero"
     diesel_l = 0,
     petrol_l = 0,
     electricity_kwh = 20000,
-    ef_electricity = 0.50,      # fija el factor (kg CO2/kWh)
+    ef_electricity = 0.50, # fija el factor (kg CO2/kWh)
     include_upstream = FALSE
   )
 

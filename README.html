@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM+8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB/aFGpk3jaTY6xa8JAGMW/O62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v+k/0an2i+itHDw3v2+9+DBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3/I7AtxEJLtzzuZfI+VVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy/Lt7Kc+0vWY/gAgIIEqAN9we0pwKXreiMasxvabDQMM4riO+qxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw+ymhce7vwM9jSqO8JyVd5RH9gyTt2+J/yUmYlIR0s04n6+7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv/ocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi+W2+MjCzMIDApSwvXzC97Z4Ig8N/BxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh/8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT+AEjAwuDFpBmA9KMDEwMCh9i/v8H8sH0/4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9/lqYwOGZxeUelN2U2R6+cArgtCJpauW7UQBqnFkUsjAY/kOU1cP+DAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl+vvmM/byA48e6tWrKArm4ZJlCbdsrxksL1AwWn/yBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO//sdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd/89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF+9JOS0nbaaYDCQfwCJ7Au3AHj+LO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm+EBXuAbHmIMSRMs+4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL+hD7C1xoaHeLJSEao0FEW14ckxC+TU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13/+lm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl+9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O/AdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB///AA8AAQAAAAAAAAAAAAAAAAABAAAAAA==) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+box-sizing: border-box;
+min-width: 200px;
+max-width: 980px;
+margin: 0 auto;
+padding: 45px;
+padding-top: 0px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="cowfootr-">cowfootR
+<img role="img" src="man/figures/logo.png" align="right" width="120" /></h1>
+<p>Tools to estimate the carbon footprint of dairy farms.<br />
+Implements methods based on IDF (International Dairy Federation)<br />
+and IPCC guidelines for greenhouse gas accounting.</p>
+<!-- badges: start -->
+
+<p><a href="https://CRAN.R-project.org/package=cowfootR"><img role="img" aria-label="CRAN status" src="data:image/svg+xml; charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NSIgaGVpZ2h0PSIyMCIgYXJpYS1sYWJlbD0iQ1JBTiAwLjEuMiI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMCIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxtYXNrIGlkPSJhIj4KICAgIDxyZWN0IHdpZHRoPSI4NSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4KICA8L21hc2s+CiAgPGcgbWFzaz0idXJsKCNhKSI+CiAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDQzdjIwSDB6Ii8+CiAgICA8cGF0aCBmaWxsPSIjNGMxIiBkPSJNNDMgMGg2M3YyMEg0M3oiLz4KICAgIDxwYXRoIGZpbGw9InVybCgjYikiIGQ9Ik0wIDBoODV2MjBIMHoiLz4KICA8L2c+CiAgPGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIKICAgICBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICA8dGV4dCB4PSIyMS41IiB5PSIxNSIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+CiAgICAgIENSQU4KICAgIDwvdGV4dD4KICAgIDx0ZXh0IHg9IjIxLjUiIHk9IjE0Ij4KICAgICAgQ1JBTgogICAgPC90ZXh0PgogICAgPHRleHQgeD0iNjMiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj4KICAgICAgMC4xLjIKICAgIDwvdGV4dD4KICAgIDx0ZXh0IHg9IjYzIiB5PSIxNCI+CiAgICAgIDAuMS4yCiAgICA8L3RleHQ+CiAgPC9nPgo8L3N2Zz4=" alt="CRAN status" /></a> <a href="https://github.com/juanmarcosmoreno-arch/cowfootR/actions/workflows/R-CMD-check.yaml"><img role="img" aria-label="R-CMD-check" src="data:image/svg+xml; charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzUiIGhlaWdodD0iMjAiPgogIDx0aXRsZT5SLUNNRC1jaGVjay55YW1sIC0gZmFpbGluZzwvdGl0bGU+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9IndvcmtmbG93LWZpbGwiIHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjNDQ0RDU2IiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMyNDI5MkUiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic3RhdGUtZmlsbCIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNENzNBNDkiIG9mZnNldD0iMCUiPjwvc3RvcD4KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iI0NCMjQzMSIgb2Zmc2V0PSIxMDAlIj48L3N0b3A+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgPGcgZm9udC1mYW1pbHk9IiYjMzk7RGVqYVZ1IFNhbnMmIzM5OyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4KICAgICAgPHBhdGggaWQ9IndvcmtmbG93LWJnIiBkPSJNMCwzIEMwLDEuMzQzMSAxLjM1NTIsMCAzLjAyNzAyNzAzLDAgTDEzMiwwIEwxMzIsMjAgTDMuMDI3MDI3MDMsMjAgQzEuMzU1MiwyMCAwLDE4LjY1NjkgMCwxNyBMMCwzIFoiIGZpbGw9InVybCgjd29ya2Zsb3ctZmlsbCkiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICA8dGV4dCBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj4KICAgICAgICA8dHNwYW4geD0iMjIuMTk4MTk4MiIgeT0iMTUiIGFyaWEtaGlkZGVuPSJ0cnVlIj5SLUNNRC1jaGVjay55YW1sPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgICA8dGV4dCBmaWxsPSIjRkZGRkZGIj4KICAgICAgICA8dHNwYW4geD0iMjIuMTk4MTk4MiIgeT0iMTQiPlItQ01ELWNoZWNrLnlhbWw8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzIpIiBmb250LWZhbWlseT0iJiMzOTtEZWphVnUgU2FucyYjMzk7LFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICA8cGF0aCBkPSJNMCAwaDQwLjQ3QzQxLjg2OSAwIDQzIDEuMzQzIDQzIDN2MTRjMCAxLjY1Ny0xLjEzMiAzLTIuNTMgM0gwVjB6IiBpZD0ic3RhdGUtYmciIGZpbGw9InVybCgjc3RhdGUtZmlsbCkiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICA8dGV4dCBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CiAgICAgICAgPHRzcGFuIHg9IjUiIHk9IjE1Ij5mYWlsaW5nPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgICA8dGV4dCBmaWxsPSIjRkZGRkZGIj4KICAgICAgICA8dHNwYW4geD0iNSIgeT0iMTQiPmZhaWxpbmc8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICA8L2c+CiAgICA8cGF0aCBmaWxsPSIjOTU5REE1IiBkPSJNMTEgM2MtMy44NjggMC03IDMuMTMyLTcgN2E2Ljk5NiA2Ljk5NiAwIDAgMCA0Ljc4NiA2LjY0MWMuMzUuMDYyLjQ4Mi0uMTQ4LjQ4Mi0uMzMyIDAtLjE2Ni0uMDEtLjcxOC0uMDEtMS4zMDQtMS43NTguMzI0LTIuMjEzLS40MjktMi4zNTMtLjgyMi0uMDc5LS4yMDItLjQyLS44MjMtLjcxNy0uOTktLjI0NS0uMTMtLjU5NS0uNDU0LS4wMS0uNDYzLjU1Mi0uMDA5Ljk0Ni41MDggMS4wNzcuNzE4LjYzIDEuMDU4IDEuNjM2Ljc2IDIuMDM5LjU3Ny4wNjEtLjQ1NS4yNDUtLjc2MS40NDYtLjkzNi0xLjU1Ny0uMTc1LTMuMTg1LS43NzktMy4xODUtMy40NTYgMC0uNzYyLjI3MS0xLjM5Mi43MTgtMS44ODItLjA3LS4xNzUtLjMxNS0uODkyLjA3LTEuODU1IDAgMCAuNTg2LS4xODMgMS45MjUuNzE4YTYuNSA2LjUgMCAwIDEgMS43NS0uMjM2IDYuNSA2LjUgMCAwIDEgMS43NS4yMzZjMS4zMzgtLjkxIDEuOTI1LS43MTggMS45MjUtLjcxOC4zODUuOTYzLjE0IDEuNjguMDcgMS44NTUuNDQ2LjQ5LjcxNyAxLjExMi43MTcgMS44ODIgMCAyLjY4Ni0xLjYzNiAzLjI4LTMuMTk0IDMuNDU2LjI1NC4yMTkuNDczLjYzOS40NzMgMS4yOTUgMCAuOTM2LS4wMDkgMS42ODktLjAwOSAxLjkyNSAwIC4xODQuMTMxLjQwMi40ODEuMzMyQTcuMDExIDcuMDExIDAgMCAwIDE4IDEwYzAtMy44NjctMy4xMzMtNy03LTd6Ij48L3BhdGg+CiAgPC9nPgo8L3N2Zz4KCg==" alt="R-CMD-check" /></a> <a href="https://www.repostatus.org/#active"><img role="img" aria-label="Project Status: Active" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjIwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9InJlcG8gc3RhdHVzOiBBY3RpdmUiPjx0aXRsZT5yZXBvIHN0YXR1czogQWN0aXZlPC90aXRsZT48bGluZWFyR3JhZGllbnQgaWQ9InMiIHgyPSIwIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+PC9saW5lYXJHcmFkaWVudD48Y2xpcFBhdGggaWQ9InIiPjxyZWN0IHdpZHRoPSIxMTYiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjcikiPjxyZWN0IHdpZHRoPSI3MyIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9IjczIiB3aWR0aD0iNDMiIGhlaWdodD0iMjAiIGZpbGw9IiM0YzEiLz48cmVjdCB3aWR0aD0iMTE2IiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI3MpIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjExMCI+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjM3NSIgeT0iMTUwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iNjMwIj5yZXBvIHN0YXR1czwvdGV4dD48dGV4dCB4PSIzNzUiIHk9IjE0MCIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIGZpbGw9IiNmZmYiIHRleHRMZW5ndGg9IjYzMCI+cmVwbyBzdGF0dXM8L3RleHQ+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjkzNSIgeT0iMTUwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iMzMwIj5BY3RpdmU8L3RleHQ+PHRleHQgeD0iOTM1IiB5PSIxNDAiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiBmaWxsPSIjZmZmIiB0ZXh0TGVuZ3RoPSIzMzAiPkFjdGl2ZTwvdGV4dD48L2c+PC9zdmc+" alt="Project Status: Active" /></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#maturing"><img role="img" aria-label="Lifecycle: maturing" src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMTYiIGhlaWdodD0iMjAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0ibGlmZWN5Y2xlOiBtYXR1cmluZyI+PHRpdGxlPmxpZmVjeWNsZTogbWF0dXJpbmc8L3RpdGxlPjxsaW5lYXJHcmFkaWVudCBpZD0icyIgeDI9IjAiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiLz48L2xpbmVhckdyYWRpZW50PjxjbGlwUGF0aCBpZD0iciI+PHJlY3Qgd2lkdGg9IjExNiIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz48L2NsaXBQYXRoPjxnIGNsaXAtcGF0aD0idXJsKCNyKSI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjNTU1Ii8+PHJlY3QgeD0iNTUiIHdpZHRoPSI2MSIgaGVpZ2h0PSIyMCIgZmlsbD0iIzAwN2VjNiIvPjxyZWN0IHdpZHRoPSIxMTYiIGhlaWdodD0iMjAiIGZpbGw9InVybCgjcykiLz48L2c+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IlZlcmRhbmEsR2VuZXZhLERlamFWdSBTYW5zLHNhbnMtc2VyaWYiIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGZvbnQtc2l6ZT0iMTEwIj48dGV4dCBhcmlhLWhpZGRlbj0idHJ1ZSIgeD0iMjg1IiB5PSIxNTAiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB0ZXh0TGVuZ3RoPSI0NTAiPmxpZmVjeWNsZTwvdGV4dD48dGV4dCB4PSIyODUiIHk9IjE0MCIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIGZpbGw9IiNmZmYiIHRleHRMZW5ndGg9IjQ1MCI+bGlmZWN5Y2xlPC90ZXh0Pjx0ZXh0IGFyaWEtaGlkZGVuPSJ0cnVlIiB4PSI4NDUiIHk9IjE1MCIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHRleHRMZW5ndGg9IjUxMCI+bWF0dXJpbmc8L3RleHQ+PHRleHQgeD0iODQ1IiB5PSIxNDAiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiBmaWxsPSIjZmZmIiB0ZXh0TGVuZ3RoPSI1MTAiPm1hdHVyaW5nPC90ZXh0PjwvZz48L3N2Zz4=" alt="Lifecycle: maturing" /></a> <a href="https://app.codecov.io/gh/juanmarcosmoreno-arch/cowfootR"><img role="img" aria-label="Codecov test coverage" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzciIGhlaWdodD0iMjAiPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMCIgeTI9IjEwMCUiPgogICAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIgLz4KICAgICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPG1hc2sgaWQ9ImEiPgogICAgICAgIDxyZWN0IHdpZHRoPSIxMzciIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIiAvPgogICAgPC9tYXNrPgogICAgPGcgbWFzaz0idXJsKCNhKSI+CiAgICAgICAgPHBhdGggZmlsbD0iIzU1NSIgZD0iTTAgMGg3NnYyMEgweiIgLz4KICAgICAgICA8cGF0aCBmaWxsPSIjOWY5ZjlmIiBkPSJNNzYgMGg2MXYyMEg3NnoiIC8+CiAgICAgICAgPHBhdGggZmlsbD0idXJsKCNiKSIgZD0iTTAgMGgxMzd2MjBIMHoiIC8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iNDYiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5jb2RlY292PC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjQ2IiB5PSIxNCI+Y29kZWNvdjwvdGV4dD4KICAgICAgICA8dGV4dCB4PSIxMDUuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPnVua25vd248L3RleHQ+CiAgICAgICAgPHRleHQgeD0iMTA1LjUiIHk9IjE0Ij51bmtub3duPC90ZXh0PgogICAgPC9nPgogICAgPHN2ZyB2aWV3Qm94PSIxNjEgLTggNjAgNjAiPgogICAgICAgIDxwYXRoIGQ9Ik0yMy4wMTMgMEMxMC4zMzMuMDA5LjAxIDEwLjIyIDAgMjIuNzYydi4wNThsMy45MTQgMi4yNzUuMDUzLS4wMzZhMTEuMjkxIDExLjI5MSAwIDAgMSA4LjM1Mi0xLjc2NyAxMC45MTEgMTAuOTExIDAgMCAxIDUuNSAyLjcyNmwuNjczLjYyNC4zOC0uODI4Yy4zNjgtLjgwMi43OTMtMS41NTYgMS4yNjQtMi4yNC4xOS0uMjc2LjM5OC0uNTU0LjYzNy0uODUxbC4zOTMtLjQ5LS40ODQtLjQwNGExNi4wOCAxNi4wOCAwIDAgMC03LjQ1My0zLjQ2NiAxNi40ODIgMTYuNDgyIDAgMCAwLTcuNzA1LjQ0OUM3LjM4NiAxMC42ODMgMTQuNTYgNS4wMTYgMjMuMDMgNS4wMWM0Ljc3OSAwIDkuMjcyIDEuODQgMTIuNjUxIDUuMTggMi40MSAyLjM4MiA0LjA2OSA1LjM1IDQuODA3IDguNTkxYTE2LjUzIDE2LjUzIDAgMCAwLTQuNzkyLS43MjNsLS4yOTItLjAwMmExNi43MDcgMTYuNzA3IDAgMCAwLTEuOTAyLjE0bC0uMDguMDEyYy0uMjguMDM3LS41MjQuMDc0LS43NDguMTE1LS4xMS4wMTktLjIxOC4wNDEtLjMyNy4wNjMtLjI1Ny4wNTItLjUxLjEwOC0uNzUuMTY5bC0uMjY1LjA2N2ExNi4zOSAxNi4zOSAwIDAgMC0uOTI2LjI3NmwtLjA1Ni4wMThjLS42ODIuMjMtMS4zNi41MTEtMi4wMTYuODM4bC0uMDUyLjAyNmMtLjI5LjE0NS0uNTg0LjMwNS0uODk5LjQ5bC0uMDY5LjA0YTE1LjU5NiAxNS41OTYgMCAwIDAtNC4wNjEgMy40NjZsLS4xNDUuMTc1Yy0uMjkuMzYtLjUyMS42NjYtLjcyMy45Ni0uMTcuMjQ3LS4zNC41MTMtLjU1Mi44NjRsLS4xMTYuMTk5Yy0uMTcuMjkyLS4zMi41Ny0uNDQ5LjgyNGwtLjAzLjA1N2ExNi4xMTYgMTYuMTE2IDAgMCAwLS44NDMgMi4wMjlsLS4wMzQuMTAyYTE1LjY1IDE1LjY1IDAgMCAwLS43ODYgNS4xNzRsLjAwMy4yMTRhMjEuNTIzIDIxLjUyMyAwIDAgMCAuMDQuNzU0Yy4wMDkuMTE5LjAyLjIzNy4wMzIuMzU1LjAxNC4xNDUuMDMyLjI5LjA0OS40MzJsLjAxLjA4Yy4wMS4wNjcuMDE3LjEzMy4wMjYuMTk3LjAzNC4yNDIuMDc0LjQ4LjExOS43Mi40NjMgMi40MTkgMS42MiA0LjgzNiAzLjM0NSA2Ljk5bC4wNzguMDk4LjA4LS4wOTVjLjY4OC0uODEgMi4zOTUtMy4zOCAyLjUzOS00LjkyMmwuMDAzLS4wMjktLjAxNC0uMDI1YTEwLjcyNyAxMC43MjcgMCAwIDEtMS4yMjYtNC45NTZjMC01Ljc2IDQuNTQ1LTEwLjU0NCAxMC4zNDMtMTAuODlsLjM4MS0uMDE0YTExLjQwMyAxMS40MDMgMCAwIDEgNi42NTEgMS45NTdsLjA1NC4wMzYgMy44NjItMi4yMzcuMDUtLjAzdi0uMDU2Yy4wMDYtNi4wOC0yLjM4NC0xMS43OTMtNi43MjktMTYuMDg5QzM0LjkzMiAyLjM2MSAyOS4xNiAwIDIzLjAxMyAwIiBmaWxsPSIjRjAxRjdBIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz4KICAgIDwvc3ZnPgo8L3N2Zz4K" alt="Codecov test coverage" /></a></p>
+<!-- badges: end -->
+
+<h2 id="overview">Overview</h2>
+<p><code>cowfootR</code> provides a comprehensive toolkit for
+calculating carbon footprints of dairy farms following IPCC guidelines
+(<a href="https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html">IPCC
+2019 Refinement</a>) and International Dairy Federation guidance for the
+dairy sector (<a href="https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&amp;_sid=8a3f414f8&amp;_ss=r">IDF
+Bulletin 520</a>). The package includes:</p>
+<ul>
+<li><strong>Individual emission calculations</strong> from enteric
+fermentation, manure, soil, energy, and inputs</li>
+<li><strong>Batch processing</strong> capabilities for multiple
+farms</li>
+<li><strong>Intensity metrics</strong> per liter of milk and per
+hectare</li>
+<li><strong>System boundary flexibility</strong> (farm gate,
+cradle-to-farm gate, etc.)</li>
+<li><strong>Excel integration</strong> for data input and report
+generation</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;cowfootR&quot;</span>)</span></code></pre></div>
+<p>Or install the development version:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;juanmarcosmoreno-arch/cowfootR&quot;</span>)</span></code></pre></div>
+<h2 id="quick-start">Quick Start</h2>
+<p>Below is a minimal, end-to-end example showing the core workflow of
+<code>cowfootR</code> for a single dairy farm.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(cowfootR)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># 1. Define system boundaries</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>boundaries <span class="ot">&lt;-</span> <span class="fu">set_system_boundaries</span>(<span class="st">&quot;farm_gate&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># 2. Calculate emissions by source</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>enteric <span class="ot">&lt;-</span> <span class="fu">calc_emissions_enteric</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">n_animals =</span> <span class="dv">100</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">cattle_category =</span> <span class="st">&quot;dairy_cows&quot;</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">boundaries =</span> boundaries</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>manure <span class="ot">&lt;-</span> <span class="fu">calc_emissions_manure</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  <span class="at">n_cows =</span> <span class="dv">100</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>  <span class="at">boundaries =</span> boundaries</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>)</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">calc_emissions_soil</span>(</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>  <span class="at">n_fertilizer_synthetic =</span> <span class="dv">1500</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>  <span class="at">n_excreta_pasture =</span> <span class="dv">5000</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>  <span class="at">area_ha =</span> <span class="dv">120</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>  <span class="at">boundaries =</span> boundaries</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>)</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>energy <span class="ot">&lt;-</span> <span class="fu">calc_emissions_energy</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>  <span class="at">diesel_l =</span> <span class="dv">2000</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>  <span class="at">electricity_kwh =</span> <span class="dv">5000</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>  <span class="at">boundaries =</span> boundaries</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>)</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>inputs <span class="ot">&lt;-</span> <span class="fu">calc_emissions_inputs</span>(</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>  <span class="at">conc_kg =</span> <span class="dv">1000</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>  <span class="at">fert_n_kg =</span> <span class="dv">500</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>  <span class="at">boundaries =</span> boundaries</span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>)</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co"># 3. Aggregate total emissions</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>total_emissions <span class="ot">&lt;-</span> <span class="fu">calc_total_emissions</span>(enteric, manure, soil, energy, inputs)</span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>total_emissions</span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; Carbon Footprint - Total Emissions</span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; ==================================</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; Total CO2eq: 451512.6 kg</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; Number of sources: 5 </span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt; Breakdown by source:</span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a><span class="co">#&gt;   energy : 5740 kg CO2eq</span></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a><span class="co">#&gt;   enteric : 312800 kg CO2eq</span></span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a><span class="co">#&gt;   inputs : 4000 kg CO2eq</span></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a><span class="co">#&gt;   manure : 89880 kg CO2eq</span></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="co">#&gt;   soil : 39092.62 kg CO2eq</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="co">#&gt; Calculated on: 2026-01-08</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a></span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="co"># 4. Intensity metrics</span></span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a>milk_intensity <span class="ot">&lt;-</span> <span class="fu">calc_intensity_litre</span>(</span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a>  <span class="at">total_emissions =</span> total_emissions,</span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a>  <span class="at">milk_litres =</span> <span class="dv">750000</span>,</span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a>  <span class="at">fat =</span> <span class="fl">4.0</span>,</span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a>  <span class="at">protein =</span> <span class="fl">3.3</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a>)</span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a>milk_intensity</span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="co">#&gt; Carbon Footprint Intensity</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a><span class="co">#&gt; ==========================</span></span>
+<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a><span class="co">#&gt; Intensity: 0.585 kg CO2eq/kg FPCM</span></span>
+<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a><span class="co">#&gt; Production data:</span></span>
+<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a><span class="co">#&gt;  Raw milk (L): 750,000 L</span></span>
+<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a><span class="co">#&gt;  Raw milk (kg): 772,500 kg</span></span>
+<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a><span class="co">#&gt;  FPCM (kg): 772,407 kg</span></span>
+<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a><span class="co">#&gt;  Fat content: 4 %</span></span>
+<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a><span class="co">#&gt;  Protein content: 3.3 %</span></span>
+<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
+<span id="cb3-74"><a href="#cb3-74" tabindex="-1"></a><span class="co">#&gt; Calculated on: 2026-01-08</span></span>
+<span id="cb3-75"><a href="#cb3-75" tabindex="-1"></a></span>
+<span id="cb3-76"><a href="#cb3-76" tabindex="-1"></a>area_intensity <span class="ot">&lt;-</span> <span class="fu">calc_intensity_area</span>(</span>
+<span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a>  <span class="at">total_emissions =</span> total_emissions,</span>
+<span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a>  <span class="at">area_total_ha =</span> <span class="dv">120</span></span>
+<span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a>)</span>
+<span id="cb3-80"><a href="#cb3-80" tabindex="-1"></a>area_intensity</span>
+<span id="cb3-81"><a href="#cb3-81" tabindex="-1"></a><span class="co">#&gt; Carbon Footprint Area Intensity</span></span>
+<span id="cb3-82"><a href="#cb3-82" tabindex="-1"></a><span class="co">#&gt; ===============================</span></span>
+<span id="cb3-83"><a href="#cb3-83" tabindex="-1"></a><span class="co">#&gt; Intensity (total area): 3762.61 kg CO2eq/ha</span></span>
+<span id="cb3-84"><a href="#cb3-84" tabindex="-1"></a><span class="co">#&gt; Intensity (productive area): 3762.61 kg CO2eq/ha</span></span>
+<span id="cb3-85"><a href="#cb3-85" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-86"><a href="#cb3-86" tabindex="-1"></a><span class="co">#&gt; Area summary:</span></span>
+<span id="cb3-87"><a href="#cb3-87" tabindex="-1"></a><span class="co">#&gt;  Total area: 120 ha</span></span>
+<span id="cb3-88"><a href="#cb3-88" tabindex="-1"></a><span class="co">#&gt;  Productive area: 120 ha</span></span>
+<span id="cb3-89"><a href="#cb3-89" tabindex="-1"></a><span class="co">#&gt;  Land use efficiency: 100%</span></span>
+<span id="cb3-90"><a href="#cb3-90" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-91"><a href="#cb3-91" tabindex="-1"></a><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
+<span id="cb3-92"><a href="#cb3-92" tabindex="-1"></a><span class="co">#&gt; Calculated on: 2026-01-08</span></span></code></pre></div>
+<h2 id="batch-processing-typical-real-world-use">Batch processing
+(typical real-world use)</h2>
+<p>In practical applications, <code>cowfootR</code> is most often used
+to process data from multiple farms simultaneously. This is handled
+through the <code>calc_batch()</code> function, which applies the same
+methodological workflow across all farms in a structured dataset.</p>
+<p>Below is a minimal example illustrating batch processing for multiple
+farms.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(cowfootR)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># Example dataset with two farms</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>farms <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">FarmID =</span> <span class="fu">c</span>(<span class="st">&quot;Farm_A&quot;</span>, <span class="st">&quot;Farm_B&quot;</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">c</span>(<span class="dv">2023</span>, <span class="dv">2023</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">Milk_litres =</span> <span class="fu">c</span>(<span class="dv">500000</span>, <span class="dv">750000</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">Cows_milking =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">130</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">Area_total_ha =</span> <span class="fu">c</span>(<span class="dv">110</span>, <span class="dv">160</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="at">Diesel_litres =</span> <span class="fu">c</span>(<span class="dv">4000</span>, <span class="dv">6500</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="at">Electricity_kWh =</span> <span class="fu">c</span>(<span class="dv">18000</span>, <span class="dv">26000</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="at">Concentrate_feed_kg =</span> <span class="fu">c</span>(<span class="dv">120000</span>, <span class="dv">180000</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co"># Define system boundaries</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>boundaries <span class="ot">&lt;-</span> <span class="fu">set_system_boundaries</span>(<span class="st">&quot;farm_gate&quot;</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co"># Run batch carbon footprint calculation</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>batch_results <span class="ot">&lt;-</span> <span class="fu">calc_batch</span>(</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="at">data =</span> farms,</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>  <span class="at">tier =</span> <span class="dv">2</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>  <span class="at">boundaries =</span> boundaries,</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>  <span class="at">benchmark_region =</span> <span class="st">&quot;uruguay&quot;</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>)</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; Batch: 2 rows; tier=2 ...</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co"># Summary of batch processing</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>batch_results<span class="sc">$</span>summary</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; $n_farms_processed</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; $n_farms_successful</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; $n_farms_with_errors</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; $boundaries_used</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; $boundaries_used$scope</span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; [1] &quot;farm_gate&quot;</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; $boundaries_used$include</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; [1] &quot;enteric&quot; &quot;manure&quot;  &quot;soil&quot;    &quot;energy&quot;  &quot;inputs&quot; </span></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt; $benchmark_region</span></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt; [1] &quot;uruguay&quot;</span></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="co">#&gt; $processing_date</span></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2026-01-08&quot;</span></span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a><span class="co"># Farm-level results</span></span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>batch_results<span class="sc">$</span>farm_results</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a><span class="co">#&gt; [[1]]$success</span></span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a><span class="co">#&gt; [[1]]$farm_id</span></span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Farm_A&quot;</span></span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a><span class="co">#&gt; [[1]]$year</span></span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023&quot;</span></span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a><span class="co">#&gt; [[1]]$emissions_enteric</span></span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a><span class="co">#&gt; [1] 230826.6</span></span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt; [[1]]$emissions_manure</span></span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; [1] 183066.1</span></span>
+<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a><span class="co">#&gt; [[1]]$emissions_soil</span></span>
+<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a><span class="co">#&gt; [[1]]$emissions_energy</span></span>
+<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a><span class="co">#&gt; [1] 13794</span></span>
+<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a><span class="co">#&gt; [[1]]$emissions_inputs</span></span>
+<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a><span class="co">#&gt; [1] 84000</span></span>
+<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a><span class="co">#&gt; [[1]]$emissions_total</span></span>
+<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a><span class="co">#&gt; [1] 511686.8</span></span>
+<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a><span class="co">#&gt; [[1]]$intensity_milk_kg_co2eq_per_kg_fpcm</span></span>
+<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a><span class="co">#&gt; [1] 0.9936858</span></span>
+<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a><span class="co">#&gt; [[1]]$intensity_area_kg_co2eq_per_ha_total</span></span>
+<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a><span class="co">#&gt; [1] 4651.7</span></span>
+<span id="cb4-88"><a href="#cb4-88" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-89"><a href="#cb4-89" tabindex="-1"></a><span class="co">#&gt; [[1]]$intensity_area_kg_co2eq_per_ha_productive</span></span>
+<span id="cb4-90"><a href="#cb4-90" tabindex="-1"></a><span class="co">#&gt; [1] 4651.7</span></span>
+<span id="cb4-91"><a href="#cb4-91" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-92"><a href="#cb4-92" tabindex="-1"></a><span class="co">#&gt; [[1]]$fpcm_production_kg</span></span>
+<span id="cb4-93"><a href="#cb4-93" tabindex="-1"></a><span class="co">#&gt; [1] 514938.2</span></span>
+<span id="cb4-94"><a href="#cb4-94" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-95"><a href="#cb4-95" tabindex="-1"></a><span class="co">#&gt; [[1]]$milk_production_kg</span></span>
+<span id="cb4-96"><a href="#cb4-96" tabindex="-1"></a><span class="co">#&gt; [1] 515000</span></span>
+<span id="cb4-97"><a href="#cb4-97" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-98"><a href="#cb4-98" tabindex="-1"></a><span class="co">#&gt; [[1]]$milk_production_litres</span></span>
+<span id="cb4-99"><a href="#cb4-99" tabindex="-1"></a><span class="co">#&gt; [1] 5e+05</span></span>
+<span id="cb4-100"><a href="#cb4-100" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-101"><a href="#cb4-101" tabindex="-1"></a><span class="co">#&gt; [[1]]$land_use_efficiency</span></span>
+<span id="cb4-102"><a href="#cb4-102" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb4-103"><a href="#cb4-103" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-104"><a href="#cb4-104" tabindex="-1"></a><span class="co">#&gt; [[1]]$total_animals</span></span>
+<span id="cb4-105"><a href="#cb4-105" tabindex="-1"></a><span class="co">#&gt; [1] 90</span></span>
+<span id="cb4-106"><a href="#cb4-106" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-107"><a href="#cb4-107" tabindex="-1"></a><span class="co">#&gt; [[1]]$dairy_cows</span></span>
+<span id="cb4-108"><a href="#cb4-108" tabindex="-1"></a><span class="co">#&gt; [1] 90</span></span>
+<span id="cb4-109"><a href="#cb4-109" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-110"><a href="#cb4-110" tabindex="-1"></a><span class="co">#&gt; [[1]]$benchmark_region</span></span>
+<span id="cb4-111"><a href="#cb4-111" tabindex="-1"></a><span class="co">#&gt; [1] &quot;uruguay&quot;</span></span>
+<span id="cb4-112"><a href="#cb4-112" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-113"><a href="#cb4-113" tabindex="-1"></a><span class="co">#&gt; [[1]]$benchmark_performance</span></span>
+<span id="cb4-114"><a href="#cb4-114" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Excellent (below typical range)&quot;</span></span>
+<span id="cb4-115"><a href="#cb4-115" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-116"><a href="#cb4-116" tabindex="-1"></a><span class="co">#&gt; [[1]]$processing_date</span></span>
+<span id="cb4-117"><a href="#cb4-117" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2026-01-08&quot;</span></span>
+<span id="cb4-118"><a href="#cb4-118" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-119"><a href="#cb4-119" tabindex="-1"></a><span class="co">#&gt; [[1]]$boundaries_used</span></span>
+<span id="cb4-120"><a href="#cb4-120" tabindex="-1"></a><span class="co">#&gt; [1] &quot;farm_gate&quot;</span></span>
+<span id="cb4-121"><a href="#cb4-121" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-122"><a href="#cb4-122" tabindex="-1"></a><span class="co">#&gt; [[1]]$tier_used</span></span>
+<span id="cb4-123"><a href="#cb4-123" tabindex="-1"></a><span class="co">#&gt; [1] &quot;tier_2&quot;</span></span>
+<span id="cb4-124"><a href="#cb4-124" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-125"><a href="#cb4-125" tabindex="-1"></a><span class="co">#&gt; [[1]]$detailed_objects</span></span>
+<span id="cb4-126"><a href="#cb4-126" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb4-127"><a href="#cb4-127" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-128"><a href="#cb4-128" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-129"><a href="#cb4-129" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb4-130"><a href="#cb4-130" tabindex="-1"></a><span class="co">#&gt; [[2]]$success</span></span>
+<span id="cb4-131"><a href="#cb4-131" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb4-132"><a href="#cb4-132" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-133"><a href="#cb4-133" tabindex="-1"></a><span class="co">#&gt; [[2]]$farm_id</span></span>
+<span id="cb4-134"><a href="#cb4-134" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Farm_B&quot;</span></span>
+<span id="cb4-135"><a href="#cb4-135" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-136"><a href="#cb4-136" tabindex="-1"></a><span class="co">#&gt; [[2]]$year</span></span>
+<span id="cb4-137"><a href="#cb4-137" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2023&quot;</span></span>
+<span id="cb4-138"><a href="#cb4-138" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-139"><a href="#cb4-139" tabindex="-1"></a><span class="co">#&gt; [[2]]$emissions_enteric</span></span>
+<span id="cb4-140"><a href="#cb4-140" tabindex="-1"></a><span class="co">#&gt; [1] 333416.3</span></span>
+<span id="cb4-141"><a href="#cb4-141" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-142"><a href="#cb4-142" tabindex="-1"></a><span class="co">#&gt; [[2]]$emissions_manure</span></span>
+<span id="cb4-143"><a href="#cb4-143" tabindex="-1"></a><span class="co">#&gt; [1] 264428.9</span></span>
+<span id="cb4-144"><a href="#cb4-144" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-145"><a href="#cb4-145" tabindex="-1"></a><span class="co">#&gt; [[2]]$emissions_soil</span></span>
+<span id="cb4-146"><a href="#cb4-146" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb4-147"><a href="#cb4-147" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-148"><a href="#cb4-148" tabindex="-1"></a><span class="co">#&gt; [[2]]$emissions_energy</span></span>
+<span id="cb4-149"><a href="#cb4-149" tabindex="-1"></a><span class="co">#&gt; [1] 22142.25</span></span>
+<span id="cb4-150"><a href="#cb4-150" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-151"><a href="#cb4-151" tabindex="-1"></a><span class="co">#&gt; [[2]]$emissions_inputs</span></span>
+<span id="cb4-152"><a href="#cb4-152" tabindex="-1"></a><span class="co">#&gt; [1] 126000</span></span>
+<span id="cb4-153"><a href="#cb4-153" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-154"><a href="#cb4-154" tabindex="-1"></a><span class="co">#&gt; [[2]]$emissions_total</span></span>
+<span id="cb4-155"><a href="#cb4-155" tabindex="-1"></a><span class="co">#&gt; [1] 745987.4</span></span>
+<span id="cb4-156"><a href="#cb4-156" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-157"><a href="#cb4-157" tabindex="-1"></a><span class="co">#&gt; [[2]]$intensity_milk_kg_co2eq_per_kg_fpcm</span></span>
+<span id="cb4-158"><a href="#cb4-158" tabindex="-1"></a><span class="co">#&gt; [1] 0.9657954</span></span>
+<span id="cb4-159"><a href="#cb4-159" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-160"><a href="#cb4-160" tabindex="-1"></a><span class="co">#&gt; [[2]]$intensity_area_kg_co2eq_per_ha_total</span></span>
+<span id="cb4-161"><a href="#cb4-161" tabindex="-1"></a><span class="co">#&gt; [1] 4662.42</span></span>
+<span id="cb4-162"><a href="#cb4-162" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-163"><a href="#cb4-163" tabindex="-1"></a><span class="co">#&gt; [[2]]$intensity_area_kg_co2eq_per_ha_productive</span></span>
+<span id="cb4-164"><a href="#cb4-164" tabindex="-1"></a><span class="co">#&gt; [1] 4662.42</span></span>
+<span id="cb4-165"><a href="#cb4-165" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-166"><a href="#cb4-166" tabindex="-1"></a><span class="co">#&gt; [[2]]$fpcm_production_kg</span></span>
+<span id="cb4-167"><a href="#cb4-167" tabindex="-1"></a><span class="co">#&gt; [1] 772407.3</span></span>
+<span id="cb4-168"><a href="#cb4-168" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-169"><a href="#cb4-169" tabindex="-1"></a><span class="co">#&gt; [[2]]$milk_production_kg</span></span>
+<span id="cb4-170"><a href="#cb4-170" tabindex="-1"></a><span class="co">#&gt; [1] 772500</span></span>
+<span id="cb4-171"><a href="#cb4-171" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-172"><a href="#cb4-172" tabindex="-1"></a><span class="co">#&gt; [[2]]$milk_production_litres</span></span>
+<span id="cb4-173"><a href="#cb4-173" tabindex="-1"></a><span class="co">#&gt; [1] 750000</span></span>
+<span id="cb4-174"><a href="#cb4-174" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-175"><a href="#cb4-175" tabindex="-1"></a><span class="co">#&gt; [[2]]$land_use_efficiency</span></span>
+<span id="cb4-176"><a href="#cb4-176" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb4-177"><a href="#cb4-177" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-178"><a href="#cb4-178" tabindex="-1"></a><span class="co">#&gt; [[2]]$total_animals</span></span>
+<span id="cb4-179"><a href="#cb4-179" tabindex="-1"></a><span class="co">#&gt; [1] 130</span></span>
+<span id="cb4-180"><a href="#cb4-180" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-181"><a href="#cb4-181" tabindex="-1"></a><span class="co">#&gt; [[2]]$dairy_cows</span></span>
+<span id="cb4-182"><a href="#cb4-182" tabindex="-1"></a><span class="co">#&gt; [1] 130</span></span>
+<span id="cb4-183"><a href="#cb4-183" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-184"><a href="#cb4-184" tabindex="-1"></a><span class="co">#&gt; [[2]]$benchmark_region</span></span>
+<span id="cb4-185"><a href="#cb4-185" tabindex="-1"></a><span class="co">#&gt; [1] &quot;uruguay&quot;</span></span>
+<span id="cb4-186"><a href="#cb4-186" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-187"><a href="#cb4-187" tabindex="-1"></a><span class="co">#&gt; [[2]]$benchmark_performance</span></span>
+<span id="cb4-188"><a href="#cb4-188" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Excellent (below typical range)&quot;</span></span>
+<span id="cb4-189"><a href="#cb4-189" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-190"><a href="#cb4-190" tabindex="-1"></a><span class="co">#&gt; [[2]]$processing_date</span></span>
+<span id="cb4-191"><a href="#cb4-191" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2026-01-08&quot;</span></span>
+<span id="cb4-192"><a href="#cb4-192" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-193"><a href="#cb4-193" tabindex="-1"></a><span class="co">#&gt; [[2]]$boundaries_used</span></span>
+<span id="cb4-194"><a href="#cb4-194" tabindex="-1"></a><span class="co">#&gt; [1] &quot;farm_gate&quot;</span></span>
+<span id="cb4-195"><a href="#cb4-195" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-196"><a href="#cb4-196" tabindex="-1"></a><span class="co">#&gt; [[2]]$tier_used</span></span>
+<span id="cb4-197"><a href="#cb4-197" tabindex="-1"></a><span class="co">#&gt; [1] &quot;tier_2&quot;</span></span>
+<span id="cb4-198"><a href="#cb4-198" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-199"><a href="#cb4-199" tabindex="-1"></a><span class="co">#&gt; [[2]]$detailed_objects</span></span>
+<span id="cb4-200"><a href="#cb4-200" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb4-201"><a href="#cb4-201" tabindex="-1"></a></span>
+<span id="cb4-202"><a href="#cb4-202" tabindex="-1"></a><span class="co"># Export results to Excel</span></span>
+<span id="cb4-203"><a href="#cb4-203" tabindex="-1"></a><span class="fu">export_hdc_report</span>(</span>
+<span id="cb4-204"><a href="#cb4-204" tabindex="-1"></a>  batch_results,</span>
+<span id="cb4-205"><a href="#cb4-205" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;cowfootR_batch_report.xlsx&quot;</span></span>
+<span id="cb4-206"><a href="#cb4-206" tabindex="-1"></a>)</span>
+<span id="cb4-207"><a href="#cb4-207" tabindex="-1"></a><span class="co">#&gt; Batch report saved to: cowfootR_batch_report.xlsx</span></span></code></pre></div>
+<p>Batch results can be directly exported to an Excel report using
+<code>export_hdc_report()</code>, facilitating integration with
+reporting workflows commonly used by consultants, researchers, and
+stakeholders.</p>
+<h3 id="emission-sources-covered">Emission Sources Covered</h3>
+<ul>
+<li><strong>Enteric fermentation</strong>: CH₄ from ruminal
+fermentation</li>
+<li><strong>Manure management</strong>: CH₄ and N₂O from manure
+systems</li>
+<li><strong>Soil emissions</strong>: N₂O from fertilizer application and
+excreta</li>
+<li><strong>Energy consumption</strong>: CO₂ from diesel, electricity,
+and other fuels</li>
+<li><strong>External inputs</strong>: CO₂eq from feed, fertilizers, and
+materials</li>
+</ul>
+<h3 id="system-boundaries">System Boundaries</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>boundaries_fg <span class="ot">&lt;-</span> <span class="fu">set_system_boundaries</span>(<span class="st">&quot;farm_gate&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>boundaries_cfg <span class="ot">&lt;-</span> <span class="fu">set_system_boundaries</span>(<span class="st">&quot;cradle_to_farm_gate&quot;</span>)</span></code></pre></div>
+<h3 id="intensity-metrics">Intensity Metrics</h3>
+<p>The package calculates multiple intensity metrics:</p>
+<ul>
+<li><strong>Per liter of milk</strong>: kg CO₂eq per liter</li>
+<li><strong>Per kg FPCM</strong>: kg CO₂eq per kg Fat and Protein
+Corrected Milk</li>
+<li><strong>Per hectare</strong>: kg CO₂eq per hectare (total and
+productive area)</li>
+<li><strong>Land use efficiency</strong>: productive area / total area
+ratio</li>
+</ul>
+<h2 id="data-requirements">Data Requirements</h2>
+<h3 id="required-columns">Required Columns</h3>
+<ul>
+<li><code>FarmID</code>: Unique farm identifier</li>
+<li><code>Year</code>: Year of data collection</li>
+<li><code>Milk_litres</code>: Annual milk production (liters)</li>
+<li><code>Cows_milking</code>: Number of milking cows</li>
+<li><code>Area_total_ha</code>: Total farm area (hectares)</li>
+</ul>
+<h3 id="optional-columns">Optional Columns</h3>
+<ul>
+<li>Animal data: <code>Cows_dry</code>, <code>Heifers_total</code>,
+<code>Calves_total</code>, <code>Bulls_total</code></li>
+<li>Production: <code>Fat_percent</code>, <code>Protein_percent</code>,
+<code>Milk_yield_kg_cow_year</code></li>
+<li>Feed: <code>MS_intake_cows_milking_kg_day</code>,
+<code>Ym_percent</code>, <code>Concentrate_feed_kg</code></li>
+<li>Fertilizer: <code>N_fertilizer_kg</code>,
+<code>N_fertilizer_organic_kg</code></li>
+<li>Energy: <code>Diesel_litres</code>, <code>Electricity_kWh</code>,
+<code>Petrol_litres</code></li>
+<li>Land use: <code>Area_productive_ha</code>,
+<code>Pasture_permanent_ha</code></li>
+</ul>
+<p>Use <code>cf_download_template()</code> to get the complete column
+structure.</p>
+<h2 id="error-handling">Error Handling</h2>
+<p>The package includes robust error handling for batch processing:</p>
+<p>For batch processing, Excel templates, reporting, and error handling,
+please see the package vignettes and the documentation website.</p>
+<h2 id="contributing">Contributing</h2>
+<p>This package is under active development. Please report issues or
+suggest improvements on <a href="https://github.com/juanmarcosmoreno-arch/cowfootR/issues">GitHub</a>.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>IPCC 2019 Refinement to the 2006 IPCC Guidelines for National
+Greenhouse Gas Inventories <a href="https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html">https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html</a></li>
+<li>International Dairy Federation (IDF). 2022. The IDF global Carbon
+Footprint standard for the dairy sector <a href="https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&amp;_sid=8a3f414f8&amp;_ss=r">https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector?_pos=1&amp;_sid=8a3f414f8&amp;_ss=r</a></li>
+<li>FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector <a href="https://www.fao.org/4/k7930e/k7930e00.pdf">https://www.fao.org/4/k7930e/k7930e00.pdf</a></li>
+</ul>
+<h2 id="license">License</h2>
+<p>MIT License © 2025 Juan Moreno</p>
+<p><a href="https://juanmarcosmoreno-arch.github.io/cowfootR/"><img role="img" aria-label="pkgdown site" src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NCIgaGVpZ2h0PSIyMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJkb2NzOiBwa2dkb3duIj48dGl0bGU+ZG9jczogcGtnZG93bjwvdGl0bGU+PGxpbmVhckdyYWRpZW50IGlkPSJzIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PGNsaXBQYXRoIGlkPSJyIj48cmVjdCB3aWR0aD0iOTQiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjZmZmIi8+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjcikiPjxyZWN0IHdpZHRoPSIzNSIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9IjM1IiB3aWR0aD0iNTkiIGhlaWdodD0iMjAiIGZpbGw9IiMwMDdlYzYiLz48cmVjdCB3aWR0aD0iOTQiIGhlaWdodD0iMjAiIGZpbGw9InVybCgjcykiLz48L2c+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IlZlcmRhbmEsR2VuZXZhLERlamFWdSBTYW5zLHNhbnMtc2VyaWYiIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGZvbnQtc2l6ZT0iMTEwIj48dGV4dCBhcmlhLWhpZGRlbj0idHJ1ZSIgeD0iMTg1IiB5PSIxNTAiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB0ZXh0TGVuZ3RoPSIyNTAiPmRvY3M8L3RleHQ+PHRleHQgeD0iMTg1IiB5PSIxNDAiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiBmaWxsPSIjZmZmIiB0ZXh0TGVuZ3RoPSIyNTAiPmRvY3M8L3RleHQ+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjYzNSIgeT0iMTUwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iNDkwIj5wa2dkb3duPC90ZXh0Pjx0ZXh0IHg9IjYzNSIgeT0iMTQwIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgZmlsbD0iI2ZmZiIgdGV4dExlbmd0aD0iNDkwIj5wa2dkb3duPC90ZXh0PjwvZz48L3N2Zz4=" alt="pkgdown site" /></a></p>
+
+</body>
+</html>

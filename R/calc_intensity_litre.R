@@ -31,7 +31,6 @@ calc_intensity_litre <- function(total_emissions,
                                  fat = 4,
                                  protein = 3.3,
                                  milk_density = 1.03) {
-
   # Extract emissions value if cf_total object is passed
   if (inherits(total_emissions, "cf_total")) {
     emissions_value <- total_emissions$total_co2eq
@@ -101,7 +100,7 @@ calc_intensity_litre <- function(total_emissions,
 #'   total_emissions_co2eq = 85000,
 #'   milk_production_litres = 750000,
 #'   milk_production_kg = 750000 * 1.03,
-#'   fpcm_production_kg = 750000 * 1.03 * (0.1226*4 + 0.0776*3.3 + 0.2534),
+#'   fpcm_production_kg = 750000 * 1.03 * (0.1226 * 4 + 0.0776 * 3.3 + 0.2534),
 #'   fat_percent = 4, protein_percent = 3.3, milk_density_kg_per_l = 1.03,
 #'   date = Sys.Date()
 #' )

@@ -65,13 +65,12 @@ calc_emissions_inputs <- function(conc_kg = 0,
                                   ef_fert = NULL,
                                   ef_plastic = NULL,
                                   boundaries = NULL) {
-
   # -------------------------------
   # Input validation and boundaries
   # -------------------------------
-  valid_regions <- c("EU","US","Brazil","Argentina","Australia","global")
-  valid_fert_types <- c("urea","ammonium_nitrate","mixed","organic")
-  valid_plastic_types <- c("LDPE","HDPE","PP","mixed")
+  valid_regions <- c("EU", "US", "Brazil", "Argentina", "Australia", "global")
+  valid_fert_types <- c("urea", "ammonium_nitrate", "mixed", "organic")
+  valid_plastic_types <- c("LDPE", "HDPE", "PP", "mixed")
 
   if (!region %in% valid_regions) {
     stop("Invalid `region`. Use one of: ", paste(valid_regions, collapse = ", "))
@@ -84,15 +83,17 @@ calc_emissions_inputs <- function(conc_kg = 0,
     plastic_type <- "mixed"
   } else {
     plastic_type <- toupper(plastic_type)
-    if (!plastic_type %in% c("LDPE","HDPE","PP")) {
+    if (!plastic_type %in% c("LDPE", "HDPE", "PP")) {
       stop("Invalid `plastic_type`. Use one of: ", paste(valid_plastic_types, collapse = ", "))
     }
   }
 
   # Non-negative quantities check
-  qty <- c(conc_kg, fert_n_kg, plastic_kg, feed_grain_dry_kg, feed_grain_wet_kg,
-           feed_ration_kg, feed_byproducts_kg, feed_proteins_kg,
-           feed_corn_kg, feed_soy_kg, feed_wheat_kg)
+  qty <- c(
+    conc_kg, fert_n_kg, plastic_kg, feed_grain_dry_kg, feed_grain_wet_kg,
+    feed_ration_kg, feed_byproducts_kg, feed_proteins_kg,
+    feed_corn_kg, feed_soy_kg, feed_wheat_kg
+  )
   if (any(qty < 0, na.rm = TRUE)) stop("All input quantities must be non-negative.")
 
   # Boundary exclusion: return numeric zero when "inputs" not included
@@ -136,12 +137,12 @@ calc_emissions_inputs <- function(conc_kg = 0,
   feed_factors <- list(
     grain_dry = region_ef$feeds$grain_dry,
     grain_wet = region_ef$feeds$grain_wet,
-    ration    = region_ef$feeds$ration,
-    byproducts= region_ef$feeds$byproducts,
-    proteins  = region_ef$feeds$proteins,
-    corn      = region_ef$feeds$corn,
-    soy       = region_ef$feeds$soy,
-    wheat     = region_ef$feeds$wheat
+    ration = region_ef$feeds$ration,
+    byproducts = region_ef$feeds$byproducts,
+    proteins = region_ef$feeds$proteins,
+    corn = region_ef$feeds$corn,
+    soy = region_ef$feeds$soy,
+    wheat = region_ef$feeds$wheat
   )
 
   # Plastic EF
@@ -158,7 +159,9 @@ calc_emissions_inputs <- function(conc_kg = 0,
   # -------------------------------
   to_num_safe <- function(x) {
     y <- suppressWarnings(as.numeric(x))
-    if (is.null(x) || length(y) == 0L || !is.finite(y)) return(0)
+    if (is.null(x) || length(y) == 0L || !is.finite(y)) {
+      return(0)
+    }
     y
   }
   transport_km <- to_num_safe(transport_km)
@@ -167,29 +170,33 @@ calc_emissions_inputs <- function(conc_kg = 0,
   if (transport_km > 0) {
     # Default LCA truck factor (kg CO2e per kg·km); keep conservative order of magnitude
     ef_truck <- 1e-4
-    total_feed_kg <- sum(c(conc_kg, feed_grain_dry_kg, feed_grain_wet_kg, feed_ration_kg,
-                           feed_byproducts_kg, feed_proteins_kg,
-                           feed_corn_kg, feed_soy_kg, feed_wheat_kg),
-                         na.rm = TRUE)
+    total_feed_kg <- sum(
+      c(
+        conc_kg, feed_grain_dry_kg, feed_grain_wet_kg, feed_ration_kg,
+        feed_byproducts_kg, feed_proteins_kg,
+        feed_corn_kg, feed_soy_kg, feed_wheat_kg
+      ),
+      na.rm = TRUE
+    )
     transport_adjustment <- total_feed_kg * transport_km * ef_truck
   }
 
   # -------------------------------
   # Emission calculations
   # -------------------------------
-  conc_co2     <- conc_kg    * ef_conc
-  fert_co2     <- fert_n_kg  * ef_fert
-  plastic_co2  <- plastic_kg * ef_plastic
+  conc_co2 <- conc_kg * ef_conc
+  fert_co2 <- fert_n_kg * ef_fert
+  plastic_co2 <- plastic_kg * ef_plastic
 
   feed_emissions <- c(
-    grain_dry = feed_grain_dry_kg  * feed_factors$grain_dry$mean,
-    grain_wet = feed_grain_wet_kg  * feed_factors$grain_wet$mean,
-    ration    = feed_ration_kg     * feed_factors$ration$mean,
-    byproducts= feed_byproducts_kg * feed_factors$byproducts$mean,
-    proteins  = feed_proteins_kg   * feed_factors$proteins$mean,
-    corn      = feed_corn_kg       * feed_factors$corn$mean,
-    soy       = feed_soy_kg        * feed_factors$soy$mean,
-    wheat     = feed_wheat_kg      * feed_factors$wheat$mean
+    grain_dry = feed_grain_dry_kg * feed_factors$grain_dry$mean,
+    grain_wet = feed_grain_wet_kg * feed_factors$grain_wet$mean,
+    ration = feed_ration_kg * feed_factors$ration$mean,
+    byproducts = feed_byproducts_kg * feed_factors$byproducts$mean,
+    proteins = feed_proteins_kg * feed_factors$proteins$mean,
+    corn = feed_corn_kg * feed_factors$corn$mean,
+    soy = feed_soy_kg * feed_factors$soy$mean,
+    wheat = feed_wheat_kg * feed_factors$wheat$mean
   )
   total_feed_co2 <- sum(feed_emissions, na.rm = TRUE)
 
@@ -208,17 +215,17 @@ calc_emissions_inputs <- function(conc_kg = 0,
         feeds = list(
           grain_dry = feed_grain_dry_kg,
           grain_wet = feed_grain_wet_kg,
-          ration    = feed_ration_kg,
-          byproducts= feed_byproducts_kg,
-          proteins  = feed_proteins_kg,
-          corn      = feed_corn_kg,
-          soy       = feed_soy_kg,
-          wheat     = feed_wheat_kg
+          ration = feed_ration_kg,
+          byproducts = feed_byproducts_kg,
+          proteins = feed_proteins_kg,
+          corn = feed_corn_kg,
+          soy = feed_soy_kg,
+          wheat = feed_wheat_kg
         )
       ),
       factors = list(
-        conc    = list(mean = ef_conc,    range = ef_conc_range),
-        fert    = list(mean = ef_fert,    range = ef_fert_range),
+        conc    = list(mean = ef_conc, range = ef_conc_range),
+        fert    = list(mean = ef_fert, range = ef_fert_range),
         plastic = list(mean = ef_plastic, range = ef_plastic_range),
         feeds   = feed_factors
       )
@@ -230,7 +237,6 @@ calc_emissions_inputs <- function(conc_kg = 0,
   # -------------------------------
   result <- list(
     source = "inputs",
-
     emissions_breakdown = list(
       concentrate_co2eq_kg          = round(conc_co2, 2),
       fertilizer_co2eq_kg           = round(fert_co2, 2),
@@ -241,27 +247,27 @@ calc_emissions_inputs <- function(conc_kg = 0,
     ),
 
     # Primary total used by calc_total_emissions()
-    co2eq_kg       = round(total_co2, 2),
+    co2eq_kg = round(total_co2, 2),
     # Duplicate field for convenience
     total_co2eq_kg = round(total_co2, 2),
-
     region = region,
     emission_factors_used = list(
-      concentrate = list(value = ef_conc,   unit = "kg CO2e/kg"),
-      fertilizer  = list(value = ef_fert,   type = fert_type,     unit = "kg CO2e/kg N"),
-      plastic     = list(value = ef_plastic,type = plastic_type,  unit = "kg CO2e/kg"),
-      feeds       = lapply(feed_factors, function(x) list(value = x$mean, unit = "kg CO2e/kg")),
+      concentrate = list(value = ef_conc, unit = "kg CO2e/kg"),
+      fertilizer = list(value = ef_fert, type = fert_type, unit = "kg CO2e/kg N"),
+      plastic = list(value = ef_plastic, type = plastic_type, unit = "kg CO2e/kg"),
+      feeds = lapply(feed_factors, function(x) list(value = x$mean, unit = "kg CO2e/kg")),
       region_source = region,
-      transport_km  = transport_km
+      transport_km = transport_km
     ),
-
     inputs_summary = list(
-      concentrate_kg  = conc_kg,
+      concentrate_kg = conc_kg,
       fertilizer_n_kg = fert_n_kg,
-      plastic_kg      = plastic_kg,
-      total_feeds_kg  = sum(c(feed_grain_dry_kg, feed_grain_wet_kg, feed_ration_kg,
-                              feed_byproducts_kg, feed_proteins_kg,
-                              feed_corn_kg, feed_soy_kg, feed_wheat_kg), na.rm = TRUE),
+      plastic_kg = plastic_kg,
+      total_feeds_kg = sum(c(
+        feed_grain_dry_kg, feed_grain_wet_kg, feed_ration_kg,
+        feed_byproducts_kg, feed_proteins_kg,
+        feed_corn_kg, feed_soy_kg, feed_wheat_kg
+      ), na.rm = TRUE),
       feed_breakdown_kg = list(
         grain_dry  = feed_grain_dry_kg,
         grain_wet  = feed_grain_wet_kg,
@@ -273,22 +279,21 @@ calc_emissions_inputs <- function(conc_kg = 0,
         wheat      = feed_wheat_kg
       )
     ),
-
     contribution_analysis = if (total_co2 > 0) {
       list(
-        concentrate_pct = round(conc_co2        / total_co2 * 100, 1),
-        fertilizer_pct  = round(fert_co2        / total_co2 * 100, 1),
-        plastic_pct     = round(plastic_co2     / total_co2 * 100, 1),
-        feeds_pct       = round(total_feed_co2  / total_co2 * 100, 1),
+        concentrate_pct = round(conc_co2 / total_co2 * 100, 1),
+        fertilizer_pct  = round(fert_co2 / total_co2 * 100, 1),
+        plastic_pct     = round(plastic_co2 / total_co2 * 100, 1),
+        feeds_pct       = round(total_feed_co2 / total_co2 * 100, 1),
         transport_pct   = round(transport_adjustment / total_co2 * 100, 1)
       )
-    } else NULL,
-
+    } else {
+      NULL
+    },
     uncertainty = uncertainty,
-
     methodology = "Regional emission factors with optional uncertainty analysis",
-    standards   = "IDF 2022; generic LCI sources",
-    date        = Sys.Date()
+    standards = "IDF 2022; generic LCI sources",
+    date = Sys.Date()
   )
 
   result
@@ -329,7 +334,7 @@ get_regional_emission_factors <- function() {
     EU = list(
       fertilizer = list(
         mixed = list(mean = 6.8, range = c(5.8, 7.9)),
-        urea  = list(mean = 7.5, range = c(6.5, 8.7)),
+        urea = list(mean = 7.5, range = c(6.5, 8.7)),
         ammonium_nitrate = list(mean = 6.3, range = c(5.5, 7.3)),
         organic = list(mean = 0.9, range = c(0.6, 1.3))
       ),
@@ -354,7 +359,7 @@ get_regional_emission_factors <- function() {
     US = list(
       fertilizer = list(
         mixed = list(mean = 6.4, range = c(5.3, 7.6)),
-        urea  = list(mean = 6.9, range = c(5.8, 8.1)),
+        urea = list(mean = 6.9, range = c(5.8, 8.1)),
         ammonium_nitrate = list(mean = 5.9, range = c(5.0, 6.9)),
         organic = list(mean = 0.7, range = c(0.4, 1.0))
       ),
@@ -379,7 +384,7 @@ get_regional_emission_factors <- function() {
     Brazil = list(
       fertilizer = list(
         mixed = list(mean = 7.1, range = c(6.0, 8.3)),
-        urea  = list(mean = 7.8, range = c(6.6, 9.2)),
+        urea = list(mean = 7.8, range = c(6.6, 9.2)),
         ammonium_nitrate = list(mean = 6.5, range = c(5.5, 7.6)),
         organic = list(mean = 0.6, range = c(0.3, 0.9))
       ),
@@ -404,7 +409,7 @@ get_regional_emission_factors <- function() {
     Argentina = list(
       fertilizer = list(
         mixed = list(mean = 6.9, range = c(5.8, 8.1)),
-        urea  = list(mean = 7.6, range = c(6.4, 8.9)),
+        urea = list(mean = 7.6, range = c(6.4, 8.9)),
         ammonium_nitrate = list(mean = 6.3, range = c(5.3, 7.4)),
         organic = list(mean = 0.5, range = c(0.3, 0.8))
       ),
@@ -429,7 +434,7 @@ get_regional_emission_factors <- function() {
     Australia = list(
       fertilizer = list(
         mixed = list(mean = 6.5, range = c(5.4, 7.7)),
-        urea  = list(mean = 7.0, range = c(5.9, 8.2)),
+        urea = list(mean = 7.0, range = c(5.9, 8.2)),
         ammonium_nitrate = list(mean = 6.0, range = c(5.1, 7.0)),
         organic = list(mean = 0.8, range = c(0.5, 1.1))
       ),
@@ -462,19 +467,21 @@ calculate_input_uncertainties <- function(quantities, factors) {
   n <- 1000L
 
   sample_factor <- function(info) {
-    if (is.null(info$range)) return(rep(info$mean, n))
+    if (is.null(info$range)) {
+      return(rep(info$mean, n))
+    }
     stats::runif(n, min = info$range[1], max = info$range[2])
   }
 
-  conc_s   <- sample_factor(factors$conc)
-  fert_s   <- sample_factor(factors$fert)
-  plast_s  <- sample_factor(factors$plastic)
-  feed_s   <- lapply(factors$feeds, sample_factor)
+  conc_s <- sample_factor(factors$conc)
+  fert_s <- sample_factor(factors$fert)
+  plast_s <- sample_factor(factors$plastic)
+  feed_s <- lapply(factors$feeds, sample_factor)
 
   total <- numeric(n)
-  total <- total + quantities$conc_kg   * conc_s
+  total <- total + quantities$conc_kg * conc_s
   total <- total + quantities$fert_n_kg * fert_s
-  total <- total + quantities$plastic_kg* plast_s
+  total <- total + quantities$plastic_kg * plast_s
 
   for (nm in names(quantities$feeds)) {
     q <- quantities$feeds[[nm]]
@@ -482,9 +489,9 @@ calculate_input_uncertainties <- function(quantities, factors) {
   }
 
   list(
-    mean   = round(mean(total), 2),
+    mean = round(mean(total), 2),
     median = round(stats::median(total), 2),
-    sd     = round(stats::sd(total), 2),
+    sd = round(stats::sd(total), 2),
     cv_percent = round(stats::sd(total) / mean(total) * 100, 1),
     percentiles = list(
       p5  = round(stats::quantile(total, 0.05), 2),

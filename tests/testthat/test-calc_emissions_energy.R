@@ -62,8 +62,8 @@ test_that("calc_emissions_energy respeta límites del sistema (energy excluido)"
 
   # Debe marcarse como excluido y NO contribuir; la función hoy puede devolver NULL o 0
   excl_flag <- isTRUE(res$excluded)
-  null_ok   <- is.null(res$co2eq_kg)
-  zero_ok   <- (is.numeric(res$co2eq_kg) && identical(as.numeric(res$co2eq_kg), 0))
+  null_ok <- is.null(res$co2eq_kg)
+  zero_ok <- (is.numeric(res$co2eq_kg) && identical(as.numeric(res$co2eq_kg), 0))
 
   expect_true(excl_flag || null_ok || zero_ok)
 

@@ -2,8 +2,8 @@
 
 # Create a minimal valid farm dataset
 create_test_farm <- function(farm_id = "TestFarm",
-                            milk_litres = 600000,
-                            cows_milking = 100) {
+                             milk_litres = 600000,
+                             cows_milking = 100) {
   data.frame(
     FarmID = farm_id,
     Milk_litres = milk_litres,
@@ -28,5 +28,6 @@ create_test_emissions <- function() {
 expect_equal_tolerance <- function(actual, expected, tolerance = 0.01) {
   diff <- abs(actual - expected)
   expect_true(diff < tolerance,
-              info = paste("Expected", expected, "but got", actual))
+    info = paste("Expected", expected, "but got", actual)
+  )
 }

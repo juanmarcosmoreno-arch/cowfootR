@@ -52,8 +52,8 @@ test_that("boundaries exclude emissions correctly (energy excluded)", {
   # 1) devolver co2eq_kg = 0
   # 2) marcar excluded = TRUE (y co2eq_kg 0 o NULL)
   excl_flag <- isTRUE(res_energy$excluded)
-  zero_ok   <- is.numeric(res_energy$co2eq_kg) && identical(as.numeric(res_energy$co2eq_kg), 0)
-  null_ok   <- is.null(res_energy$co2eq_kg)
+  zero_ok <- is.numeric(res_energy$co2eq_kg) && identical(as.numeric(res_energy$co2eq_kg), 0)
+  null_ok <- is.null(res_energy$co2eq_kg)
 
   expect_true(excl_flag || zero_ok || null_ok)
 

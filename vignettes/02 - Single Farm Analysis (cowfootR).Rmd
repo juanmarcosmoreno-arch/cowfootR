@@ -78,12 +78,10 @@ herd_data <- list(
   heifers_total = 45,
   calves_total = 35,
   bulls_total = 3,
-
   body_weight_cows = 580,
   body_weight_heifers = 380,
   body_weight_calves = 180,
   body_weight_bulls = 750,
-
   milk_yield_per_cow = 6300,
   annual_milk_litres = 950000,
   fat_percent = 3.7,
@@ -104,7 +102,6 @@ feed_data <- list(
   ration_kg = 60000,
   byproducts_kg = 25000,
   proteins_kg = 35000,
-
   dry_matter_intake_cows = 19.5,
   dry_matter_intake_heifers = 11.0,
   dry_matter_intake_calves = 6.0,
@@ -122,17 +119,14 @@ land_data <- list(
   area_total = 200,
   area_productive = 185,
   area_fertilized = 160,
-
   pasture_permanent = 140,
   pasture_temporary = 30,
   crops_feed = 12,
   crops_cash = 3,
   infrastructure = 8,
   woodland = 7,
-
   soil_type = "well_drained",
   climate_zone = "temperate",
-
   n_fertilizer_synthetic = 2400,
   n_fertilizer_organic = 500,
   n_excreta_pasture = 15000,
@@ -355,8 +349,10 @@ ggplot(emission_breakdown, aes(x = reorder(Source, Emissions), y = Emissions)) +
     y = "Emissions (kg CO₂eq/year)"
   ) +
   theme_minimal() +
-  theme(plot.title = element_text(size = 14, hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5))
+  theme(
+    plot.title = element_text(size = 14, hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
 ```
 
 ## Step 5: Intensity calculations
@@ -506,8 +502,10 @@ These charts answer different questions: the first highlights the hotspot catego
 
 ```{r fig.width=10, fig.height=6, fig.alt="Stacked bar chart with a detailed breakdown of farm emissions, splitting enteric emissions into cows vs young stock, plus manure, soil, energy, and purchased inputs."}
 detailed_emissions <- data.frame(
-  Source = c("Enteric - Cows", "Enteric - Young Stock", "Manure Management",
-             "Soil N2O", "Energy Use", "Purchased Inputs"),
+  Source = c(
+    "Enteric - Cows", "Enteric - Young Stock", "Manure Management",
+    "Soil N2O", "Energy Use", "Purchased Inputs"
+  ),
   Emissions = c(
     enteric_cows$co2eq_kg,
     enteric_heifers$co2eq_kg + enteric_calves$co2eq_kg + enteric_bulls$co2eq_kg,
@@ -527,10 +525,12 @@ ggplot(detailed_emissions, aes(x = "Farm emissions", y = Emissions, fill = Sourc
     y = "Emissions (kg CO₂eq/year)"
   ) +
   theme_minimal() +
-  theme(plot.title = element_text(size = 14, hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5),
-        axis.text.x = element_blank(),
-        legend.position = "right")
+  theme(
+    plot.title = element_text(size = 14, hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    axis.text.x = element_blank(),
+    legend.position = "right"
+  )
 ```
 
 ## Step 8: Summary table (KPI-style)

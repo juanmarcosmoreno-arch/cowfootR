@@ -267,11 +267,15 @@ This standardizes milk to 4.0% fat and 3.3% protein for fair comparison.
 
 ```{r echo=FALSE}
 area_breakdown_options <- data.frame(
-  Name = c("pasture_permanent", "pasture_temporary", "crops_feed", "crops_cash", 
-           "infrastructure", "woodland", "wetlands", "other"),
-  Description = c("Permanent grassland", "Rotational/temporary pasture", "Feed crop production",
-                  "Cash crop production", "Buildings, roads, facilities", "Forest/trees",
-                  "Water bodies, wetlands", "Other non-productive areas"),
+  Name = c(
+    "pasture_permanent", "pasture_temporary", "crops_feed", "crops_cash",
+    "infrastructure", "woodland", "wetlands", "other"
+  ),
+  Description = c(
+    "Permanent grassland", "Rotational/temporary pasture", "Feed crop production",
+    "Cash crop production", "Buildings, roads, facilities", "Forest/trees",
+    "Water bodies, wetlands", "Other non-productive areas"
+  ),
   Typical_Range = c("40-80%", "5-20%", "5-15%", "0-10%", "2-5%", "0-10%", "0-5%", "0-5%")
 )
 
@@ -311,10 +315,10 @@ template_structure <- data.frame(
   ),
   Column_Name = c(
     "FarmID", "Year",
-    "Milk_litres", "Fat_percent", "Protein_percent", "Milk_density", 
+    "Milk_litres", "Fat_percent", "Protein_percent", "Milk_density",
     "Cows_milking", "Cows_dry", "Heifers_total", "Calves_total", "Bulls_total",
     "Body_weight_cows_kg", "Body_weight_heifers_kg", "Body_weight_calves_kg", "Body_weight_bulls_kg",
-    "MS_intake_cows_kg_day", "MS_intake_heifers_kg_day", "MS_intake_calves_kg_day", 
+    "MS_intake_cows_kg_day", "MS_intake_heifers_kg_day", "MS_intake_calves_kg_day",
     "MS_intake_bulls_kg_day", "Ym_percent",
     "Area_total_ha", "Area_productive_ha", "Pasture_permanent_ha", "Pasture_temporary_ha",
     "Crops_feed_ha", "Crops_cash_ha", "Infrastructure_ha", "Woodland_ha",
@@ -325,7 +329,7 @@ template_structure <- data.frame(
   Data_Type = c(
     "character", "character",
     "numeric", "numeric", "numeric", "numeric",
-    "numeric", "numeric", "numeric", "numeric", "numeric", 
+    "numeric", "numeric", "numeric", "numeric", "numeric",
     "numeric", "numeric", "numeric", "numeric",
     "numeric", "numeric", "numeric", "numeric", "numeric",
     "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
@@ -371,7 +375,7 @@ validation_checks <- data.frame(
     "Must be positive integers",
     "Milk yield 1000-15000 kg/cow/year",
     "Area breakdown must sum to total (if validate=TRUE)",
-    "All quantities ≥ 0", 
+    "All quantities ≥ 0",
     "Stocking rate 0.1-3.0 cows/ha"
   ),
   Error_Actions = c(
@@ -398,8 +402,10 @@ kable(validation_checks, caption = "Built-in Validation Rules")
 ```{r echo=FALSE}
 quality_indicators <- data.frame(
   Indicator = c("Milk yield per cow", "Stocking rate", "Feed conversion", "Energy intensity"),
-  Formula = c("Milk_litres / Cows_milking / 1000", "Cows_milking / Area_total_ha", 
-              "Milk_litres / Concentrate_feed_kg", "Electricity_kWh / Milk_litres"),
+  Formula = c(
+    "Milk_litres / Cows_milking / 1000", "Cows_milking / Area_total_ha",
+    "Milk_litres / Concentrate_feed_kg", "Electricity_kWh / Milk_litres"
+  ),
   Excellent_Range = c("7000-9000", "1.2-1.8", "3.0-5.0", "0.04-0.06"),
   Good_Range = c("6000-7000", "0.8-1.2", "2.0-3.0", "0.06-0.08"),
   Poor_Range = c("<5000 or >10000", "<0.5 or >2.5", "<1.5 or >6.0", ">0.10"),
@@ -420,7 +426,7 @@ missing_data_guide <- data.frame(
   Accuracy_Impact = c("Low", "Medium", "High", "Medium", "Medium"),
   Recommended_Action = c(
     "Use literature values for breed/region",
-    "Estimate from feeding standards", 
+    "Estimate from feeding standards",
     "Collect detailed feed records",
     "Survey farm land use patterns",
     "Use regional studies or 6.0-6.8 range"
@@ -437,8 +443,10 @@ conversion_guide <- data.frame(
   Parameter = c("Milk production", "Feed amounts", "Fertilizer", "Body weight", "Area"),
   Common_Units = c("L, kg", "kg fresh, kg DM, tons", "kg product, kg N", "kg, lbs", "ha, acres"),
   cowfootR_Unit = c("L/year", "kg DM/year", "kg N/year", "kg", "hectares"),
-  Conversion_Factor = c("kg = L × density", "DM = fresh × (1 - moisture%)", 
-                       "kg N = kg product × N%", "kg = lbs ÷ 2.205", "ha = acres × 0.405"),
+  Conversion_Factor = c(
+    "kg = L × density", "DM = fresh × (1 - moisture%)",
+    "kg N = kg product × N%", "kg = lbs ÷ 2.205", "ha = acres × 0.405"
+  ),
   Typical_Values = c("1.03 kg/L", "35% DM corn silage", "46% N in urea", "580 kg dairy cow", "0.405 ha/acre")
 )
 
@@ -454,14 +462,14 @@ regional_adjustments <- data.frame(
   Fertilizer_EF = c("5.8-7.9", "5.3-7.6", "6.0-8.3", "5.8-8.1", "5.4-7.7", "5.5-7.8"),
   Key_Differences = c(
     "High soy transport costs",
-    "Domestic grain production", 
+    "Domestic grain production",
     "Local soy, high N fertilizer",
     "Local grain/soy production",
     "High transport distances",
     "Average of all regions"
   ),
   Use_When = c(
-    "European farms", "US/Canadian farms", "Brazilian operations", 
+    "European farms", "US/Canadian farms", "Brazilian operations",
     "Argentinian farms", "Australian/NZ farms", "Unknown/mixed sourcing"
   )
 )
@@ -493,8 +501,10 @@ medium_impact <- data.frame(
   Parameter = c("n_fertilizer_kg", "diet_digestibility", "area_total_ha", "manure_system", "region"),
   Impact_Range = c("5-12%", "8-15%", "Area metrics only", "10-25% manure", "5-20% inputs"),
   Collection_Difficulty = c("Easy", "Medium", "Easy", "Easy", "Easy"),
-  Recommendation = c("Get purchase records", "Estimate from feed quality", 
-                    "Survey or property records", "Observe system", "Select best match")
+  Recommendation = c(
+    "Get purchase records", "Estimate from feed quality",
+    "Survey or property records", "Observe system", "Select best match"
+  )
 )
 
 kable(medium_impact, caption = "Medium Impact Parameters")
@@ -506,10 +516,14 @@ kable(medium_impact, caption = "Medium Impact Parameters")
 low_impact <- data.frame(
   Parameter = c("plastic_kg", "lpg_kg", "gwp values", "milk_density", "transport_km"),
   Impact_Range = c("<2%", "<3%", "<5%", "<2%", "<5%"),
-  Default_Approach = c("Estimate broadly", "Estimate or ignore", "Use package defaults", 
-                      "Use 1.03", "Estimate 100-200 km"),
-  Notes = c("Small contribution unless very large", "Often minimal in dairy",
-           "IPCC AR6 values recommended", "Varies little", "Affects feed emissions only")
+  Default_Approach = c(
+    "Estimate broadly", "Estimate or ignore", "Use package defaults",
+    "Use 1.03", "Estimate 100-200 km"
+  ),
+  Notes = c(
+    "Small contribution unless very large", "Often minimal in dairy",
+    "IPCC AR6 values recommended", "Varies little", "Affects feed emissions only"
+  )
 )
 
 kable(low_impact, caption = "Low Impact Parameters (Can Use Estimates)")
@@ -598,8 +612,10 @@ kable(optimal_combinations, caption = "Optimal Parameter Combinations by System 
 
 ```{r echo=FALSE}
 interaction_effects <- data.frame(
-  Parameter_Pair = c("Body weight + DM intake", "Ym% + Feed quality", "Climate + Soil type", 
-                    "Region + Feed sources", "Manure system + Retention time"),
+  Parameter_Pair = c(
+    "Body weight + DM intake", "Ym% + Feed quality", "Climate + Soil type",
+    "Region + Feed sources", "Manure system + Retention time"
+  ),
   Interaction_Type = c("Multiplicative", "Exponential", "Additive", "Complex", "Threshold"),
   Effect_Magnitude = c("Medium", "High", "Medium", "High", "Variable"),
   Management_Implication = c(
@@ -623,7 +639,7 @@ data_requirements <- data.frame(
   Assessment_Goal = c("Screening Assessment", "Management Planning", "Carbon Trading", "Research Study"),
   Essential_Data = c(
     "Animal numbers, milk production, basic inputs",
-    "Detailed feeds, precise areas, management practices",  
+    "Detailed feeds, precise areas, management practices",
     "Verified production, third-party validated inputs",
     "Complete parameter set, uncertainty quantification"
   ),
@@ -639,14 +655,20 @@ kable(data_requirements, caption = "Data Requirements by Assessment Objective")
 
 ```{r echo=FALSE}
 collection_schedule <- data.frame(
-  Data_Category = c("Production Records", "Feed Purchases", "Energy Consumption", 
-                   "Land Management", "Animal Characteristics"),
+  Data_Category = c(
+    "Production Records", "Feed Purchases", "Energy Consumption",
+    "Land Management", "Animal Characteristics"
+  ),
   Collection_Frequency = c("Monthly", "Each delivery", "Monthly", "Seasonal", "Annual"),
-  Storage_Location = c("Farm office", "Purchase invoices", "Utility bills", 
-                      "Management records", "Herd records"),
-  Quality_Control = c("Cross-check with processor", "Verify units and quantities", 
-                     "Monitor seasonal patterns", "Update land use changes", 
-                     "Weigh representative sample")
+  Storage_Location = c(
+    "Farm office", "Purchase invoices", "Utility bills",
+    "Management records", "Herd records"
+  ),
+  Quality_Control = c(
+    "Cross-check with processor", "Verify units and quantities",
+    "Monitor seasonal patterns", "Update land use changes",
+    "Weigh representative sample"
+  )
 )
 
 kable(collection_schedule, caption = "Recommended Data Collection Schedule")
@@ -658,8 +680,10 @@ kable(collection_schedule, caption = "Recommended Data Collection Schedule")
 
 ```{r echo=FALSE}
 validation_hierarchy <- data.frame(
-  Level = c("Level 1: Range Checks", "Level 2: Consistency Checks", 
-            "Level 3: Benchmark Comparison", "Level 4: Expert Review"),
+  Level = c(
+    "Level 1: Range Checks", "Level 2: Consistency Checks",
+    "Level 3: Benchmark Comparison", "Level 4: Expert Review"
+  ),
   Validation_Type = c("Automatic", "Automatic", "Semi-automatic", "Manual"),
   Examples = c(
     "Values within expected ranges, correct units",
@@ -679,13 +703,15 @@ kable(validation_hierarchy, caption = "Quality Assurance Validation Levels")
 ```{r echo=FALSE}
 red_flags <- data.frame(
   Indicator = c("Milk intensity", "Feed efficiency", "Energy use", "Emission ratios", "System consistency"),
-  Warning_Threshold = c(">2.5 kg CO2eq/kg FPCM", "<1.0 L milk/kg concentrate", 
-                       ">0.15 kWh/L milk", "Enteric <30% of total", "Intensive system + low inputs"),
+  Warning_Threshold = c(
+    ">2.5 kg CO2eq/kg FPCM", "<1.0 L milk/kg concentrate",
+    ">0.15 kWh/L milk", "Enteric <30% of total", "Intensive system + low inputs"
+  ),
   Likely_Cause = c(
     "Poor productivity or data errors",
     "Overestimated feed use or underestimated milk",
     "Energy-intensive processes or errors",
-    "Missing emission sources or calculation errors", 
+    "Missing emission sources or calculation errors",
     "Inconsistent system classification"
   ),
   Investigation_Priority = c("High", "High", "Medium", "High", "Medium")

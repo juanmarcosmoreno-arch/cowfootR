@@ -53,19 +53,20 @@
 #' )
 #'
 #' # Using with calc_total_emissions output
-#' # \donttest{
+#' #
+#' \donttest{
 #' # b <- set_system_boundaries("farm_gate")
 #' # e1 <- calc_emissions_enteric(100, boundaries = b)
 #' # e2 <- calc_emissions_manure(100, boundaries = b)
 #' # tot <- calc_total_emissions(e1, e2)
 #' # calc_intensity_area(tot, area_total_ha = 120)
-#' # }
+#' #
+#' }
 calc_intensity_area <- function(total_emissions,
                                 area_total_ha,
                                 area_productive_ha = NULL,
                                 area_breakdown = NULL,
                                 validate_area_sum = TRUE) {
-
   # Extract emissions value if cf_total object is passed
   if (inherits(total_emissions, "cf_total")) {
     emissions_value <- total_emissions$total_co2eq
@@ -115,13 +116,17 @@ calc_intensity_area <- function(total_emissions,
 
     if (validate_area_sum) {
       if (abs(total_breakdown_area - area_total_ha) > 0.1) {
-        stop(paste0("Area breakdown sum (", round(total_breakdown_area, 1),
-                    " ha) doesn't match total area (", area_total_ha, " ha). ",
-                    "Set validate_area_sum = FALSE to override."))
+        stop(paste0(
+          "Area breakdown sum (", round(total_breakdown_area, 1),
+          " ha) doesn't match total area (", area_total_ha, " ha). ",
+          "Set validate_area_sum = FALSE to override."
+        ))
       }
     } else if (abs(total_breakdown_area - area_total_ha) > 0.1) {
-      warning(paste0("Area breakdown sum (", round(total_breakdown_area, 1),
-                     " ha) doesn't match total area (", area_total_ha, " ha)"))
+      warning(paste0(
+        "Area breakdown sum (", round(total_breakdown_area, 1),
+        " ha) doesn't match total area (", area_total_ha, " ha)"
+      ))
     }
   }
 
@@ -210,8 +215,10 @@ print.cf_area_intensity <- function(x, ...) {
       area <- x$area_breakdown$land_use_ha[[nm]]
       percentage <- x$area_breakdown$land_use_percentages[[nm]]
       emissions <- x$area_breakdown$proportional_emissions_co2eq[[nm]]
-      cat(sprintf(" %s: %.1f ha (%.1f%%) -> %.0f kg CO2eq\n",
-                  gsub("_", " ", nm), area, percentage, emissions))
+      cat(sprintf(
+        " %s: %.1f ha (%.1f%%) -> %.0f kg CO2eq\n",
+        gsub("_", " ", nm), area, percentage, emissions
+      ))
     }
     cat("\n")
   }
@@ -239,19 +246,18 @@ print.cf_area_intensity <- function(x, ...) {
 benchmark_area_intensity <- function(cf_area_intensity,
                                      region = NULL,
                                      benchmark_data = NULL) {
-
   if (!inherits(cf_area_intensity, "cf_area_intensity")) {
     stop("Input must be a cf_area_intensity object")
   }
 
   # Default regional benchmarks (kg CO2eq/ha) - placeholders, reemplazar con fuentes reales (IDF/FAO/etc.)
   default_benchmarks <- list(
-    uruguay = list(mean = 6000, range = c(5000, 7000),  source = "Placeholder"),
+    uruguay = list(mean = 6000, range = c(5000, 7000), source = "Placeholder"),
     argentina = list(mean = 6800, range = c(5500, 8500), source = "Placeholder"),
-    brazil = list(mean = 7200, range = c(5500, 9000),   source = "Placeholder"),
+    brazil = list(mean = 7200, range = c(5500, 9000), source = "Placeholder"),
     new_zealand = list(mean = 8500, range = c(7000, 10500), source = "Placeholder"),
     ireland = list(mean = 9200, range = c(8000, 11000), source = "Placeholder"),
-    global = list(mean = 7500, range = c(4000, 12000),  source = "FAO/IDF (placeholder)")
+    global = list(mean = 7500, range = c(4000, 12000), source = "FAO/IDF (placeholder)")
   )
 
   if (!is.null(benchmark_data)) {

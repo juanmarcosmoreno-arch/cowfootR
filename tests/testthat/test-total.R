@@ -2,8 +2,8 @@
 
 test_that("calc_total_emissions aggregates correctly with standard fields", {
   e1 <- list(source = "enteric", co2eq_kg = 1000)
-  e2 <- list(source = "manure",  co2eq_kg = 500)
-  e3 <- list(source = "soil",    co2eq_kg = 300)
+  e2 <- list(source = "manure", co2eq_kg = 500)
+  e3 <- list(source = "soil", co2eq_kg = 300)
 
   result <- calc_total_emissions(e1, e2, e3)
 
@@ -14,8 +14,8 @@ test_that("calc_total_emissions aggregates correctly with standard fields", {
 
 test_that("calc_total_emissions supports alternative CO2eq field names", {
   e1 <- list(source = "enteric", co2eq_kg = 1000)
-  e2 <- list(source = "manure",  total_co2eq_kg = 500)
-  e3 <- list(source = "soil",    total_co2eq = 300)
+  e2 <- list(source = "manure", total_co2eq_kg = 500)
+  e3 <- list(source = "soil", total_co2eq = 300)
 
   result <- calc_total_emissions(e1, e2, e3)
 
@@ -26,12 +26,12 @@ test_that("calc_total_emissions supports alternative CO2eq field names", {
 test_that("calc_total_emissions is monotonic (increasing one source increases total)", {
   base <- calc_total_emissions(
     list(source = "enteric", co2eq_kg = 1000),
-    list(source = "manure",  co2eq_kg = 500)
+    list(source = "manure", co2eq_kg = 500)
   )
 
   more <- calc_total_emissions(
     list(source = "enteric", co2eq_kg = 1100),
-    list(source = "manure",  co2eq_kg = 500)
+    list(source = "manure", co2eq_kg = 500)
   )
 
   expect_gt(more$total_co2eq, base$total_co2eq)

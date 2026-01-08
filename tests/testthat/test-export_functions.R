@@ -28,7 +28,7 @@ test_that("export_hdc_report creates an Excel file and returns the path", {
   # La función devuelve la ruta (según el comportamiento actual)
   expect_true(is.character(out))
   expect_true(normalizePath(out, winslash = "/", mustWork = FALSE) ==
-                normalizePath(temp_file, winslash = "/", mustWork = FALSE))
+    normalizePath(temp_file, winslash = "/", mustWork = FALSE))
 })
 
 test_that("cf_download_template creates an Excel template file", {

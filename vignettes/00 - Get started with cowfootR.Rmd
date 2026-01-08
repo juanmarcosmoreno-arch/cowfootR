@@ -78,11 +78,18 @@ boundaries
 Other options (e.g. "cradle_to_farm_gate") are described in the
 Workflow overview vignette.
 
+#### Units and reporting basis
+
+Unless otherwise stated, cowfootR reports:
+- **Absolute emissions** as **annual farm totals** in **kg CO₂eq per year (kg CO₂eq yr⁻¹)**, within the selected system boundaries.
+- **Milk intensity** as **kg CO₂eq per kg FPCM** (FPCM computed following IDF).
+- **Area intensity** as **kg CO₂eq per hectare (kg CO₂eq ha⁻¹ yr⁻¹)**.
+
 
 ### Step 2: Calculate emissions by source
 
 Each emission source is calculated using a dedicated function.
-All functions return structured objects with emissions expressed in kg CO₂eq.
+All functions return structured objects with emissions expressed in kg CO₂eq.All functions return structured objects with emissions expressed as **kg CO₂eq yr⁻¹** (annual totals), unless stated otherwise.
 
 #### Enteric fermentation
 
