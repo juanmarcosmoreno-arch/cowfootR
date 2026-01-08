@@ -71,7 +71,7 @@ With cowfootR, users can estimate emissions for dairy farms using a
 systematic, modular approach based on annual production and management
 data. Total emissions correspond to one accounting year, while intensity
 metrics are calculated per unit of product or per unit of managed area.
-The package follows a standard workflow : defining system boundaries,
+The package follows a standard workflow: defining system boundaries,
 calculating emissions by source, aggregating total emissions, and
 computing intensity metrics.
 
