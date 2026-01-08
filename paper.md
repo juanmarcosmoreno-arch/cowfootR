@@ -29,11 +29,13 @@ from five key sources: enteric fermentation, manure management, soil nitrogen
 dynamics, energy consumption, and purchased inputs, supporting both Tier 1 and 
 Tier 2 IPCC methodologies. Key features include standardized intensity metrics 
 (kg CO₂eq per kg of fat-protein corrected milk, per hectare), batch processing 
-capabilities for multiple farms, and regional benchmarking tools. By 
-transforming complex carbon accounting into accessible workflows, cowfootR 
-empowers researchers, agricultural consultants, and policymakers to evaluate 
-mitigation strategies, monitor environmental progress, and enhance the 
-sustainability of dairy operations while addressing the critical need for 
+capabilities for multiple farms, and regional benchmarking tools. Unless otherwise 
+stated, absolute greenhouse gas emissions reported by cowfootR are annual emissions 
+expressed as kg CO₂-equivalent per year at the farm (system) level, consistent with 
+IPCC and IDF accounting frameworks. By transforming complex carbon accounting into 
+accessible workflows, cowfootR empowers researchers, agricultural consultants, and 
+policymakers to evaluate mitigation strategies, monitor environmental progress, and 
+enhance the sustainability of dairy operations while addressing the critical need for 
 standardized, reproducible carbon assessment in agricultural systems.
 
 # Statement of need
@@ -80,7 +82,9 @@ adoption of standardized carbon assessment practices.
 
 # Usage
 With cowfootR, users can estimate emissions for dairy farms using a systematic, 
-modular approach. The package follows a standard workflow \autoref{fig:wf}: defining system 
+modular approach based on annual production and management data. Total emissions 
+correspond to one accounting year, while intensity metrics are calculated per unit 
+of product or per unit of managed area. The package follows a standard workflow \autoref{fig:wf}: defining system 
 boundaries, calculating emissions by source, aggregating total emissions, 
 and computing intensity metrics.
 
