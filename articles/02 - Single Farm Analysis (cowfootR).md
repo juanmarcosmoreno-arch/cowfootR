@@ -485,7 +485,7 @@ manure_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -597,7 +597,7 @@ soil_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $per_hectare_metrics
 #> $per_hectare_metrics$n_input_kg_per_ha
@@ -724,7 +724,7 @@ energy_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $energy_metrics
 #> $energy_metrics$electricity_share_pct
@@ -963,7 +963,7 @@ input_emissions
 #> [1] "IDF 2022; generic LCI sources"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 ```
 
 ### Step 4: Total emissions and hotspot analysis
@@ -996,7 +996,7 @@ total_emissions
 #>   manure : 347959.2 kg CO2eq
 #>   soil : 112601.8 kg CO2eq
 #> 
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-12
 ```
 
 #### Visualize emission sources (bar chart)
@@ -1059,7 +1059,7 @@ milk_intensity
 #>  Protein content: 3.3 %
 #> 
 #> Total emissions: 1,590,294 kg CO2eq
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-12
 ```
 
 #### Area Intensity (kg CO₂eq per ha)
@@ -1102,7 +1102,7 @@ area_intensity
 #>  woodland: 7.0 ha (3.5%) -> 55660 kg CO2eq
 #> 
 #> Total emissions: 1,590,294 kg CO2eq
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-12
 ```
 
 #### Benchmarking (interpretation note)

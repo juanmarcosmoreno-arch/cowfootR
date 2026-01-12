@@ -301,7 +301,7 @@ enteric_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $per_animal
 #> $per_animal$ch4_kg
@@ -405,7 +405,7 @@ manure_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -525,7 +525,7 @@ soil_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $per_hectare_metrics
 #> $per_hectare_metrics$n_input_kg_per_ha
@@ -659,7 +659,7 @@ energy_emissions
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $energy_metrics
 #> $energy_metrics$electricity_share_pct
@@ -899,7 +899,7 @@ input_emissions
 #> [1] "IDF 2022; generic LCI sources"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 ```
 
 #### Step 4: Aggregate Total Emissions
@@ -933,7 +933,7 @@ total_emissions
 #>   manure : 159755.4 kg CO2eq
 #>   soil : 69658.88 kg CO2eq
 #> 
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-12
 ```
 
 #### Step 5: Calculate Intensity Metrics
@@ -967,7 +967,7 @@ milk_intensity
 #>  Protein content: 3.2 %
 #> 
 #> Total emissions: 645,948 kg CO2eq
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-12
 ```
 
 ##### Area Intensity
@@ -1004,7 +1004,7 @@ area_intensity
 #>  infrastructure: 5.0 ha (4.2%) -> 26914 kg CO2eq
 #> 
 #> Total emissions: 645,948 kg CO2eq
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-12
 ```
 
 ### Visualizing Results

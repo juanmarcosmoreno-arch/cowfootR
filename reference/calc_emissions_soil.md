@@ -168,7 +168,7 @@ calc_emissions_soil(
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $per_hectare_metrics
 #> $per_hectare_metrics$n_input_kg_per_ha
@@ -279,7 +279,7 @@ calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-08"
+#> [1] "2026-01-12"
 #> 
 #> $source_contributions
 #> $source_contributions$synthetic_fertilizer_pct
