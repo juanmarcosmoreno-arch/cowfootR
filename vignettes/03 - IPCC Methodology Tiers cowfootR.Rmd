@@ -70,6 +70,80 @@ tier2_additional <- data.frame(
 kable(tier2_additional, caption = "Additional Tier 2 Data Requirements")
 ```
 
+## Input columns used by `calc_batch()` for Tier 2 calculations
+
+When using `calc_batch()` with `tier = 2`, users may provide additional
+farm-level variables to enable more detailed IPCC Tier 2 calculations.
+All inputs represent one accounting year unless explicitly stated
+otherwise by the column name (e.g., *_kg_day).
+
+The input data frame is flexible: only a small set of columns is strictly
+required, while the presence of additional columns enables more refined
+calculations. Missing optional columns do not cause errors; instead,
+cowfootR falls back to Tier 1–consistent default assumptions following
+IPCC and IDF guidance.
+
+### Core required columns (all tiers)
+
+- `FarmID`: Unique farm identifier  
+- `Milk_litres`: Annual milk production (litres/year)  
+- `Cows_milking`: Number of milking cows  
+- `Area_total_ha`: Total managed farm area (hectares)
+
+### Tier 2–relevant optional columns by emission source
+
+#### Enteric fermentation (Tier 2 refinement)
+
+Providing one or more of the following columns enables Tier 2 enteric
+methane calculations based on animal performance and intake:
+
+- `Milk_yield_kg_cow_year`: Average annual milk yield per cow (kg/year)
+- `Body_weight_cows_kg`: Average body weight of milking cows (kg)
+- `MS_intake_cows_milking_kg_day`: Dry matter intake of milking cows (kg/day)
+- `Ym_percent`: Methane conversion factor (% of gross energy intake)
+
+If none of these variables are provided, Tier 1 default emission factors
+are used.
+
+#### Young stock (optional refinement)
+
+When young stock is included, Tier 2 calculations may also use:
+
+- `Body_weight_heifers_kg`
+- `Body_weight_calves_kg`
+- `Body_weight_bulls_kg`
+- `MS_intake_heifers_kg_day`
+- `MS_intake_calves_kg_day`
+- `MS_intake_bulls_kg_day`
+
+#### Manure management (Tier 2 refinement)
+
+Tier 2 manure emissions may use additional information when available:
+
+- `Manure_system`: Manure management system (e.g., pasture, liquid storage)
+- `Diet_digestibility`: Diet digestibility (fraction)
+- `Protein_intake_kg_day`: Average protein intake per animal (kg/day)
+- `Retention_days`: Manure storage or retention time (days)
+- `System_temperature`: Average system temperature (°C)
+- `Climate_zone`: Climatic classification used for emission factors
+
+#### Other emission sources
+
+Soil, energy, and input-related emissions primarily rely on annual
+activity data (e.g., fertilizer use, fuel consumption, purchased inputs).
+For these sources, Tier 2 calculations are typically driven by regional
+emission factors rather than additional farm-specific columns.
+
+### Complete column specification
+
+The full and authoritative list of supported input columns, including
+expected units and naming conventions, is provided by the Excel template
+generated with:
+
+```{r}
+cf_download_template()
+```
+
 ## Theoretical Background
 
 ### IPCC Tier System Overview
