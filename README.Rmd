@@ -112,6 +112,8 @@ area_intensity <- calc_intensity_area(
 )
 area_intensity
 ```
+**Note on units:**  
+All absolute emission results returned by `cowfootR` (reported as kg CO₂eq) correspond to **annual, farm-level emissions** within the defined system boundaries. Intensity metrics are expressed per unit of product (kg CO₂eq per kg FPCM) and per unit of land area (kg CO₂eq per ha), all based on annual data.
 
 ## Batch processing (typical real-world use)
 
