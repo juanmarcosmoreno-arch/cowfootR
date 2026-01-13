@@ -12,23 +12,8 @@
 \item{...}{Additional arguments passed to print methods (currently ignored)}
 }
 \value{
-No return value, called for side effects. Prints formatted total emissions
-summary to the console and invisibly returns the input object.
-
 The input object \code{x}, invisibly.
 }
 \description{
 Print method for cf_total objects
-}
-\examples{
-\donttest{
-x <- list(
-  breakdown   = c(enteric = 45000, manure = 12000),
-  total_co2eq = 57000,
-  n_sources   = 2,
-  date        = Sys.Date()
-)
-class(x) <- "cf_total"
-# print(x)
-}
 }

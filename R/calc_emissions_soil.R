@@ -23,6 +23,8 @@
 #'
 #' @return A list with at least \code{source="soil"} and \code{co2eq_kg} (numeric),
 #' plus detailed breakdown metadata when included by boundaries.
+#' Absolute emissions are annual farm-level emissions (kg CO2eq yr-1) within the
+#' defined system boundaries.
 #' @export
 #'
 #' @examples
@@ -74,6 +76,15 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
   if (any(nin < 0)) {
     stop("All nitrogen inputs must be non-negative.")
   }
+  if (!is.finite(gwp_n2o) || gwp_n2o <= 0) {
+    stop("gwp_n2o must be a positive number.")
+  }
+
+  # ---- Units (annual) --------------------------------------------------------
+  units <- list(
+    n2o_kg   = "kg N2O yr-1",
+    co2eq_kg = "kg CO2eq yr-1"
+  )
 
   # Boundary exclusion: return numeric zero (not NULL) for co2eq_kg as per tests.
   soil_excluded <- is.list(boundaries) && !is.null(boundaries$include) && !("soil" %in% boundaries$include)
@@ -81,6 +92,7 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
     return(list(
       source = "soil",
       co2eq_kg = 0, # numeric zero required by tests
+      units = units,
       methodology = "excluded_by_boundaries",
       emissions_breakdown = NULL,
       nitrogen_inputs = NULL,
@@ -95,7 +107,6 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
   # Direct emission factors (IPCC-like)
   # ------------------------------------
   if (is.null(ef_direct)) {
-    # Illustrative Tier 1-style values; adjust as you source country/region data.
     direct_factors <- list(
       temperate = list(well_drained = 0.010, poorly_drained = 0.015),
       tropical  = list(well_drained = 0.012, poorly_drained = 0.018)
@@ -126,7 +137,6 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
   ef_leach <- NA_real_
 
   if (isTRUE(include_indirect)) {
-    # IPCC-style fractions/EFs (illustrative Tier 1)
     # Volatilisation (NH3 + NOx)
     frac_vol_synthetic <- 0.10
     frac_vol_organic <- 0.20
@@ -157,6 +167,7 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
   # -------------------------
   result <- list(
     source = "soil",
+    units = units,
     soil_conditions = list(
       soil_type = soil_type,
       climate   = climate
@@ -176,7 +187,7 @@ calc_emissions_soil <- function(n_fertilizer_synthetic = 0,
       total_n2o_kg                   = round(n2o_total, 3)
     ),
 
-    # Primary field used downstream (and by your tests)
+    # Primary field used downstream
     co2eq_kg = round(co2eq_total, 2),
     emission_factors = list(
       ef_direct = ef_direct,

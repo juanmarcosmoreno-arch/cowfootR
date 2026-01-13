@@ -55,8 +55,13 @@ is used directly; otherwise it is calculated (Tier 1 or Tier 2).}
 \item{boundaries}{Optional list from \code{set_system_boundaries()}.}
 }
 \value{
-List with CH4 (kg), CO2eq (kg), inputs, factors, and metadata.
-Includes \code{co2eq_kg} for compatibility with \code{calc_total_emissions()}.
+A list with annual CH4 emissions and annual CO2-equivalent emissions.
+\itemize{
+\item \code{ch4_kg}: annual CH4 emissions (kg CH4 yr-1)
+\item \code{co2eq_kg}: annual CO2-equivalent emissions (kg CO2eq yr-1), for compatibility
+with \code{calc_total_emissions()}
+\item \code{units_ch4} and \code{units_co2eq}: explicit unit strings
+}
 }
 \description{
 Estimates enteric methane (CH4) emissions from cattle using IPCC Tier 1 or
@@ -74,6 +79,6 @@ calc_emissions_enteric(
 
 # Boundary exclusion: enteric not included
 b <- list(include = c("manure", "energy"))
-calc_emissions_enteric(100, boundaries = b)$co2eq_kg  # NULL → excluded
+calc_emissions_enteric(100, boundaries = b)$co2eq_kg # NULL → excluded
 }
 }

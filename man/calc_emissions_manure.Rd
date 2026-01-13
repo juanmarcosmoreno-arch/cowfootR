@@ -65,6 +65,8 @@ Tier 2 can refine N excretion.}
 A list with CH4 (kg), N2O (kg), CO2eq (kg), metadata, and per-cow metrics.
 The returned object includes a \code{co2eq_kg} field compatible with
 \code{calc_total_emissions()}.
+Absolute emissions are annual farm-level emissions (kg CO2eq yr-1) within the
+defined system boundaries.
 }
 \description{
 Estimates CH4 and N2O emissions from manure management using IPCC Tier 1

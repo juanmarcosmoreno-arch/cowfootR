@@ -10,23 +10,17 @@ calc_total_emissions(...)
 \item{...}{Results from \code{calc_emissions_*()} functions (lists).}
 }
 \value{
-Object "cf_total" with breakdown (kg CO2eq by source) and total.
+Object of class \code{cf_total} including:
+\itemize{
+\item \code{total_co2eq}: total absolute emissions (kg CO2eq yr-1)
+\item \code{breakdown}: named numeric vector by source (kg CO2eq yr-1)
+\item \code{by_source}: data.frame with \code{source}, \code{co2eq_kg}, and \code{units}
+\item \code{units_total}, \code{units_by_source}: unit strings
+}
 }
 \description{
 Aggregates results from different sources (enteric, manure, soil, energy, inputs)
 even if they don't use exactly the same field name for the total.
 IMPORTANT: If a source explicitly reports \code{co2eq_kg = NULL} (e.g. excluded by
 system boundaries), it is treated as zero and no fallback summation is attempted.
-}
-\examples{
-\donttest{
-# hipotético: totales ya agregados por fuente
-enteric <- list(co2eq_kg = 45000, source = "enteric")
-manure  <- list(co2eq_kg = 12000, source = "manure")
-soil    <- list(co2eq_kg = 18000, source = "soil")
-energy  <- list(co2eq_kg =  8000, source = "energy")
-
-tot <- calc_total_emissions(enteric = enteric, manure = manure, soil = soil, energy = energy)
-# print(tot)
-}
 }

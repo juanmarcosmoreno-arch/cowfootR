@@ -18,11 +18,14 @@ export_hdc_report(
 \item{include_details}{Logical. If TRUE, includes extra sheets with detailed objects (if available).}
 }
 \value{
-Invisibly returns the file path.
+Invisibly returns the file path. The Excel output includes unit-consistent
+columns for annual emissions (kg CO2eq yr-1) and emission intensities.
 }
 \description{
 Exports results from \code{calc_batch()} into an Excel file
 with summary and farm-level sheets.
+Emission columns are exported as annual emissions (kg CO2eq yr-1).
+Intensity columns are exported as kg CO2eq per kg FPCM and kg CO2eq per ha.
 }
 \examples{
 \donttest{

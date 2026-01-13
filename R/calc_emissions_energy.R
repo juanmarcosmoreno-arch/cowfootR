@@ -65,12 +65,24 @@ calc_emissions_energy <- function(diesel_l = 0,
   }
   # ---------------------------------------------------------------------------
 
+  # ---- Units (annual) --------------------------------------------------------
+  units <- list(
+    co2_kg     = "kg CO2 yr-1",
+    co2eq_kg   = "kg CO2eq yr-1",
+    diesel_l   = "L yr-1",
+    petrol_l   = "L yr-1",
+    lpg_kg     = "kg yr-1",
+    natural_gas_m3 = "m3 yr-1",
+    electricity_kwh = "kWh yr-1"
+  )
+
   # 1) System boundaries gate -------------------------------------------------
   if (is.list(boundaries) && !is.null(boundaries$include) &&
-    !("energy" %in% boundaries$include)) {
+      !("energy" %in% boundaries$include)) {
     return(list(
       source = "energy",
       co2eq_kg = 0,
+      units = units,
       methodology = "excluded_by_boundaries",
       excluded = TRUE
     ))
@@ -121,12 +133,13 @@ calc_emissions_energy <- function(diesel_l = 0,
         use_gas <- (as.numeric(energy_breakdown$natural_gas_m3[i]) %||% 0) * ef_natural_gas
         use_elec <- (as.numeric(energy_breakdown$electricity_kwh[i]) %||% 0) * ef_electricity
         breakdown_emissions[[nm_uses[i]]] <- list(
-          diesel_co2      = round(use_diesel, 2),
-          petrol_co2      = round(use_petrol, 2),
-          lpg_co2         = round(use_lpg, 2),
-          natural_gas_co2 = round(use_gas, 2),
-          electricity_co2 = round(use_elec, 2),
-          total_co2       = round(use_diesel + use_petrol + use_lpg + use_gas + use_elec, 2)
+          diesel_co2_kg      = round(use_diesel, 2),
+          petrol_co2_kg      = round(use_petrol, 2),
+          lpg_co2_kg         = round(use_lpg, 2),
+          natural_gas_co2_kg = round(use_gas, 2),
+          electricity_co2_kg = round(use_elec, 2),
+          total_co2_kg       = round(use_diesel + use_petrol + use_lpg + use_gas + use_elec, 2),
+          units              = list(co2_kg = units$co2_kg)
         )
       }
     } else {
@@ -147,12 +160,13 @@ calc_emissions_energy <- function(diesel_l = 0,
         use_elec <- .get_num(use_data, "electricity_kwh") * ef_electricity
 
         breakdown_emissions[[use_name]] <- list(
-          diesel_co2      = round(use_diesel, 2),
-          petrol_co2      = round(use_petrol, 2),
-          lpg_co2         = round(use_lpg, 2),
-          natural_gas_co2 = round(use_gas, 2),
-          electricity_co2 = round(use_elec, 2),
-          total_co2       = round(use_diesel + use_petrol + use_lpg + use_gas + use_elec, 2)
+          diesel_co2_kg      = round(use_diesel, 2),
+          petrol_co2_kg      = round(use_petrol, 2),
+          lpg_co2_kg         = round(use_lpg, 2),
+          natural_gas_co2_kg = round(use_gas, 2),
+          electricity_co2_kg = round(use_elec, 2),
+          total_co2_kg       = round(use_diesel + use_petrol + use_lpg + use_gas + use_elec, 2),
+          units              = list(co2_kg = units$co2_kg)
         )
       }
     }
@@ -186,16 +200,21 @@ calc_emissions_energy <- function(diesel_l = 0,
   # 7) Result object ----------------------------------------------------------
   result <- list(
     source = "energy",
+    units = units,
+
     fuel_emissions = list(
       diesel_co2_kg      = round(diesel_co2, 2),
       petrol_co2_kg      = round(petrol_co2, 2),
       lpg_co2_kg         = round(lpg_co2, 2),
       natural_gas_co2_kg = round(natural_gas_co2, 2),
-      electricity_co2_kg = round(electricity_co2, 2)
+      electricity_co2_kg = round(electricity_co2, 2),
+      units              = list(co2_kg = units$co2_kg)
     ),
+
     direct_co2eq_kg = round(total_direct, 2),
     upstream_co2eq_kg = round(upstream_emissions, 2),
     co2eq_kg = round(total_emissions, 2),
+
     emission_factors = list(
       diesel_kg_co2_per_l        = ef_diesel,
       petrol_kg_co2_per_l        = ef_petrol,
@@ -204,11 +223,13 @@ calc_emissions_energy <- function(diesel_l = 0,
       electricity_kg_co2_per_kwh = ef_electricity,
       electricity_country        = country
     ),
+
     inputs = list(
       diesel_l = diesel_l, petrol_l = petrol_l, lpg_kg = lpg_kg,
       natural_gas_m3 = natural_gas_m3, electricity_kwh = electricity_kwh,
       include_upstream = include_upstream
     ),
+
     methodology = paste0(
       "IPCC 2019 emission factors",
       if (include_upstream) " + upstream" else ""

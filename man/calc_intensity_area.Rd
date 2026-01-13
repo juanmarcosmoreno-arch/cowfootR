@@ -71,11 +71,13 @@ calc_intensity_area(
 )
 
 # Using with calc_total_emissions output
-# \donttest{
+#
+\donttest{
 # b <- set_system_boundaries("farm_gate")
 # e1 <- calc_emissions_enteric(100, boundaries = b)
 # e2 <- calc_emissions_manure(100, boundaries = b)
 # tot <- calc_total_emissions(e1, e2)
 # calc_intensity_area(tot, area_total_ha = 120)
-# }
+#
+}
 }

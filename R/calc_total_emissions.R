@@ -6,25 +6,23 @@
 #' system boundaries), it is treated as zero and no fallback summation is attempted.
 #'
 #' @param ... Results from \code{calc_emissions_*()} functions (lists).
-#' @return Object "cf_total" with breakdown (kg CO2eq by source) and total.
-#' @export
-#' @examples
-#' \donttest{
-#' # hipotético: totales ya agregados por fuente
-#' enteric <- list(co2eq_kg = 45000, source = "enteric")
-#' manure <- list(co2eq_kg = 12000, source = "manure")
-#' soil <- list(co2eq_kg = 18000, source = "soil")
-#' energy <- list(co2eq_kg = 8000, source = "energy")
-#'
-#' tot <- calc_total_emissions(enteric = enteric, manure = manure, soil = soil, energy = energy)
-#' # print(tot)
+#' @return Object of class \code{cf_total} including:
+#' \itemize{
+#'   \item \code{total_co2eq}: total absolute emissions (kg CO2eq yr-1)
+#'   \item \code{breakdown}: named numeric vector by source (kg CO2eq yr-1)
+#'   \item \code{by_source}: data.frame with \code{source}, \code{co2eq_kg}, and \code{units}
+#'   \item \code{units_total}, \code{units_by_source}: unit strings
 #' }
+#' @export
 calc_total_emissions <- function(...) {
   sources <- list(...)
   if (length(sources) == 0) stop("Must provide at least one emission source")
 
   dot_names <- names(match.call(expand.dots = FALSE)$...)
   if (is.null(dot_names)) dot_names <- rep("", length(sources))
+
+  # Unit convention for absolute emissions throughout cowfootR:
+  unit_abs <- "kg CO2eq yr-1"
 
   # internal helpers -------------------------
   .first_non_null <- function(...) {
@@ -71,7 +69,6 @@ calc_total_emissions <- function(...) {
     NULL
   }
   .infer_source_name <- function(x, i, dot_nm = "") {
-    # prioridad: nombre provisto en ... → campo 'source' → atributo → type/category → fallback
     nm <- if (nzchar(dot_nm)) dot_nm else .first_non_null(x$source, attr(x, "source"), x$type, x$category)
     if (is.null(nm) || !nzchar(nm)) nm <- paste0("source_", i)
     as.character(nm)
@@ -128,18 +125,27 @@ calc_total_emissions <- function(...) {
   }
 
   breakdown <- tapply(values, src_names, sum, na.rm = TRUE)
-  # asegurar vector named puro (no array) por si tapply devuelve 'array'
   breakdown <- as.numeric(breakdown)
   names(breakdown) <- names(tapply(values, src_names, sum, na.rm = TRUE))
 
   total <- sum(breakdown, na.rm = TRUE)
 
+  by_source <- data.frame(
+    source = names(breakdown),
+    co2eq_kg = as.numeric(breakdown),
+    units = rep(unit_abs, length(breakdown)),
+    stringsAsFactors = FALSE
+  )
+
   structure(
     list(
-      breakdown   = breakdown,
-      total_co2eq = total,
-      n_sources   = length(sources),
-      date        = Sys.Date()
+      breakdown      = breakdown,     # named numeric vector (kg CO2eq yr-1)
+      by_source      = by_source,     # explicit table (kg CO2eq yr-1)
+      total_co2eq    = total,         # (kg CO2eq yr-1)
+      n_sources      = length(sources),
+      units_total    = unit_abs,
+      units_by_source= unit_abs,
+      date           = Sys.Date()
     ),
     class = "cf_total"
   )
@@ -149,30 +155,21 @@ calc_total_emissions <- function(...) {
 #'
 #' @param x A cf_total object
 #' @param ... Additional arguments passed to print methods (currently ignored)
-#' @return No return value, called for side effects. Prints formatted total emissions
-#'   summary to the console and invisibly returns the input object.
 #' @return The input object `x`, invisibly.
 #' @export
-#' @examples
-#' \donttest{
-#' x <- list(
-#'   breakdown   = c(enteric = 45000, manure = 12000),
-#'   total_co2eq = 57000,
-#'   n_sources   = 2,
-#'   date        = Sys.Date()
-#' )
-#' class(x) <- "cf_total"
-#' # print(x)
-#' }
 print.cf_total <- function(x, ...) {
+  unit_abs <- x$units_total %||% "kg CO2eq yr-1"
+
   cat("Carbon Footprint - Total Emissions\n")
   cat("==================================\n")
-  cat("Total CO2eq:", round(x$total_co2eq, 2), "kg\n")
+  cat("Total CO2eq:", round(x$total_co2eq, 2), unit_abs, "\n")
   cat("Number of sources:", x$n_sources, "\n\n")
+
   cat("Breakdown by source:\n")
   for (i in seq_along(x$breakdown)) {
-    cat(" ", names(x$breakdown)[i], ":", round(x$breakdown[i], 2), "kg CO2eq\n")
+    cat(" ", names(x$breakdown)[i], ":", round(x$breakdown[i], 2), unit_abs, "\n")
   }
+
   cat("\nCalculated on:", as.character(x$date), "\n")
   invisible(x)
 }

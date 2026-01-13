@@ -26,8 +26,13 @@
 #' @param gwp_ch4 Numeric. GWP for CH4 (100-yr, AR6). Default = 27.2.
 #' @param boundaries Optional list from \code{set_system_boundaries()}.
 #'
-#' @return List with CH4 (kg), CO2eq (kg), inputs, factors, and metadata.
-#'   Includes \code{co2eq_kg} for compatibility with \code{calc_total_emissions()}.
+#' @return A list with annual CH4 emissions and annual CO2-equivalent emissions.
+#' \itemize{
+#'   \item \code{ch4_kg}: annual CH4 emissions (kg CH4 yr-1)
+#'   \item \code{co2eq_kg}: annual CO2-equivalent emissions (kg CO2eq yr-1), for compatibility
+#'     with \code{calc_total_emissions()}
+#'   \item \code{units_ch4} and \code{units_co2eq}: explicit unit strings
+#' }
 #' @export
 #'
 #' @examples
@@ -83,13 +88,17 @@ calc_emissions_enteric <- function(n_animals,
 
   # Boundary exclusion: clean signal for calc_total_emissions()
   if (is.list(boundaries) && !is.null(boundaries$include) &&
-    !("enteric" %in% boundaries$include)) {
+      !("enteric" %in% boundaries$include)) {
     return(list(
       source = "enteric",
       category = cattle_category,
-      co2eq_kg = NULL, # explicit exclusion → treated as zero
+      ch4_kg = NULL,
+      co2eq_kg = NULL,  # explicit exclusion → treated as zero by calc_total_emissions()
+      units_ch4 = "kg CH4 yr-1",
+      units_co2eq = "kg CO2eq yr-1",
       methodology = "excluded_by_boundaries",
-      excluded = TRUE
+      excluded = TRUE,
+      date = Sys.Date()
     ))
   }
 
@@ -162,10 +171,10 @@ calc_emissions_enteric <- function(n_animals,
     warning("Tier 2 calculation produced an invalid EF; falling back to Tier 1 defaults.")
     tier <- 1L
     ef_ch4 <- switch(cattle_category,
-      dairy_cows = 115,
-      heifers = 80,
-      calves = 42,
-      bulls = 105
+                     dairy_cows = 115,
+                     heifers = 80,
+                     calves = 42,
+                     bulls = 105
     )
   }
 
@@ -180,6 +189,8 @@ calc_emissions_enteric <- function(n_animals,
     production_system = production_system,
     ch4_kg = round(ch4_annual, 2),
     co2eq_kg = round(co2eq_annual, 2),
+    units_ch4 = "kg CH4 yr-1",
+    units_co2eq = "kg CO2eq yr-1",
     emission_factors = list(
       emission_factor_ch4 = round(ef_ch4, 3),
       ym_percent = ym_percent,

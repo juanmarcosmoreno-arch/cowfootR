@@ -46,6 +46,8 @@ If soil is excluded, returns \code{co2eq_kg = 0}.}
 \value{
 A list with at least \code{source="soil"} and \code{co2eq_kg} (numeric),
 plus detailed breakdown metadata when included by boundaries.
+Absolute emissions are annual farm-level emissions (kg CO2eq yr-1) within the
+defined system boundaries.
 }
 \description{
 Estimates direct and indirect N2O emissions from soils due to fertilisation,
@@ -71,7 +73,7 @@ calc_emissions_soil(
 calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
 
 # Boundary exclusion example
-b <- list(include = c("energy", "manure"))  # soil not included
-calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = b)$co2eq_kg  # 0
+b <- list(include = c("energy", "manure")) # soil not included
+calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = b)$co2eq_kg # 0
 }
 }

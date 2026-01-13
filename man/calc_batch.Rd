@@ -14,28 +14,96 @@ calc_batch(
 )
 }
 \arguments{
-\item{data}{A data.frame with one row per farm (already loaded). This version does not read files.}
+\item{data}{A data.frame with one row per farm and annual activity data.
+At minimum, the following columns are required:
+\itemize{
+\item \code{FarmID}: Unique farm identifier.
+\item \code{Milk_litres}: Annual milk production (litres/year).
+\item \code{Cows_milking}: Number of milking cows.
+}
+Additional columns are optional and enable more detailed Tier 2 calculations,
+including herd structure, feed intake, manure management, soil nitrogen inputs,
+energy use, and purchased inputs. When optional variables are not provided,
+default IPCC- or IDF-consistent values are used. All inputs are assumed to
+represent one accounting year.}
 
 \item{tier}{Integer; methodology tier (usually 1 or 2). Default = 2.}
 
 \item{boundaries}{System boundaries as returned by \code{set_system_boundaries()}.}
 
-\item{benchmark_region}{Optional character code/region for benchmarking (if supported).}
+\item{benchmark_region}{Optional character string specifying a geographic or
+regional benchmark (e.g., country or production region). When provided,
+emission intensity results are compared against region-specific reference
+values using internal benchmarking functions. This argument does not affect
+emission calculations and is only used for comparative performance assessment.}
 
 \item{save_detailed_objects}{Logical; if TRUE, returns detailed objects per farm.}
 }
 \value{
 A list with \code{$summary} and \code{$farm_results}; class \code{cf_batch_complete}.
+Absolute emissions returned in \code{$farm_results} (e.g., \code{emissions_total},
+\code{emissions_enteric}, \code{emissions_manure}, etc.) are annual emissions expressed as
+kg CO2-equivalent per year (kg CO2eq yr-1) at the farm (system) level, within the defined
+system boundaries. Intensity metrics are reported as kg CO2eq per kg FPCM and kg CO2eq per ha
+(based on annual milk production and managed area).
 }
 \description{
-Processes a data.frame of farms and computes emissions per farm,
+Processes a data.frame of farms and computes annual emissions per farm,
 returning a summary plus per-farm details (optionally).
+}
+\details{
+The input data frame is intentionally flexible to support heterogeneous
+data availability across farms. Each row represents one farm and all inputs
+are assumed to correspond to a single accounting year, unless explicitly
+stated otherwise by the column name (e.g., *_kg_day).
+
+Column names follow cowfootR conventions. The complete and authoritative
+specification of supported input columns (including expected units and
+whether they are required or optional) is provided by the Excel template
+generated with \code{cf_download_template()}. This template represents the
+full set of columns that can be used by \code{calc_batch()}.
+
+In addition, the vignettes "Get started" and "IPCC Methodology Tiers in cowfootR"
+describe how these columns are used conceptually and methodologically.
+
+\strong{Tier 2–relevant optional columns:}
+When \code{tier = 2}, \code{calc_batch()} uses additional farm-specific
+information if available. The most relevant optional columns include:
+\itemize{
+\item \strong{Enteric fermentation:}
+\code{Milk_yield_kg_cow_year},
+\code{Body_weight_cows_kg},
+\code{MS_intake_cows_milking_kg_day},
+\code{Ym_percent}.
+
+\item \strong{Young stock (optional refinement):}
+\code{Body_weight_heifers_kg},
+\code{Body_weight_calves_kg},
+\code{Body_weight_bulls_kg},
+\code{MS_intake_heifers_kg_day},
+\code{MS_intake_calves_kg_day},
+\code{MS_intake_bulls_kg_day}.
+
+\item \strong{Manure management:}
+\code{Manure_system},
+\code{Diet_digestibility},
+\code{Protein_intake_kg_day},
+\code{Retention_days},
+\code{System_temperature},
+\code{Climate_zone}.
+}
+
+If any Tier 2–relevant column is missing, the function automatically falls
+back to Tier 1–consistent default assumptions following IPCC and IDF guidance.
+Missing optional inputs therefore do not cause errors.
 }
 \examples{
 \donttest{
-farms <- data.frame(FarmID = c("A","B"),
-                    Milk_litres = c(5e5, 7e5),
-                    Cows_milking = c(100, 140))
+farms <- data.frame(
+  FarmID = c("A", "B"),
+  Milk_litres = c(5e5, 7e5),
+  Cows_milking = c(100, 140)
+)
 res <- calc_batch(
   data = farms,
   tier = 2,

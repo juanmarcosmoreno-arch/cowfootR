@@ -28,6 +28,8 @@
 #' @return A list with CH4 (kg), N2O (kg), CO2eq (kg), metadata, and per-cow metrics.
 #'   The returned object includes a \code{co2eq_kg} field compatible with
 #'   \code{calc_total_emissions()}.
+#'   Absolute emissions are annual farm-level emissions (kg CO2eq yr-1) within the
+#'   defined system boundaries.
 #' @export
 #'
 #' @examples
@@ -88,17 +90,28 @@ calc_emissions_manure <- function(n_cows,
   if (!is.finite(diet_digestibility) || diet_digestibility <= 0 || diet_digestibility > 1) {
     stop("diet_digestibility must be in (0, 1]")
   }
+  if (!is.finite(gwp_ch4) || gwp_ch4 <= 0) stop("gwp_ch4 must be positive")
+  if (!is.finite(gwp_n2o) || gwp_n2o <= 0) stop("gwp_n2o must be positive")
+
+  # ---- Units (annual) --------------------------------------------------------
+  units <- list(
+    ch4_kg   = "kg CH4 yr-1",
+    n2o_kg   = "kg N2O yr-1",
+    co2eq_kg = "kg CO2eq yr-1"
+  )
 
   # Boundary-based exclusion (clean signal for calc_total_emissions())
+  # Use co2eq_kg = NULL consistently (calc_total_emissions treats NULL as zero)
   if (is.list(boundaries) && !is.null(boundaries$include) &&
-    !("manure" %in% boundaries$include)) {
+      !("manure" %in% boundaries$include)) {
     return(list(
       source = "manure",
       system = manure_system,
       tier = tier,
-      co2eq_kg = 0, # explicit exclusion
+      co2eq_kg = NULL,
       methodology = "excluded_by_boundaries",
-      excluded = TRUE
+      excluded = TRUE,
+      units = units
     ))
   }
 
@@ -107,20 +120,20 @@ calc_emissions_manure <- function(n_cows,
     # Default CH4 EFs (kg CH4/cow/year) if not provided
     if (is.null(ef_ch4)) {
       ch4_factors <- list(
-        pasture            = 1.5, # grazing/minimal storage
-        solid_storage      = 20, # typical solid storage
-        liquid_storage     = 30, # liquid lagoons/pits
-        anaerobic_digester = 10 # controlled anaerobic
+        pasture            = 1.5,  # grazing/minimal storage
+        solid_storage      = 20,   # typical solid storage
+        liquid_storage     = 30,   # liquid lagoons/pits
+        anaerobic_digester = 10    # controlled anaerobic
       )
       ef_ch4 <- ch4_factors[[manure_system]]
     } else {
       if (!is.finite(ef_ch4) || ef_ch4 < 0) stop("ef_ch4 must be non-negative")
     }
 
-    # CH4 emissions
+    # CH4 emissions (annual)
     ch4 <- n_cows * ef_ch4
 
-    # N2O emissions (common helper for both tiers)
+    # N2O emissions
     n2o_results <- calc_n2o_emissions(
       n_cows = n_cows,
       n_excreted = n_excreted,
@@ -130,9 +143,9 @@ calc_emissions_manure <- function(n_cows,
     )
 
     methodology_note <- "IPCC Tier 1 (default emission factors)"
+    tier2_details <- NULL
   } else {
     # --------------------------- Tier 2 --------------------------------------
-    # CH4 via VS_B0_MCF approach with temperature/retention adjustments
     ch4_results <- calc_ch4_tier2(
       n_cows = n_cows,
       avg_body_weight = avg_body_weight,
@@ -155,6 +168,7 @@ calc_emissions_manure <- function(n_cows,
     )
 
     methodology_note <- "IPCC Tier 2 (VS_B0_MCF calculation)"
+    tier2_details <- ch4_results[c("vs_kg_per_day", "b0_used", "mcf_used")]
   }
 
   # --------------------------- Aggregation -----------------------------------
@@ -168,12 +182,15 @@ calc_emissions_manure <- function(n_cows,
     tier = tier,
     climate = climate,
 
-    # Emissions by gas
+    # Emissions by gas (annual)
     ch4_kg = round(ch4, 2),
     n2o_direct_kg = round(n2o_results$n2o_direct, 2),
     n2o_indirect_kg = round(n2o_results$n2o_indirect, 2),
     n2o_total_kg = round(n2o_total, 2),
     co2eq_kg = round(co2eq, 2),
+
+    # Units (explicit)
+    units = units,
 
     # Emission factors used
     emission_factors = list(
@@ -190,7 +207,9 @@ calc_emissions_manure <- function(n_cows,
       manure_system = manure_system,
       include_indirect = include_indirect,
       avg_body_weight = if (tier == 2L) avg_body_weight else NA_real_,
-      diet_digestibility = if (tier == 2L) diet_digestibility else NA_real_
+      diet_digestibility = if (tier == 2L) diet_digestibility else NA_real_,
+      retention_days = retention_days,
+      system_temperature = system_temperature
     ),
 
     # Methodology meta
@@ -198,17 +217,17 @@ calc_emissions_manure <- function(n_cows,
     standards = "IPCC 2019 Refinement, IDF 2022",
     date = Sys.Date(),
 
-    # Per-cow metrics
+    # Per-cow metrics (still annual per head)
     per_cow = list(
       ch4_kg = round(ch4 / n_cows, 4),
       n2o_kg = round(n2o_total / n_cows, 6),
-      co2eq_kg = round(co2eq / n_cows, 4)
+      co2eq_kg = round(co2eq / n_cows, 4),
+      units = units
     )
   )
 
-  # Add Tier 2 details for transparency
   if (tier == 2L) {
-    result$tier2_details <- ch4_results[c("vs_kg_per_day", "b0_used", "mcf_used")]
+    result$tier2_details <- tier2_details
   }
 
   return(result)
@@ -221,8 +240,14 @@ calc_emissions_manure <- function(n_cows,
 calc_ch4_tier2 <- function(n_cows, avg_body_weight, diet_digestibility,
                            manure_system, climate, retention_days = NULL,
                            system_temperature = NULL) {
+  # Validation (minimal; keep helper robust)
+  if (!is.finite(n_cows) || n_cows <= 0) stop("n_cows must be positive")
+  if (!is.finite(avg_body_weight) || avg_body_weight <= 0) stop("avg_body_weight must be positive")
+  if (!is.finite(diet_digestibility) || diet_digestibility <= 0 || diet_digestibility > 1) {
+    stop("diet_digestibility must be in (0, 1]")
+  }
+
   # Step 1: Volatile Solids (VS) excretion (simple IPCC-style approximation)
-  # Adults vs. young cattle differentiation
   if (avg_body_weight > 200) {
     vs_excretion <- 0.04 * avg_body_weight * (2 - diet_digestibility) # kg VS/day
   } else {
@@ -249,14 +274,16 @@ calc_ch4_tier2 <- function(n_cows, avg_body_weight, diet_digestibility,
 
   # Temperature adjustment (simple elasticities)
   if (!is.null(system_temperature)) {
+    if (!is.finite(system_temperature)) stop("system_temperature must be numeric if provided")
     temp_adj <- ifelse(system_temperature < 15, 0.8,
-      ifelse(system_temperature > 25, 1.2, 1.0)
+                       ifelse(system_temperature > 25, 1.2, 1.0)
     )
     mcf <- mcf * temp_adj
   }
 
   # Retention time adjustment (simple thresholds, not for pasture)
   if (!is.null(retention_days) && manure_system != "pasture") {
+    if (!is.finite(retention_days) || retention_days <= 0) stop("retention_days must be positive if provided")
     if (retention_days < 30) {
       mcf <- mcf * 0.7
     } else if (retention_days > 120) {
@@ -266,7 +293,6 @@ calc_ch4_tier2 <- function(n_cows, avg_body_weight, diet_digestibility,
 
   # Step 4: CH4 (convert cow-level daily to annual total)
   ch4_kg_per_cow_year <- vs_excretion * b0 * mcf * 365 * 0.67 # 0.67 ~ kg CH4 per m^3 proxy
-
   total_ch4_kg <- n_cows * ch4_kg_per_cow_year
 
   list(
@@ -286,9 +312,19 @@ calc_ch4_tier2 <- function(n_cows, avg_body_weight, diet_digestibility,
 calc_n2o_emissions <- function(n_cows, n_excreted, ef_n2o_direct,
                                include_indirect, protein_intake_kg = NULL,
                                tier2_enhancement = FALSE) {
+  if (!is.finite(n_cows) || n_cows <= 0) stop("n_cows must be positive")
+  if (!is.finite(n_excreted) || n_excreted < 0) stop("n_excreted must be non-negative")
+  if (!is.finite(ef_n2o_direct) || ef_n2o_direct < 0) stop("ef_n2o_direct must be non-negative")
+
   # Optional Tier 2 refinement of N excretion from protein intake
-  if (!is.null(protein_intake_kg) && (tier2_enhancement || !is.null(protein_intake_kg))) {
-    n_in_protein <- protein_intake_kg / 6.25 # crude protein N
+  if (!is.null(protein_intake_kg)) {
+    if (!is.finite(protein_intake_kg) || protein_intake_kg < 0) {
+      stop("protein_intake_kg must be non-negative if provided")
+    }
+  }
+
+  if (!is.null(protein_intake_kg) && (isTRUE(tier2_enhancement) || !is.null(protein_intake_kg))) {
+    n_in_protein <- protein_intake_kg / 6.25 # crude protein N (kg N/day)
     n_retention_milk <- 0.25 # assumed retained fraction for milk
     n_excreted_used <- n_in_protein * (1 - n_retention_milk) * 365
   } else {
@@ -302,7 +338,7 @@ calc_n2o_emissions <- function(n_cows, n_excreted, ef_n2o_direct,
   n2o_indirect <- 0
   if (isTRUE(include_indirect)) {
     frac_vol <- 0.20 # volatilized fraction of N
-    ef_vol <- 0.01 # EF for deposition of volatilized N
+    ef_vol <- 0.01   # EF for deposition of volatilized N
     frac_leach <- 0.30
     ef_leach <- 0.0075
 
@@ -312,7 +348,8 @@ calc_n2o_emissions <- function(n_cows, n_excreted, ef_n2o_direct,
       frac_leach <- 0.25
     }
 
-    n2o_indirect <- n_cows * n_excreted_used * ((frac_vol * ef_vol) + (frac_leach * ef_leach)) * (44 / 28)
+    n2o_indirect <- n_cows * n_excreted_used *
+      ((frac_vol * ef_vol) + (frac_leach * ef_leach)) * (44 / 28)
   }
 
   list(
