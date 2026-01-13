@@ -20,19 +20,12 @@ calc_total_emissions(...)
 
 ## Value
 
-Object "cf_total" with breakdown (kg CO2eq by source) and total.
+Object of class `cf_total` including:
 
-## Examples
+- `total_co2eq`: total absolute emissions (kg CO2eq yr-1)
 
-``` r
-# \donttest{
-# hipotético: totales ya agregados por fuente
-enteric <- list(co2eq_kg = 45000, source = "enteric")
-manure  <- list(co2eq_kg = 12000, source = "manure")
-soil    <- list(co2eq_kg = 18000, source = "soil")
-energy  <- list(co2eq_kg =  8000, source = "energy")
+- `breakdown`: named numeric vector by source (kg CO2eq yr-1)
 
-tot <- calc_total_emissions(enteric = enteric, manure = manure, soil = soil, energy = energy)
-# print(tot)
-# }
-```
+- `by_source`: data.frame with `source`, `co2eq_kg`, and `units`
+
+- `units_total`, `units_by_source`: unit strings

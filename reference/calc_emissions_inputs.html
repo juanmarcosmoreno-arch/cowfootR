@@ -169,6 +169,41 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $source</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "inputs"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$co2eq_kg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2eq yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$conc_kg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$fert_n_kg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg N yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$plastic_kg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$feed_kg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg DM yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$transport_km</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "km"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$ef_conc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$ef_fert</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg N"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$ef_plastic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$ef_feed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units$ef_truck</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per (kg·km)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$concentrate_co2eq_kg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 750</span>
@@ -207,7 +242,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.75</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$concentrate$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$fertilizer</span>
@@ -218,7 +253,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$fertilizer$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg N"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg N"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$plastic</span>
@@ -229,7 +264,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$plastic$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds</span>
@@ -238,7 +273,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.42</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_dry$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_wet</span>
@@ -246,7 +281,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.32</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_wet$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$ration</span>
@@ -254,7 +289,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$ration$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$byproducts</span>
@@ -262,7 +297,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.18</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$byproducts$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$proteins</span>
@@ -270,7 +305,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$proteins$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$corn</span>
@@ -278,7 +313,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.48</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$corn$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$soy</span>
@@ -286,7 +321,7 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$soy$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$wheat</span>
@@ -294,15 +329,23 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.51</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$wheat$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per kg DM"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$transport</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$transport$ef_truck</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$transport$unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e per (kg·km)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$transport$transport_km</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$region_source</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "EU"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$transport_km</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary</span>
@@ -372,258 +415,12 @@ convenience.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "IDF 2022; generic LCI sources"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-12"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-13"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With uncertainty analysis</span></span></span>
 <span class="r-in"><span><span class="fu">calc_emissions_inputs</span><span class="op">(</span>feed_corn_kg <span class="op">=</span> <span class="fl">2000</span>, region <span class="op">=</span> <span class="st">"US"</span>, include_uncertainty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $source</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "inputs"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$concentrate_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$fertilizer_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$plastic_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$feeds_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  grain_dry  grain_wet     ration byproducts   proteins       corn        soy </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          0          0          0          0          0        760          0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      wheat </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$total_feeds_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emissions_breakdown$transport_adjustment_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $total_co2eq_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $region</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "US"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$concentrate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$concentrate$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$concentrate$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$fertilizer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$fertilizer$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$fertilizer$type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$fertilizer$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg N"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$plastic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$plastic$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$plastic$type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mixed"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$plastic$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_dry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_dry$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_dry$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_wet</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_wet$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$grain_wet$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$ration</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$ration$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$ration$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$byproducts</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$byproducts$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$byproducts$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$proteins</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$proteins$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$proteins$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$corn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$corn$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$corn$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$soy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$soy$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$soy$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$wheat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$wheat$value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$feeds$wheat$unit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2e/kg"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$region_source</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "US"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors_used$transport_km</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$concentrate_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$fertilizer_n_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$plastic_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$total_feeds_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$grain_dry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$grain_wet</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$ration</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$byproducts</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$proteins</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$corn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$soy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inputs_summary$feed_breakdown_kg$wheat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $contribution_analysis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $contribution_analysis$concentrate_pct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $contribution_analysis$fertilizer_pct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $contribution_analysis$plastic_pct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $contribution_analysis$feeds_pct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $contribution_analysis$transport_pct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 830.47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 831.64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 119.45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$cv_percent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$percentiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$percentiles$p5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 643.49 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$percentiles$p25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    25% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 724.52 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$percentiles$p75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    75% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 934.82 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$percentiles$p95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     95% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1015.21 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$confidence_interval_95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$confidence_interval_95$lower</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2.5% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 631.41 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $uncertainty$confidence_interval_95$upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   97.5% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1026.93 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $methodology</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Regional emission factors with optional uncertainty analysis"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $standards</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "IDF 2022; generic LCI sources"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-12"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in calculate_input_uncertainties(quantities = list(conc_kg = conc_kg,     fert_n_kg = fert_n_kg, plastic_kg = plastic_kg, feeds = list(grain_dry = feed_grain_dry_kg,         grain_wet = feed_grain_wet_kg, ration = feed_ration_kg,         byproducts = feed_byproducts_kg, proteins = feed_proteins_kg,         corn = feed_corn_kg, soy = feed_soy_kg, wheat = feed_wheat_kg)),     factors = list(conc = list(mean = ef_conc, range = ef_conc_range),         fert = list(mean = ef_fert, range = ef_fert_range), plastic = list(mean = ef_plastic,             range = ef_plastic_range), feeds = feed_factors)):</span> could not find function "calculate_input_uncertainties"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

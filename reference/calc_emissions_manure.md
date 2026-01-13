@@ -104,6 +104,8 @@ calc_emissions_manure(
 A list with CH4 (kg), N2O (kg), CO2eq (kg), metadata, and per-cow
 metrics. The returned object includes a `co2eq_kg` field compatible with
 [`calc_total_emissions()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_total_emissions.md).
+Absolute emissions are annual farm-level emissions (kg CO2eq yr-1)
+within the defined system boundaries.
 
 ## Examples
 
@@ -138,6 +140,17 @@ calc_emissions_manure(n_cows = 120, manure_system = "liquid_storage")
 #> $co2eq_kg
 #> [1] 200880
 #> 
+#> $units
+#> $units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
+#> 
 #> $emission_factors
 #> $emission_factors$ef_ch4
 #> [1] 30
@@ -171,6 +184,12 @@ calc_emissions_manure(n_cows = 120, manure_system = "liquid_storage")
 #> $inputs$diet_digestibility
 #> [1] NA
 #> 
+#> $inputs$retention_days
+#> NULL
+#> 
+#> $inputs$system_temperature
+#> NULL
+#> 
 #> 
 #> $methodology
 #> [1] "IPCC Tier 1 (default emission factors)"
@@ -179,7 +198,7 @@ calc_emissions_manure(n_cows = 120, manure_system = "liquid_storage")
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -190,6 +209,17 @@ calc_emissions_manure(n_cows = 120, manure_system = "liquid_storage")
 #> 
 #> $per_cow$co2eq_kg
 #> [1] 1674
+#> 
+#> $per_cow$units
+#> $per_cow$units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $per_cow$units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $per_cow$units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> 
 
@@ -221,6 +251,17 @@ calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_ind
 #> 
 #> $co2eq_kg
 #> [1] 190119
+#> 
+#> $units
+#> $units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> $emission_factors
 #> $emission_factors$ef_ch4
@@ -255,6 +296,12 @@ calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_ind
 #> $inputs$diet_digestibility
 #> [1] NA
 #> 
+#> $inputs$retention_days
+#> NULL
+#> 
+#> $inputs$system_temperature
+#> NULL
+#> 
 #> 
 #> $methodology
 #> [1] "IPCC Tier 1 (default emission factors)"
@@ -263,7 +310,7 @@ calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_ind
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -274,6 +321,17 @@ calc_emissions_manure(n_cows = 120, manure_system = "solid_storage", include_ind
 #> 
 #> $per_cow$co2eq_kg
 #> [1] 1584.325
+#> 
+#> $per_cow$units
+#> $per_cow$units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $per_cow$units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $per_cow$units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> 
 
@@ -310,6 +368,17 @@ calc_emissions_manure(
 #> $co2eq_kg
 #> [1] 1572353
 #> 
+#> $units
+#> $units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
+#> 
 #> $emission_factors
 #> $emission_factors$ef_ch4
 #> [1] NA
@@ -343,6 +412,12 @@ calc_emissions_manure(
 #> $inputs$diet_digestibility
 #> [1] 0.68
 #> 
+#> $inputs$retention_days
+#> NULL
+#> 
+#> $inputs$system_temperature
+#> NULL
+#> 
 #> 
 #> $methodology
 #> [1] "IPCC Tier 2 (VS_B0_MCF calculation)"
@@ -351,7 +426,7 @@ calc_emissions_manure(
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -362,6 +437,17 @@ calc_emissions_manure(
 #> 
 #> $per_cow$co2eq_kg
 #> [1] 15723.53
+#> 
+#> $per_cow$units
+#> $per_cow$units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $per_cow$units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $per_cow$units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> 
 #> $tier2_details

@@ -76,7 +76,9 @@ calc_emissions_soil(
 ## Value
 
 A list with at least `source="soil"` and `co2eq_kg` (numeric), plus
-detailed breakdown metadata when included by boundaries.
+detailed breakdown metadata when included by boundaries. Absolute
+emissions are annual farm-level emissions (kg CO2eq yr-1) within the
+defined system boundaries.
 
 ## Details
 
@@ -98,6 +100,14 @@ calc_emissions_soil(
 )
 #> $source
 #> [1] "soil"
+#> 
+#> $units
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> $soil_conditions
 #> $soil_conditions$soil_type
@@ -168,7 +178,7 @@ calc_emissions_soil(
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_hectare_metrics
 #> $per_hectare_metrics$n_input_kg_per_ha
@@ -209,6 +219,14 @@ calc_emissions_soil(
 calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
 #> $source
 #> [1] "soil"
+#> 
+#> $units
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> $soil_conditions
 #> $soil_conditions$soil_type
@@ -279,7 +297,7 @@ calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $source_contributions
 #> $source_contributions$synthetic_fertilizer_pct
@@ -303,8 +321,8 @@ calc_emissions_soil(n_fertilizer_synthetic = 2000, include_indirect = FALSE)
 #> 
 
 # Boundary exclusion example
-b <- list(include = c("energy", "manure"))  # soil not included
-calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = b)$co2eq_kg  # 0
+b <- list(include = c("energy", "manure")) # soil not included
+calc_emissions_soil(n_fertilizer_synthetic = 1000, boundaries = b)$co2eq_kg # 0
 #> [1] 0
 # }
 ```

@@ -166,6 +166,12 @@ ruminal digestion.</p>
 <span><span class="co">#&gt; $co2eq_kg</span></span>
 <span><span class="co">#&gt; [1] 312800</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units_ch4</span></span>
+<span><span class="co">#&gt; [1] "kg CH4 yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units_co2eq</span></span>
+<span><span class="co">#&gt; [1] "kg CO2eq yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors</span></span>
 <span><span class="co">#&gt; $emission_factors$emission_factor_ch4</span></span>
 <span><span class="co">#&gt; [1] 115</span></span>
@@ -207,7 +213,7 @@ ruminal digestion.</p>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-12"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-13"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_animal</span></span>
 <span><span class="co">#&gt; $per_animal$ch4_kg</span></span>
@@ -256,6 +262,17 @@ ruminal digestion.</p>
 <span><span class="co">#&gt; $co2eq_kg</span></span>
 <span><span class="co">#&gt; [1] 89880</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units</span></span>
+<span><span class="co">#&gt; $units$ch4_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CH4 yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$n2o_kg</span></span>
+<span><span class="co">#&gt; [1] "kg N2O yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2eq yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors</span></span>
 <span><span class="co">#&gt; $emission_factors$ef_ch4</span></span>
 <span><span class="co">#&gt; [1] 1.5</span></span>
@@ -289,6 +306,12 @@ ruminal digestion.</p>
 <span><span class="co">#&gt; $inputs$diet_digestibility</span></span>
 <span><span class="co">#&gt; [1] NA</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $inputs$retention_days</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $inputs$system_temperature</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $methodology</span></span>
 <span><span class="co">#&gt; [1] "IPCC Tier 1 (default emission factors)"</span></span>
@@ -297,7 +320,7 @@ ruminal digestion.</p>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-12"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-13"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_cow</span></span>
 <span><span class="co">#&gt; $per_cow$ch4_kg</span></span>
@@ -307,7 +330,17 @@ ruminal digestion.</p>
 <span><span class="co">#&gt; [1] 3.142857</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_cow$co2eq_kg</span></span>
-<span><span class="co">#&gt; [1] 898.8</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 898.8</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $per_cow$units</span></span>
+<span><span class="co">#&gt; $per_cow$units$ch4_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CH4 yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $per_cow$units$n2o_kg</span></span>
+<span><span class="co">#&gt; [1] "kg N2O yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $per_cow$units$co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2eq yr-1"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="soil-emissions">Soil emissions<a class="anchor" aria-label="anchor" href="#soil-emissions"></a>
@@ -324,6 +357,14 @@ fertilizers and excreta deposited during grazing.</p>
 <span><span class="va">soil</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "soil"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units</span></span>
+<span><span class="co">#&gt; $units$n2o_kg</span></span>
+<span><span class="co">#&gt; [1] "kg N2O yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2eq yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $soil_conditions</span></span>
 <span><span class="co">#&gt; $soil_conditions$soil_type</span></span>
@@ -394,7 +435,7 @@ fertilizers and excreta deposited during grazing.</p>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-12"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-13"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $per_hectare_metrics</span></span>
 <span><span class="co">#&gt; $per_hectare_metrics$n_input_kg_per_ha</span></span>
@@ -444,6 +485,29 @@ consumption.</p>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "energy"</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units</span></span>
+<span><span class="co">#&gt; $units$co2_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2 yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2eq yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$diesel_l</span></span>
+<span><span class="co">#&gt; [1] "L yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$petrol_l</span></span>
+<span><span class="co">#&gt; [1] "L yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$lpg_kg</span></span>
+<span><span class="co">#&gt; [1] "kg yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$natural_gas_m3</span></span>
+<span><span class="co">#&gt; [1] "m3 yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$electricity_kwh</span></span>
+<span><span class="co">#&gt; [1] "kWh yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $fuel_emissions</span></span>
 <span><span class="co">#&gt; $fuel_emissions$diesel_co2_kg</span></span>
 <span><span class="co">#&gt; [1] 5340</span></span>
@@ -459,6 +523,11 @@ consumption.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $fuel_emissions$electricity_co2_kg</span></span>
 <span><span class="co">#&gt; [1] 400</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $fuel_emissions$units</span></span>
+<span><span class="co">#&gt; $fuel_emissions$units$co2_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2 yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $direct_co2eq_kg</span></span>
@@ -517,7 +586,7 @@ consumption.</p>
 <span><span class="co">#&gt; [1] "IPCC 2019 Refinement, IDF 2022"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-12"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-13"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $energy_metrics</span></span>
 <span><span class="co">#&gt; $energy_metrics$electricity_share_pct</span></span>
@@ -543,6 +612,41 @@ materials.</p>
 <span><span class="va">inputs</span></span>
 <span><span class="co">#&gt; $source</span></span>
 <span><span class="co">#&gt; [1] "inputs"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units</span></span>
+<span><span class="co">#&gt; $units$co2eq_kg</span></span>
+<span><span class="co">#&gt; [1] "kg CO2eq yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$conc_kg</span></span>
+<span><span class="co">#&gt; [1] "kg yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$fert_n_kg</span></span>
+<span><span class="co">#&gt; [1] "kg N yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$plastic_kg</span></span>
+<span><span class="co">#&gt; [1] "kg yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$feed_kg</span></span>
+<span><span class="co">#&gt; [1] "kg DM yr-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$transport_km</span></span>
+<span><span class="co">#&gt; [1] "km"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$ef_conc</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$ef_fert</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg N"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$ef_plastic</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$ef_feed</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $units$ef_truck</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per (kg·km)"</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emissions_breakdown</span></span>
 <span><span class="co">#&gt; $emissions_breakdown$concentrate_co2eq_kg</span></span>
@@ -582,7 +686,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.7</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$concentrate$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$fertilizer</span></span>
@@ -593,7 +697,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] "mixed"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$fertilizer$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg N"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg N"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$plastic</span></span>
@@ -604,7 +708,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] "mixed"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$plastic$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds</span></span>
@@ -613,7 +717,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.4</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$grain_dry$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$grain_wet</span></span>
@@ -621,7 +725,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.3</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$grain_wet$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$ration</span></span>
@@ -629,7 +733,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.6</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$ration$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$byproducts</span></span>
@@ -637,7 +741,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.15</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$byproducts$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$proteins</span></span>
@@ -645,7 +749,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 1.8</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$proteins$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$corn</span></span>
@@ -653,7 +757,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.45</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$corn$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$soy</span></span>
@@ -661,7 +765,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] 2.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$soy$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$wheat</span></span>
@@ -669,15 +773,23 @@ materials.</p>
 <span><span class="co">#&gt; [1] 0.52</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$feeds$wheat$unit</span></span>
-<span><span class="co">#&gt; [1] "kg CO2e/kg"</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per kg DM"</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $emission_factors_used$transport</span></span>
+<span><span class="co">#&gt; $emission_factors_used$transport$ef_truck</span></span>
+<span><span class="co">#&gt; [1] 1e-04</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $emission_factors_used$transport$unit</span></span>
+<span><span class="co">#&gt; [1] "kg CO2e per (kg·km)"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $emission_factors_used$transport$transport_km</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $emission_factors_used$region_source</span></span>
 <span><span class="co">#&gt; [1] "global"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $emission_factors_used$transport_km</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $inputs_summary</span></span>
@@ -747,7 +859,7 @@ materials.</p>
 <span><span class="co">#&gt; [1] "IDF 2022; generic LCI sources"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-12"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "2026-01-13"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -765,17 +877,17 @@ materials.</p>
 <span><span class="va">total_emissions</span></span>
 <span><span class="co">#&gt; Carbon Footprint - Total Emissions</span></span>
 <span><span class="co">#&gt; ==================================</span></span>
-<span><span class="co">#&gt; Total CO2eq: 451512.6 kg</span></span>
+<span><span class="co">#&gt; Total CO2eq: 451512.6 kg CO2eq yr-1 </span></span>
 <span><span class="co">#&gt; Number of sources: 5 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Breakdown by source:</span></span>
-<span><span class="co">#&gt;   energy : 5740 kg CO2eq</span></span>
-<span><span class="co">#&gt;   enteric : 312800 kg CO2eq</span></span>
-<span><span class="co">#&gt;   inputs : 4000 kg CO2eq</span></span>
-<span><span class="co">#&gt;   manure : 89880 kg CO2eq</span></span>
-<span><span class="co">#&gt;   soil : 39092.62 kg CO2eq</span></span>
+<span><span class="co">#&gt;   energy : 5740 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   enteric : 312800 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   inputs : 4000 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   manure : 89880 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   soil : 39092.62 kg CO2eq yr-1 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Calculated on: 2026-01-12</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2026-01-13</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-4-calculate-intensity-metrics">Step 4: Calculate intensity metrics<a class="anchor" aria-label="anchor" href="#step-4-calculate-intensity-metrics"></a>
@@ -807,7 +919,7 @@ and protein-corrected milk (FPCM).</p>
 <span><span class="co">#&gt;  Protein content: 3.3 %</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
-<span><span class="co">#&gt; Calculated on: 2026-01-12</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2026-01-13</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="area-intensity">Area intensity<a class="anchor" aria-label="anchor" href="#area-intensity"></a>
@@ -830,7 +942,7 @@ and protein-corrected milk (FPCM).</p>
 <span><span class="co">#&gt;  Land use efficiency: 100%</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
-<span><span class="co">#&gt; Calculated on: 2026-01-12</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2026-01-13</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">

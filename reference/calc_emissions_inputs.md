@@ -145,6 +145,41 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> $source
 #> [1] "inputs"
 #> 
+#> $units
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
+#> $units$conc_kg
+#> [1] "kg yr-1"
+#> 
+#> $units$fert_n_kg
+#> [1] "kg N yr-1"
+#> 
+#> $units$plastic_kg
+#> [1] "kg yr-1"
+#> 
+#> $units$feed_kg
+#> [1] "kg DM yr-1"
+#> 
+#> $units$transport_km
+#> [1] "km"
+#> 
+#> $units$ef_conc
+#> [1] "kg CO2e per kg"
+#> 
+#> $units$ef_fert
+#> [1] "kg CO2e per kg N"
+#> 
+#> $units$ef_plastic
+#> [1] "kg CO2e per kg"
+#> 
+#> $units$ef_feed
+#> [1] "kg CO2e per kg DM"
+#> 
+#> $units$ef_truck
+#> [1] "kg CO2e per (kg·km)"
+#> 
+#> 
 #> $emissions_breakdown
 #> $emissions_breakdown$concentrate_co2eq_kg
 #> [1] 750
@@ -183,7 +218,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.75
 #> 
 #> $emission_factors_used$concentrate$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg"
 #> 
 #> 
 #> $emission_factors_used$fertilizer
@@ -194,7 +229,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] "mixed"
 #> 
 #> $emission_factors_used$fertilizer$unit
-#> [1] "kg CO2e/kg N"
+#> [1] "kg CO2e per kg N"
 #> 
 #> 
 #> $emission_factors_used$plastic
@@ -205,7 +240,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] "mixed"
 #> 
 #> $emission_factors_used$plastic$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg"
 #> 
 #> 
 #> $emission_factors_used$feeds
@@ -214,7 +249,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.42
 #> 
 #> $emission_factors_used$feeds$grain_dry$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$grain_wet
@@ -222,7 +257,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.32
 #> 
 #> $emission_factors_used$feeds$grain_wet$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$ration
@@ -230,7 +265,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.65
 #> 
 #> $emission_factors_used$feeds$ration$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$byproducts
@@ -238,7 +273,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.18
 #> 
 #> $emission_factors_used$feeds$byproducts$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$proteins
@@ -246,7 +281,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 2.2
 #> 
 #> $emission_factors_used$feeds$proteins$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$corn
@@ -254,7 +289,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.48
 #> 
 #> $emission_factors_used$feeds$corn$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$soy
@@ -262,7 +297,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 2.6
 #> 
 #> $emission_factors_used$feeds$soy$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$wheat
@@ -270,15 +305,23 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] 0.51
 #> 
 #> $emission_factors_used$feeds$wheat$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
+#> 
+#> 
+#> $emission_factors_used$transport
+#> $emission_factors_used$transport$ef_truck
+#> [1] 1e-04
+#> 
+#> $emission_factors_used$transport$unit
+#> [1] "kg CO2e per (kg·km)"
+#> 
+#> $emission_factors_used$transport$transport_km
+#> [1] 0
 #> 
 #> 
 #> $emission_factors_used$region_source
 #> [1] "EU"
-#> 
-#> $emission_factors_used$transport_km
-#> [1] 0
 #> 
 #> 
 #> $inputs_summary
@@ -348,256 +391,10 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] "IDF 2022; generic LCI sources"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 
 # With uncertainty analysis
 calc_emissions_inputs(feed_corn_kg = 2000, region = "US", include_uncertainty = TRUE)
-#> $source
-#> [1] "inputs"
-#> 
-#> $emissions_breakdown
-#> $emissions_breakdown$concentrate_co2eq_kg
-#> [1] 0
-#> 
-#> $emissions_breakdown$fertilizer_co2eq_kg
-#> [1] 0
-#> 
-#> $emissions_breakdown$plastic_co2eq_kg
-#> [1] 0
-#> 
-#> $emissions_breakdown$feeds_co2eq_kg
-#>  grain_dry  grain_wet     ration byproducts   proteins       corn        soy 
-#>          0          0          0          0          0        760          0 
-#>      wheat 
-#>          0 
-#> 
-#> $emissions_breakdown$total_feeds_co2eq_kg
-#> [1] 760
-#> 
-#> $emissions_breakdown$transport_adjustment_co2eq_kg
-#> [1] 0
-#> 
-#> 
-#> $co2eq_kg
-#> [1] 760
-#> 
-#> $total_co2eq_kg
-#> [1] 760
-#> 
-#> $region
-#> [1] "US"
-#> 
-#> $emission_factors_used
-#> $emission_factors_used$concentrate
-#> $emission_factors_used$concentrate$value
-#> [1] 0.65
-#> 
-#> $emission_factors_used$concentrate$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$fertilizer
-#> $emission_factors_used$fertilizer$value
-#> [1] 6.4
-#> 
-#> $emission_factors_used$fertilizer$type
-#> [1] "mixed"
-#> 
-#> $emission_factors_used$fertilizer$unit
-#> [1] "kg CO2e/kg N"
-#> 
-#> 
-#> $emission_factors_used$plastic
-#> $emission_factors_used$plastic$value
-#> [1] 2.4
-#> 
-#> $emission_factors_used$plastic$type
-#> [1] "mixed"
-#> 
-#> $emission_factors_used$plastic$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds
-#> $emission_factors_used$feeds$grain_dry
-#> $emission_factors_used$feeds$grain_dry$value
-#> [1] 0.35
-#> 
-#> $emission_factors_used$feeds$grain_dry$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$grain_wet
-#> $emission_factors_used$feeds$grain_wet$value
-#> [1] 0.28
-#> 
-#> $emission_factors_used$feeds$grain_wet$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$ration
-#> $emission_factors_used$feeds$ration$value
-#> [1] 0.55
-#> 
-#> $emission_factors_used$feeds$ration$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$byproducts
-#> $emission_factors_used$feeds$byproducts$value
-#> [1] 0.12
-#> 
-#> $emission_factors_used$feeds$byproducts$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$proteins
-#> $emission_factors_used$feeds$proteins$value
-#> [1] 1.5
-#> 
-#> $emission_factors_used$feeds$proteins$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$corn
-#> $emission_factors_used$feeds$corn$value
-#> [1] 0.38
-#> 
-#> $emission_factors_used$feeds$corn$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$soy
-#> $emission_factors_used$feeds$soy$value
-#> [1] 1.6
-#> 
-#> $emission_factors_used$feeds$soy$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> $emission_factors_used$feeds$wheat
-#> $emission_factors_used$feeds$wheat$value
-#> [1] 0.45
-#> 
-#> $emission_factors_used$feeds$wheat$unit
-#> [1] "kg CO2e/kg"
-#> 
-#> 
-#> 
-#> $emission_factors_used$region_source
-#> [1] "US"
-#> 
-#> $emission_factors_used$transport_km
-#> [1] 0
-#> 
-#> 
-#> $inputs_summary
-#> $inputs_summary$concentrate_kg
-#> [1] 0
-#> 
-#> $inputs_summary$fertilizer_n_kg
-#> [1] 0
-#> 
-#> $inputs_summary$plastic_kg
-#> [1] 0
-#> 
-#> $inputs_summary$total_feeds_kg
-#> [1] 2000
-#> 
-#> $inputs_summary$feed_breakdown_kg
-#> $inputs_summary$feed_breakdown_kg$grain_dry
-#> [1] 0
-#> 
-#> $inputs_summary$feed_breakdown_kg$grain_wet
-#> [1] 0
-#> 
-#> $inputs_summary$feed_breakdown_kg$ration
-#> [1] 0
-#> 
-#> $inputs_summary$feed_breakdown_kg$byproducts
-#> [1] 0
-#> 
-#> $inputs_summary$feed_breakdown_kg$proteins
-#> [1] 0
-#> 
-#> $inputs_summary$feed_breakdown_kg$corn
-#> [1] 2000
-#> 
-#> $inputs_summary$feed_breakdown_kg$soy
-#> [1] 0
-#> 
-#> $inputs_summary$feed_breakdown_kg$wheat
-#> [1] 0
-#> 
-#> 
-#> 
-#> $contribution_analysis
-#> $contribution_analysis$concentrate_pct
-#> [1] 0
-#> 
-#> $contribution_analysis$fertilizer_pct
-#> [1] 0
-#> 
-#> $contribution_analysis$plastic_pct
-#> [1] 0
-#> 
-#> $contribution_analysis$feeds_pct
-#> [1] 100
-#> 
-#> $contribution_analysis$transport_pct
-#> [1] 0
-#> 
-#> 
-#> $uncertainty
-#> $uncertainty$mean
-#> [1] 830.47
-#> 
-#> $uncertainty$median
-#> [1] 831.64
-#> 
-#> $uncertainty$sd
-#> [1] 119.45
-#> 
-#> $uncertainty$cv_percent
-#> [1] 14.4
-#> 
-#> $uncertainty$percentiles
-#> $uncertainty$percentiles$p5
-#>     5% 
-#> 643.49 
-#> 
-#> $uncertainty$percentiles$p25
-#>    25% 
-#> 724.52 
-#> 
-#> $uncertainty$percentiles$p75
-#>    75% 
-#> 934.82 
-#> 
-#> $uncertainty$percentiles$p95
-#>     95% 
-#> 1015.21 
-#> 
-#> 
-#> $uncertainty$confidence_interval_95
-#> $uncertainty$confidence_interval_95$lower
-#>   2.5% 
-#> 631.41 
-#> 
-#> $uncertainty$confidence_interval_95$upper
-#>   97.5% 
-#> 1026.93 
-#> 
-#> 
-#> 
-#> $methodology
-#> [1] "Regional emission factors with optional uncertainty analysis"
-#> 
-#> $standards
-#> [1] "IDF 2022; generic LCI sources"
-#> 
-#> $date
-#> [1] "2026-01-12"
-#> 
+#> Error in calculate_input_uncertainties(quantities = list(conc_kg = conc_kg,     fert_n_kg = fert_n_kg, plastic_kg = plastic_kg, feeds = list(grain_dry = feed_grain_dry_kg,         grain_wet = feed_grain_wet_kg, ration = feed_ration_kg,         byproducts = feed_byproducts_kg, proteins = feed_proteins_kg,         corn = feed_corn_kg, soy = feed_soy_kg, wheat = feed_wheat_kg)),     factors = list(conc = list(mean = ef_conc, range = ef_conc_range),         fert = list(mean = ef_fert, range = ef_fert_range), plastic = list(mean = ef_plastic,             range = ef_plastic_range), feeds = feed_factors)): could not find function "calculate_input_uncertainties"
 ```

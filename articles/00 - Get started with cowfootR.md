@@ -110,6 +110,12 @@ enteric
 #> $co2eq_kg
 #> [1] 312800
 #> 
+#> $units_ch4
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units_co2eq
+#> [1] "kg CO2eq yr-1"
+#> 
 #> $emission_factors
 #> $emission_factors$emission_factor_ch4
 #> [1] 115
@@ -151,7 +157,7 @@ enteric
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_animal
 #> $per_animal$ch4_kg
@@ -201,6 +207,17 @@ manure
 #> $co2eq_kg
 #> [1] 89880
 #> 
+#> $units
+#> $units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
+#> 
 #> $emission_factors
 #> $emission_factors$ef_ch4
 #> [1] 1.5
@@ -234,6 +251,12 @@ manure
 #> $inputs$diet_digestibility
 #> [1] NA
 #> 
+#> $inputs$retention_days
+#> NULL
+#> 
+#> $inputs$system_temperature
+#> NULL
+#> 
 #> 
 #> $methodology
 #> [1] "IPCC Tier 1 (default emission factors)"
@@ -242,7 +265,7 @@ manure
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_cow
 #> $per_cow$ch4_kg
@@ -253,6 +276,16 @@ manure
 #> 
 #> $per_cow$co2eq_kg
 #> [1] 898.8
+#> 
+#> $per_cow$units
+#> $per_cow$units$ch4_kg
+#> [1] "kg CH4 yr-1"
+#> 
+#> $per_cow$units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $per_cow$units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
 ```
 
 #### Soil emissions
@@ -270,6 +303,14 @@ soil <- calc_emissions_soil(
 soil
 #> $source
 #> [1] "soil"
+#> 
+#> $units
+#> $units$n2o_kg
+#> [1] "kg N2O yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
 #> 
 #> $soil_conditions
 #> $soil_conditions$soil_type
@@ -340,7 +381,7 @@ soil
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_hectare_metrics
 #> $per_hectare_metrics$n_input_kg_per_ha
@@ -391,6 +432,29 @@ energy
 #> $source
 #> [1] "energy"
 #> 
+#> $units
+#> $units$co2_kg
+#> [1] "kg CO2 yr-1"
+#> 
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
+#> $units$diesel_l
+#> [1] "L yr-1"
+#> 
+#> $units$petrol_l
+#> [1] "L yr-1"
+#> 
+#> $units$lpg_kg
+#> [1] "kg yr-1"
+#> 
+#> $units$natural_gas_m3
+#> [1] "m3 yr-1"
+#> 
+#> $units$electricity_kwh
+#> [1] "kWh yr-1"
+#> 
+#> 
 #> $fuel_emissions
 #> $fuel_emissions$diesel_co2_kg
 #> [1] 5340
@@ -406,6 +470,11 @@ energy
 #> 
 #> $fuel_emissions$electricity_co2_kg
 #> [1] 400
+#> 
+#> $fuel_emissions$units
+#> $fuel_emissions$units$co2_kg
+#> [1] "kg CO2 yr-1"
+#> 
 #> 
 #> 
 #> $direct_co2eq_kg
@@ -464,7 +533,7 @@ energy
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $energy_metrics
 #> $energy_metrics$electricity_share_pct
@@ -491,6 +560,41 @@ inputs <- calc_emissions_inputs(
 inputs
 #> $source
 #> [1] "inputs"
+#> 
+#> $units
+#> $units$co2eq_kg
+#> [1] "kg CO2eq yr-1"
+#> 
+#> $units$conc_kg
+#> [1] "kg yr-1"
+#> 
+#> $units$fert_n_kg
+#> [1] "kg N yr-1"
+#> 
+#> $units$plastic_kg
+#> [1] "kg yr-1"
+#> 
+#> $units$feed_kg
+#> [1] "kg DM yr-1"
+#> 
+#> $units$transport_km
+#> [1] "km"
+#> 
+#> $units$ef_conc
+#> [1] "kg CO2e per kg"
+#> 
+#> $units$ef_fert
+#> [1] "kg CO2e per kg N"
+#> 
+#> $units$ef_plastic
+#> [1] "kg CO2e per kg"
+#> 
+#> $units$ef_feed
+#> [1] "kg CO2e per kg DM"
+#> 
+#> $units$ef_truck
+#> [1] "kg CO2e per (kg·km)"
+#> 
 #> 
 #> $emissions_breakdown
 #> $emissions_breakdown$concentrate_co2eq_kg
@@ -530,7 +634,7 @@ inputs
 #> [1] 0.7
 #> 
 #> $emission_factors_used$concentrate$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg"
 #> 
 #> 
 #> $emission_factors_used$fertilizer
@@ -541,7 +645,7 @@ inputs
 #> [1] "mixed"
 #> 
 #> $emission_factors_used$fertilizer$unit
-#> [1] "kg CO2e/kg N"
+#> [1] "kg CO2e per kg N"
 #> 
 #> 
 #> $emission_factors_used$plastic
@@ -552,7 +656,7 @@ inputs
 #> [1] "mixed"
 #> 
 #> $emission_factors_used$plastic$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg"
 #> 
 #> 
 #> $emission_factors_used$feeds
@@ -561,7 +665,7 @@ inputs
 #> [1] 0.4
 #> 
 #> $emission_factors_used$feeds$grain_dry$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$grain_wet
@@ -569,7 +673,7 @@ inputs
 #> [1] 0.3
 #> 
 #> $emission_factors_used$feeds$grain_wet$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$ration
@@ -577,7 +681,7 @@ inputs
 #> [1] 0.6
 #> 
 #> $emission_factors_used$feeds$ration$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$byproducts
@@ -585,7 +689,7 @@ inputs
 #> [1] 0.15
 #> 
 #> $emission_factors_used$feeds$byproducts$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$proteins
@@ -593,7 +697,7 @@ inputs
 #> [1] 1.8
 #> 
 #> $emission_factors_used$feeds$proteins$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$corn
@@ -601,7 +705,7 @@ inputs
 #> [1] 0.45
 #> 
 #> $emission_factors_used$feeds$corn$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$soy
@@ -609,7 +713,7 @@ inputs
 #> [1] 2.1
 #> 
 #> $emission_factors_used$feeds$soy$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
 #> 
 #> $emission_factors_used$feeds$wheat
@@ -617,15 +721,23 @@ inputs
 #> [1] 0.52
 #> 
 #> $emission_factors_used$feeds$wheat$unit
-#> [1] "kg CO2e/kg"
+#> [1] "kg CO2e per kg DM"
 #> 
+#> 
+#> 
+#> $emission_factors_used$transport
+#> $emission_factors_used$transport$ef_truck
+#> [1] 1e-04
+#> 
+#> $emission_factors_used$transport$unit
+#> [1] "kg CO2e per (kg·km)"
+#> 
+#> $emission_factors_used$transport$transport_km
+#> [1] 0
 #> 
 #> 
 #> $emission_factors_used$region_source
 #> [1] "global"
-#> 
-#> $emission_factors_used$transport_km
-#> [1] 0
 #> 
 #> 
 #> $inputs_summary
@@ -695,7 +807,7 @@ inputs
 #> [1] "IDF 2022; generic LCI sources"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 ```
 
 ### Step 3: Aggregate total emissions
@@ -713,17 +825,17 @@ total_emissions <- calc_total_emissions(
 total_emissions
 #> Carbon Footprint - Total Emissions
 #> ==================================
-#> Total CO2eq: 451512.6 kg
+#> Total CO2eq: 451512.6 kg CO2eq yr-1 
 #> Number of sources: 5 
 #> 
 #> Breakdown by source:
-#>   energy : 5740 kg CO2eq
-#>   enteric : 312800 kg CO2eq
-#>   inputs : 4000 kg CO2eq
-#>   manure : 89880 kg CO2eq
-#>   soil : 39092.62 kg CO2eq
+#>   energy : 5740 kg CO2eq yr-1 
+#>   enteric : 312800 kg CO2eq yr-1 
+#>   inputs : 4000 kg CO2eq yr-1 
+#>   manure : 89880 kg CO2eq yr-1 
+#>   soil : 39092.62 kg CO2eq yr-1 
 #> 
-#> Calculated on: 2026-01-12
+#> Calculated on: 2026-01-13
 ```
 
 ### Step 4: Calculate intensity metrics
@@ -755,7 +867,7 @@ milk_intensity
 #>  Protein content: 3.3 %
 #> 
 #> Total emissions: 451,513 kg CO2eq
-#> Calculated on: 2026-01-12
+#> Calculated on: 2026-01-13
 ```
 
 #### Area intensity
@@ -779,7 +891,7 @@ area_intensity
 #>  Land use efficiency: 100%
 #> 
 #> Total emissions: 451,513 kg CO2eq
-#> Calculated on: 2026-01-12
+#> Calculated on: 2026-01-13
 ```
 
 ### Interpreting results

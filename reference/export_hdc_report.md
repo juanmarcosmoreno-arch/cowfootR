@@ -2,7 +2,9 @@
 
 Exports results from
 [`calc_batch()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_batch.md)
-into an Excel file with summary and farm-level sheets.
+into an Excel file with summary and farm-level sheets. Emission columns
+are exported as annual emissions (kg CO2eq yr-1). Intensity columns are
+exported as kg CO2eq per kg FPCM and kg CO2eq per ha.
 
 ## Usage
 
@@ -32,7 +34,9 @@ export_hdc_report(
 
 ## Value
 
-Invisibly returns the file path.
+Invisibly returns the file path. The Excel output includes
+unit-consistent columns for annual emissions (kg CO2eq yr-1) and
+emission intensities.
 
 ## Examples
 
@@ -70,7 +74,7 @@ class(br) <- "cf_batch_complete"
 
 f <- tempfile(fileext = ".xlsx")
 export_hdc_report(br, file = f)
-#> Batch report saved to: /tmp/RtmpAkgyNs/file1b5218909244.xlsx
+#> Batch report saved to: /tmp/Rtmpji2BYe/file1b6a21502bc6.xlsx
 file.exists(f)
 #> [1] TRUE
 # }

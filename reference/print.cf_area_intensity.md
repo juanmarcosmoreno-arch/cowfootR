@@ -52,5 +52,5 @@ print(x)
 #>  Land use efficiency: 92%
 #> 
 #> Total emissions: 108,000 kg CO2eq
-#> Calculated on: 2026-01-12 
+#> Calculated on: 2026-01-13 
 ```

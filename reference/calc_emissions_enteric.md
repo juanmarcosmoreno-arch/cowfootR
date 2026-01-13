@@ -85,9 +85,15 @@ calc_emissions_enteric(
 
 ## Value
 
-List with CH4 (kg), CO2eq (kg), inputs, factors, and metadata. Includes
-`co2eq_kg` for compatibility with
-[`calc_total_emissions()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_total_emissions.md).
+A list with annual CH4 emissions and annual CO2-equivalent emissions.
+
+- `ch4_kg`: annual CH4 emissions (kg CH4 yr-1)
+
+- `co2eq_kg`: annual CO2-equivalent emissions (kg CO2eq yr-1), for
+  compatibility with
+  [`calc_total_emissions()`](https://juanmarcosmoreno-arch.github.io/cowfootR/reference/calc_total_emissions.md)
+
+- `units_ch4` and `units_co2eq`: explicit unit strings
 
 ## Examples
 
@@ -109,6 +115,12 @@ calc_emissions_enteric(n_animals = 100)
 #> 
 #> $co2eq_kg
 #> [1] 312800
+#> 
+#> $units_ch4
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units_co2eq
+#> [1] "kg CO2eq yr-1"
 #> 
 #> $emission_factors
 #> $emission_factors$emission_factor_ch4
@@ -151,7 +163,7 @@ calc_emissions_enteric(n_animals = 100)
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_animal
 #> $per_animal$ch4_kg
@@ -183,6 +195,12 @@ calc_emissions_enteric(
 #> 
 #> $co2eq_kg
 #> [1] 462125.7
+#> 
+#> $units_ch4
+#> [1] "kg CH4 yr-1"
+#> 
+#> $units_co2eq
+#> [1] "kg CO2eq yr-1"
 #> 
 #> $emission_factors
 #> $emission_factors$emission_factor_ch4
@@ -225,7 +243,7 @@ calc_emissions_enteric(
 #> [1] "IPCC 2019 Refinement, IDF 2022"
 #> 
 #> $date
-#> [1] "2026-01-12"
+#> [1] "2026-01-13"
 #> 
 #> $per_animal
 #> $per_animal$ch4_kg
@@ -241,7 +259,7 @@ calc_emissions_enteric(
 
 # Boundary exclusion: enteric not included
 b <- list(include = c("manure", "energy"))
-calc_emissions_enteric(100, boundaries = b)$co2eq_kg  # NULL → excluded
+calc_emissions_enteric(100, boundaries = b)$co2eq_kg # NULL → excluded
 #> NULL
 # }
 ```

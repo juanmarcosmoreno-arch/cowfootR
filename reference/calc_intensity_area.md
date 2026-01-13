@@ -76,7 +76,7 @@ calc_intensity_area(total_emissions = 85000, area_total_ha = 120)
 #>  Land use efficiency: 100%
 #> 
 #> Total emissions: 85,000 kg CO2eq
-#> Calculated on: 2026-01-12 
+#> Calculated on: 2026-01-13 
 
 # With productive area distinction
 calc_intensity_area(
@@ -95,7 +95,7 @@ calc_intensity_area(
 #>  Land use efficiency: 90%
 #> 
 #> Total emissions: 95,000 kg CO2eq
-#> Calculated on: 2026-01-12 
+#> Calculated on: 2026-01-13 
 
 # With area breakdown
 area_detail <- list(
@@ -128,14 +128,16 @@ calc_intensity_area(
 #>  woodland: 7.0 ha (5.2%) -> 4563 kg CO2eq
 #> 
 #> Total emissions: 88,000 kg CO2eq
-#> Calculated on: 2026-01-12 
+#> Calculated on: 2026-01-13 
 
 # Using with calc_total_emissions output
+#
 # \donttest{
 # b <- set_system_boundaries("farm_gate")
 # e1 <- calc_emissions_enteric(100, boundaries = b)
 # e2 <- calc_emissions_manure(100, boundaries = b)
 # tot <- calc_total_emissions(e1, e2)
 # calc_intensity_area(tot, area_total_ha = 120)
+#
 # }
 ```

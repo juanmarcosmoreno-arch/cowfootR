@@ -123,9 +123,11 @@ is used directly; otherwise it is calculated (Tier 1 or Tier 2).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List with CH4 (kg), CO2eq (kg), inputs, factors, and metadata.
-Includes <code>co2eq_kg</code> for compatibility with <code><a href="calc_total_emissions.html">calc_total_emissions()</a></code>.</p>
-    </div>
+    <p>A list with annual CH4 emissions and annual CO2-equivalent emissions.</p><ul><li><p><code>ch4_kg</code>: annual CH4 emissions (kg CH4 yr-1)</p></li>
+<li><p><code>co2eq_kg</code>: annual CO2-equivalent emissions (kg CO2eq yr-1), for compatibility
+with <code><a href="calc_total_emissions.html">calc_total_emissions()</a></code></p></li>
+<li><p><code>units_ch4</code> and <code>units_co2eq</code>: explicit unit strings</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -146,6 +148,12 @@ Includes <code>co2eq_kg</code> for compatibility with <code><a href="calc_total_
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $co2eq_kg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 312800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units_ch4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CH4 yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units_co2eq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2eq yr-1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors$emission_factor_ch4</span>
@@ -188,7 +196,7 @@ Includes <code>co2eq_kg</code> for compatibility with <code><a href="calc_total_
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "IPCC 2019 Refinement, IDF 2022"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-12"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-13"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $per_animal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $per_animal$ch4_kg</span>
@@ -220,6 +228,12 @@ Includes <code>co2eq_kg</code> for compatibility with <code><a href="calc_total_
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $co2eq_kg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 462125.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units_ch4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CH4 yr-1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $units_co2eq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kg CO2eq yr-1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $emission_factors$emission_factor_ch4</span>
@@ -262,7 +276,7 @@ Includes <code>co2eq_kg</code> for compatibility with <code><a href="calc_total_
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "IPCC 2019 Refinement, IDF 2022"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-12"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-13"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $per_animal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $per_animal$ch4_kg</span>
@@ -278,7 +292,7 @@ Includes <code>co2eq_kg</code> for compatibility with <code><a href="calc_total_
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Boundary exclusion: enteric not included</span></span></span>
 <span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"manure"</span>, <span class="st">"energy"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">calc_emissions_enteric</span><span class="op">(</span><span class="fl">100</span>, boundaries <span class="op">=</span> <span class="va">b</span><span class="op">)</span><span class="op">$</span><span class="va">co2eq_kg</span>  <span class="co"># NULL → excluded</span></span></span>
+<span class="r-in"><span><span class="fu">calc_emissions_enteric</span><span class="op">(</span><span class="fl">100</span>, boundaries <span class="op">=</span> <span class="va">b</span><span class="op">)</span><span class="op">$</span><span class="va">co2eq_kg</span> <span class="co"># NULL → excluded</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
