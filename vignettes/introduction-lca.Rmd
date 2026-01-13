@@ -1,8 +1,8 @@
 ---
-title: "Introduction to Dairy Life Cycle Assessment with cowfootR"
+title: "Introduction to Dairy Life Cycle Assessment"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{01 - Introduction to Dairy Life Cycle Assessment}
+  %\VignetteIndexEntry{Introduction to Dairy Life Cycle Assessment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

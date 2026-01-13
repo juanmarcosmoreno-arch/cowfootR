@@ -154,3 +154,52 @@ get_regional_emission_factors <- function() {
     )
   )
 }
+
+
+# Internal helper: uncertainty propagation for purchased inputs
+# Not exported; used by calc_emissions_inputs()
+calculate_input_uncertainties <- function(quantities, factors) {
+  # Simple Monte Carlo on uniform ranges
+  n <- 1000L
+
+  sample_factor <- function(info) {
+    if (is.null(info$range)) {
+      return(rep(info$mean, n))
+    }
+    stats::runif(n, min = info$range[1], max = info$range[2])
+  }
+
+  conc_s  <- sample_factor(factors$conc)
+  fert_s  <- sample_factor(factors$fert)
+  plast_s <- sample_factor(factors$plastic)
+  feed_s  <- lapply(factors$feeds, sample_factor)
+
+  total <- numeric(n)
+  total <- total + quantities$conc_kg    * conc_s
+  total <- total + quantities$fert_n_kg  * fert_s
+  total <- total + quantities$plastic_kg * plast_s
+
+  for (nm in names(quantities$feeds)) {
+    q <- quantities$feeds[[nm]]
+    if (is.numeric(q) && length(q) == 1L && is.finite(q) && q > 0) {
+      total <- total + q * feed_s[[nm]]
+    }
+  }
+
+  list(
+    mean = round(mean(total), 2),
+    median = round(stats::median(total), 2),
+    sd = round(stats::sd(total), 2),
+    cv_percent = round(stats::sd(total) / mean(total) * 100, 1),
+    percentiles = list(
+      p5  = round(as.numeric(stats::quantile(total, 0.05)), 2),
+      p25 = round(as.numeric(stats::quantile(total, 0.25)), 2),
+      p75 = round(as.numeric(stats::quantile(total, 0.75)), 2),
+      p95 = round(as.numeric(stats::quantile(total, 0.95)), 2)
+    ),
+    confidence_interval_95 = list(
+      lower = round(as.numeric(stats::quantile(total, 0.025)), 2),
+      upper = round(as.numeric(stats::quantile(total, 0.975)), 2)
+    )
+  )
+}

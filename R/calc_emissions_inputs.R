@@ -78,7 +78,7 @@ calc_emissions_inputs <- function(conc_kg = 0,
     ef_fert = "kg CO2e per kg N",
     ef_plastic = "kg CO2e per kg",
     ef_feed = "kg CO2e per kg DM",
-    ef_truck = "kg CO2e per (kg·km)"
+    ef_truck = "kg CO2e per (kg*km)"
   )
 
   # -------------------------------
@@ -185,7 +185,7 @@ calc_emissions_inputs <- function(conc_kg = 0,
   transport_km <- to_num_safe(transport_km)
 
   transport_adjustment <- 0
-  ef_truck <- 1e-4  # kg CO2e per (kg·km)
+  ef_truck <- 1e-4  # kg CO2e per (kg*km)
   if (transport_km > 0) {
     total_feed_kg <- sum(
       c(

@@ -2,7 +2,7 @@
 title: "Single Farm Analysis (cowfootR)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{02 - Single Farm Analysis (cowfootR)}
+  %\VignetteIndexEntry{Single Farm Analysis (cowfootR)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

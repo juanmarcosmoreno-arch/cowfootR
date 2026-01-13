@@ -2,7 +2,7 @@
 title: "Get started with cowfootR"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{00 - Get started with cowfootR}
+  %\VignetteIndexEntry{Get started with cowfootR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

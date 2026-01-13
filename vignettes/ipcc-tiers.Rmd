@@ -2,7 +2,7 @@
 title: "IPCC Methodology Tiers in cowfootR"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{03 - IPCC Methodology Tiers in cowfootR}
+  %\VignetteIndexEntry{IPCC Methodology Tiers in cowfootR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
