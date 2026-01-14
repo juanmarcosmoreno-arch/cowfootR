@@ -2,6 +2,7 @@
 #'
 #' Aggregates results from different sources (enteric, manure, soil, energy, inputs)
 #' even if they don't use exactly the same field name for the total.
+#'
 #' IMPORTANT: If a source explicitly reports \code{co2eq_kg = NULL} (e.g. excluded by
 #' system boundaries), it is treated as zero and no fallback summation is attempted.
 #'
@@ -9,9 +10,12 @@
 #' @return Object of class \code{cf_total} including:
 #' \itemize{
 #'   \item \code{total_co2eq}: total absolute emissions (kg CO2eq yr-1)
+#'   \item \code{co2eq_kg}: alias of total absolute emissions (kg CO2eq yr-1)
+#'   \item \code{total_co2eq_kg}: alias of total absolute emissions (kg CO2eq yr-1)
 #'   \item \code{breakdown}: named numeric vector by source (kg CO2eq yr-1)
 #'   \item \code{by_source}: data.frame with \code{source}, \code{co2eq_kg}, and \code{units}
 #'   \item \code{units_total}, \code{units_by_source}: unit strings
+#'   \item \code{units}: list of unit strings (at least \code{units$co2eq_kg})
 #' }
 #' @export
 calc_total_emissions <- function(...) {
@@ -139,13 +143,20 @@ calc_total_emissions <- function(...) {
 
   structure(
     list(
-      breakdown      = breakdown,     # named numeric vector (kg CO2eq yr-1)
-      by_source      = by_source,     # explicit table (kg CO2eq yr-1)
-      total_co2eq    = total,         # (kg CO2eq yr-1)
-      n_sources      = length(sources),
-      units_total    = unit_abs,
-      units_by_source= unit_abs,
-      date           = Sys.Date()
+      breakdown       = breakdown,     # named numeric vector (kg CO2eq yr-1)
+      by_source       = by_source,     # explicit table (kg CO2eq yr-1)
+
+      # keep existing fields (backward compatible)
+      total_co2eq     = total,         # (kg CO2eq yr-1)
+      n_sources       = length(sources),
+      units_total     = unit_abs,
+      units_by_source = unit_abs,
+      date            = Sys.Date(),
+
+      # ✅ new explicit return-value fields (reviewer-proof + consistent)
+      co2eq_kg        = total,         # alias
+      total_co2eq_kg  = total,         # alias
+      units           = list(co2eq_kg = unit_abs)
     ),
     class = "cf_total"
   )
@@ -158,11 +169,12 @@ calc_total_emissions <- function(...) {
 #' @return The input object `x`, invisibly.
 #' @export
 print.cf_total <- function(x, ...) {
-  unit_abs <- x$units_total %||% "kg CO2eq yr-1"
+  unit_abs <- x$units$co2eq_kg %||% x$units_total %||% "kg CO2eq yr-1"
+  total_val <- x$co2eq_kg %||% x$total_co2eq
 
   cat("Carbon Footprint - Total Emissions\n")
   cat("==================================\n")
-  cat("Total CO2eq:", round(x$total_co2eq, 2), unit_abs, "\n")
+  cat("Total CO2eq:", round(total_val, 2), unit_abs, "\n")
   cat("Number of sources:", x$n_sources, "\n\n")
 
   cat("Breakdown by source:\n")

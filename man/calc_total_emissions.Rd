@@ -13,14 +13,19 @@ calc_total_emissions(...)
 Object of class \code{cf_total} including:
 \itemize{
 \item \code{total_co2eq}: total absolute emissions (kg CO2eq yr-1)
+\item \code{co2eq_kg}: alias of total absolute emissions (kg CO2eq yr-1)
+\item \code{total_co2eq_kg}: alias of total absolute emissions (kg CO2eq yr-1)
 \item \code{breakdown}: named numeric vector by source (kg CO2eq yr-1)
 \item \code{by_source}: data.frame with \code{source}, \code{co2eq_kg}, and \code{units}
 \item \code{units_total}, \code{units_by_source}: unit strings
+\item \code{units}: list of unit strings (at least \code{units$co2eq_kg})
 }
 }
 \description{
 Aggregates results from different sources (enteric, manure, soil, energy, inputs)
 even if they don't use exactly the same field name for the total.
+}
+\details{
 IMPORTANT: If a source explicitly reports \code{co2eq_kg = NULL} (e.g. excluded by
 system boundaries), it is treated as zero and no fallback summation is attempted.
 }

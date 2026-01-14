@@ -94,17 +94,17 @@ total_emissions <- calc_total_emissions(enteric, manure, soil, energy, inputs)
 total_emissions
 #> Carbon Footprint - Total Emissions
 #> ==================================
-#> Total CO2eq: 451512.6 kg
+#> Total CO2eq: 451512.6 kg CO2eq yr-1 
 #> Number of sources: 5 
 #> 
 #> Breakdown by source:
-#>   energy : 5740 kg CO2eq
-#>   enteric : 312800 kg CO2eq
-#>   inputs : 4000 kg CO2eq
-#>   manure : 89880 kg CO2eq
-#>   soil : 39092.62 kg CO2eq
+#>   energy : 5740 kg CO2eq yr-1 
+#>   enteric : 312800 kg CO2eq yr-1 
+#>   inputs : 4000 kg CO2eq yr-1 
+#>   manure : 89880 kg CO2eq yr-1 
+#>   soil : 39092.62 kg CO2eq yr-1 
 #> 
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-14
 
 # 4. Intensity metrics
 milk_intensity <- calc_intensity_litre(
@@ -126,7 +126,7 @@ milk_intensity
 #>  Protein content: 3.3 %
 #> 
 #> Total emissions: 451,513 kg CO2eq
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-14
 
 area_intensity <- calc_intensity_area(
   total_emissions = total_emissions,
@@ -144,8 +144,14 @@ area_intensity
 #>  Land use efficiency: 100%
 #> 
 #> Total emissions: 451,513 kg CO2eq
-#> Calculated on: 2026-01-08
+#> Calculated on: 2026-01-14
 ```
+
+**Note on units:**  
+All absolute emission results returned by `cowfootR` are annual
+farm-level totals and are expressed as **kg CO2eq yr⁻1** within the
+defined system boundaries. Intensity metrics are expressed as **kg CO2eq
+per kg FPCM** and **kg CO2eq ha⁻1 yr⁻1** (derived from annual totals).
 
 ## Batch processing (typical real-world use)
 
@@ -208,7 +214,7 @@ batch_results$summary
 #> [1] "uruguay"
 #> 
 #> $processing_date
-#> [1] "2026-01-08"
+#> [1] "2026-01-14"
 
 # Farm-level results
 batch_results$farm_results
@@ -274,7 +280,7 @@ batch_results$farm_results
 #> [1] "Excellent (below typical range)"
 #> 
 #> [[1]]$processing_date
-#> [1] "2026-01-08"
+#> [1] "2026-01-14"
 #> 
 #> [[1]]$boundaries_used
 #> [1] "farm_gate"
@@ -348,7 +354,7 @@ batch_results$farm_results
 #> [1] "Excellent (below typical range)"
 #> 
 #> [[2]]$processing_date
-#> [1] "2026-01-08"
+#> [1] "2026-01-14"
 #> 
 #> [[2]]$boundaries_used
 #> [1] "farm_gate"
