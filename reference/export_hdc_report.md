@@ -74,7 +74,7 @@ class(br) <- "cf_batch_complete"
 
 f <- tempfile(fileext = ".xlsx")
 export_hdc_report(br, file = f)
-#> Batch report saved to: /tmp/Rtmpji2BYe/file1b6a21502bc6.xlsx
+#> Batch report saved to: /tmp/RtmpFw5luG/file1ade55bf186f.xlsx
 file.exists(f)
 #> [1] TRUE
 # }

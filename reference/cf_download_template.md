@@ -32,5 +32,5 @@ Invisibly returns the file path.
 tf <- tempfile(fileext = ".xlsx")
 on.exit(unlink(tf, force = TRUE), add = TRUE)
 cf_download_template(tf)
-#> Template saved to: /tmp/Rtmpji2BYe/file1b6a15c7dd41.xlsx
+#> Template saved to: /tmp/RtmpFw5luG/file1ade4b6bd6ef.xlsx
 ```

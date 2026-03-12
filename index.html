@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,17 +132,17 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span><span class="va">total_emissions</span></span>
 <span><span class="co">#&gt; Carbon Footprint - Total Emissions</span></span>
 <span><span class="co">#&gt; ==================================</span></span>
-<span><span class="co">#&gt; Total CO2eq: 451512.6 kg</span></span>
+<span><span class="co">#&gt; Total CO2eq: 451512.6 kg CO2eq yr-1 </span></span>
 <span><span class="co">#&gt; Number of sources: 5 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Breakdown by source:</span></span>
-<span><span class="co">#&gt;   energy : 5740 kg CO2eq</span></span>
-<span><span class="co">#&gt;   enteric : 312800 kg CO2eq</span></span>
-<span><span class="co">#&gt;   inputs : 4000 kg CO2eq</span></span>
-<span><span class="co">#&gt;   manure : 89880 kg CO2eq</span></span>
-<span><span class="co">#&gt;   soil : 39092.62 kg CO2eq</span></span>
+<span><span class="co">#&gt;   energy : 5740 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   enteric : 312800 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   inputs : 4000 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   manure : 89880 kg CO2eq yr-1 </span></span>
+<span><span class="co">#&gt;   soil : 39092.62 kg CO2eq yr-1 </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Calculated on: 2026-01-08</span></span>
+<span><span class="co">#&gt; Calculated on: 2026-01-14</span></span>
 <span></span>
 <span><span class="co"># 4. Intensity metrics</span></span>
 <span><span class="va">milk_intensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_intensity_litre.html">calc_intensity_litre</a></span><span class="op">(</span></span>
@@ -164,7 +164,7 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span><span class="co">#&gt;  Protein content: 3.3 %</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
-<span><span class="co">#&gt; Calculated on: 2026-01-08</span></span>
+<span><span class="co">#&gt; Calculated on: 2026-01-14</span></span>
 <span></span>
 <span><span class="va">area_intensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_intensity_area.html">calc_intensity_area</a></span><span class="op">(</span></span>
 <span>  total_emissions <span class="op">=</span> <span class="va">total_emissions</span>,</span>
@@ -182,7 +182,9 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span><span class="co">#&gt;  Land use efficiency: 100%</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total emissions: 451,513 kg CO2eq</span></span>
-<span><span class="co">#&gt; Calculated on: 2026-01-08</span></span></code></pre></div>
+<span><span class="co">#&gt; Calculated on: 2026-01-14</span></span></code></pre></div>
+<p><strong>Note on units:</strong><br>
+All absolute emission results returned by <code>cowfootR</code> are annual farm-level totals and are expressed as <strong>kg CO2eq yr⁻1</strong> within the defined system boundaries. Intensity metrics are expressed as <strong>kg CO2eq per kg FPCM</strong> and <strong>kg CO2eq ha⁻1 yr⁻1</strong> (derived from annual totals).</p>
 </div>
 <div class="section level2">
 <h2 id="batch-processing-typical-real-world-use">Batch processing (typical real-world use)<a class="anchor" aria-label="anchor" href="#batch-processing-typical-real-world-use"></a>
@@ -240,7 +242,7 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span><span class="co">#&gt; [1] "uruguay"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $processing_date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-08"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-14"</span></span>
 <span></span>
 <span><span class="co"># Farm-level results</span></span>
 <span><span class="va">batch_results</span><span class="op">$</span><span class="va">farm_results</span></span>
@@ -306,7 +308,7 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span><span class="co">#&gt; [1] "Excellent (below typical range)"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[1]]$processing_date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-08"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-14"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[1]]$boundaries_used</span></span>
 <span><span class="co">#&gt; [1] "farm_gate"</span></span>
@@ -380,7 +382,7 @@ and IPCC guidelines for greenhouse gas accounting.</p>
 <span><span class="co">#&gt; [1] "Excellent (below typical range)"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]$processing_date</span></span>
-<span><span class="co">#&gt; [1] "2026-01-08"</span></span>
+<span><span class="co">#&gt; [1] "2026-01-14"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]$boundaries_used</span></span>
 <span><span class="co">#&gt; [1] "farm_gate"</span></span>
