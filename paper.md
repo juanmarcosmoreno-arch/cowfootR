@@ -24,16 +24,18 @@ reproducible carbon assessment in agricultural systems.
 
 # Statement of need
 
-The environmental impact of milk production has become an important
-topic of global concern due to the dairy sector’s contribution to
-anthropogenic greenhouse gas (GHG) emissions. A key indicator used in
-environmental assessments of agricultural systems is the carbon
-footprint (CF), defined as the total greenhouse gas emissions associated
-with a product or process, expressed as carbon dioxide equivalents
-(CO₂eq). In dairy production systems, the carbon footprint typically
-includes emissions from enteric fermentation, manure management, soil
-nitrogen processes, feed production, purchased inputs, and on-farm
-energy consumption \[@stolarski2025\].
+The environmental impact of milk production is a subject of growing
+global concern due to the sector’s contribution to anthropogenic
+greenhouse gas (GHG) emissions. Global analyses of food systems indicate
+that livestock production is a major contributor to agricultural
+emissions and environmental impacts \[@poore2018\]. One of the key
+indicators in environmental impact assessment is the carbon footprint
+(CF), which quantifies the total greenhouse gas emissions associated
+with a product or process and expresses them as carbon dioxide
+equivalents (CO₂e or CO₂eq). In dairy systems, these emissions arise
+from multiple sources including enteric fermentation, manure management,
+feed production, fertilizer use, energy consumption, and other external
+inputs \[@stolarski2025\].
 
 The dairy sector is estimated to contribute approximately 4% of global
 greenhouse gas emissions, with reported carbon footprint values ranging
