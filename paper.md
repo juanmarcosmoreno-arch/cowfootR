@@ -24,46 +24,61 @@ reproducible carbon assessment in agricultural systems.
 
 # Statement of need
 
-The environmental impact of milk production is a subject of growing
-global concern due to the sector’s share of anthropogenic greenhouse gas
-(GHG) emissions. One of the key indicators in an environmental impact
-assessment is the carbon footprint (CF), which determines the total
-greenhouse gas emissions attributed to a particular product or process,
-expressed in terms of the carbon dioxide equivalent (CO₂e or CO₂eq). As
-far as milk production is concerned, the carbon footprint includes
-emissions from, e.g., enteric fermentation, fertiliser management, feed
-production, use of outside inputs, and energy consumption
-\[@stolarski2025\]. The dairy industry contributes approximately 4% of
-global greenhouse gas emissions, with carbon footprint values ranging
-from 0.78 to 3.20 kg CO₂eq kg⁻¹ of milk across different production
-systems \[@flysjo2011; @stolarski2025\]. The Intergovernmental Panel on
-Climate Change emphasizes that livestock production systems require
-accurate quantification methods to support effective mitigation
-strategies and policy development \[@ipcc2019\]. Similarly, the
-International Dairy Federation has established comprehensive guidelines
-for standardized carbon footprint assessment, recognizing the critical
-need for consistent methodologies that enable fair comparison across
-different dairy systems while accounting for regional variations
-\[@idf2022\]. With increasing regulatory pressure from initiatives like
-the EU Green Deal and Corporate Sustainability Reporting Directive,
-there is urgent need for standardized, accessible tools to quantify
-dairy farm carbon footprints \[@eu2022\]. Current life cycle assessment
-(LCA) software solutions have significant limitations: most are
-expensive commercial packages requiring specialized training,
-methodological inconsistencies limit result comparability
-\[@pirlo2012\], and many lack transparency or regional adaptation
-capabilities. These barriers prevent widespread adoption of standardized
-practices, particularly among smaller farms and developing regions. The
-cowfootR package addresses these gaps by providing an open-source,
-standardized toolkit implementing IPCC Guidelines and IDF standards. The
-package features modular emission calculations covering the five key
-sources identified in dairy systems, flexible system boundaries,
-multiple calculation tiers following IPCC methodology, batch processing
-capabilities, and regional adaptation with location-specific emission
-factors. By ensuring methodological consistency while remaining
-accessible to researchers, consultants, policymakers, and farmers,
-cowfootR fills a critical gap in agricultural LCA software and enables
-broader adoption of standardized carbon assessment practices.
+The environmental impact of milk production has become an important
+topic of global concern due to the dairy sector’s contribution to
+anthropogenic greenhouse gas (GHG) emissions. A key indicator used in
+environmental assessments of agricultural systems is the carbon
+footprint (CF), defined as the total greenhouse gas emissions associated
+with a product or process, expressed as carbon dioxide equivalents
+(CO₂eq). In dairy production systems, the carbon footprint typically
+includes emissions from enteric fermentation, manure management, soil
+nitrogen processes, feed production, purchased inputs, and on-farm
+energy consumption \[@stolarski2025\].
+
+The dairy sector is estimated to contribute approximately 4% of global
+greenhouse gas emissions, with reported carbon footprint values ranging
+from approximately 0.78 to 3.20 kg CO₂eq per kilogram of milk depending
+on production system characteristics and regional conditions
+\[@flysjo2011; @stolarski2025\]. Accurate quantification of emissions
+from livestock systems is therefore essential for evaluating mitigation
+strategies, supporting policy development, and enabling consistent
+environmental reporting \[@ipcc2019\].
+
+Several methodological frameworks are currently used to estimate
+greenhouse gas emissions from dairy systems. The Intergovernmental Panel
+on Climate Change (IPCC) Guidelines for National Greenhouse Gas
+Inventories define tiered methodologies (Tier 1, Tier 2 and Tier 3) that
+differ in complexity and data requirements for estimating emissions such
+as enteric methane and manure management emissions \[@ipcc2019\]. In
+parallel, sector-specific standards such as the International Dairy
+Federation (IDF) Global Carbon Footprint Standard for the Dairy Sector
+provide guidance for applying life cycle assessment (LCA) principles to
+dairy supply chains, ensuring methodological consistency and
+comparability across production systems \[@idf2022\].
+
+Despite the availability of these methodological frameworks, practical
+tools for implementing them remain limited. Many existing LCA platforms
+are proprietary software requiring specialized training, while advisory
+services often rely on spreadsheet-based calculators that can be
+difficult to audit, reproduce, or integrate with statistical workflows.
+Methodological inconsistencies and lack of transparency in these tools
+can limit the comparability of results across farms, regions, and
+research studies \[@pirlo2012\].
+
+The cowfootR package addresses these challenges by providing an
+open-source, fully scriptable implementation of dairy carbon footprint
+methodologies within the R ecosystem. The package implements emission
+calculations following IPCC and IDF frameworks using a modular structure
+that estimates emissions from five key sources: enteric fermentation,
+manure management, soil nitrogen dynamics, energy consumption, and
+purchased inputs. In addition to total emissions, cowfootR provides
+standardized intensity metrics (e.g., kg CO₂eq per kg of fat-protein
+corrected milk or per hectare), batch processing functions for
+multi-farm analyses, and flexible system boundary definitions. By
+enabling transparent, reproducible and programmable carbon footprint
+calculations, cowfootR facilitates the integration of dairy
+environmental assessments with modern data-science and research
+workflows.
 
 # Usage
 
