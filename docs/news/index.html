@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cowfootR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,18 +34,47 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.2" id="cowfootr-012">cowfootR 0.1.2<a class="anchor" aria-label="anchor" href="#cowfootr-012"></a></h2><p class="text-muted">CRAN release: 2025-09-22</p>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="cowfootr-011">cowfootR 0.1.1<a class="anchor" aria-label="anchor" href="#cowfootr-011"></a></h2>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="cowfootr-010">cowfootR 0.1.0<a class="anchor" aria-label="anchor" href="#cowfootr-010"></a></h2>
-<ul><li>Initial release</li>
-<li>Dairy farm carbon footprint calculation functions</li>
-<li>Batch processing capabilities</li>
-<li>Comprehensive LCA methodology implementation</li>
+<h2 class="pkg-version" data-toc-text="0.1.3" id="cowfootr-013">cowfootR 0.1.3<a class="anchor" aria-label="anchor" href="#cowfootr-013"></a></h2><p class="text-muted">CRAN release: 2026-01-13</p>
+<div class="section level3">
+<h3 id="major-changes-0-1-3">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-1-3"></a></h3>
+<ul><li>
+<strong>Clarified and standardized emission units across the package</strong>. All emission calculation functions now consistently return <strong>annual emissions</strong> expressed as <code>kg CO2eq yr-1</code> (farm-level totals). This applies to:
+<ul><li><code><a href="../reference/calc_emissions_enteric.html">calc_emissions_enteric()</a></code></li>
+<li><code><a href="../reference/calc_emissions_manure.html">calc_emissions_manure()</a></code></li>
+<li><code><a href="../reference/calc_emissions_soil.html">calc_emissions_soil()</a></code></li>
+<li><code><a href="../reference/calc_emissions_energy.html">calc_emissions_energy()</a></code></li>
+<li><code><a href="../reference/calc_emissions_inputs.html">calc_emissions_inputs()</a></code></li>
+<li>aggregated results from <code><a href="../reference/calc_total_emissions.html">calc_total_emissions()</a></code>
+</li>
+</ul></li>
+<li>Updated returned objects and documentation to ensure that temporal definitions of emission units are explicit and unambiguous, addressing reviewer feedback.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="documentation-0-1-3">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-3"></a></h3>
+<ul><li>Updated the <strong>README</strong> to explicitly state that absolute emissions are reported as annual values (<code>kg CO2eq yr-1</code>), and that intensity metrics are derived from annual data.</li>
+<li>Updated the <em>Get started</em> and <em>IPCC Methodology Tiers</em> vignettes to clarify:
+<ul><li>system boundaries,</li>
+<li>unit definitions,</li>
+<li>aggregation logic.</li>
+</ul></li>
+<li>Improved function documentation (<code>@return</code> sections) for clarity and consistency.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-structure-0-1-3">Internal structure<a class="anchor" aria-label="anchor" href="#internal-structure-0-1-3"></a></h3>
+<ul><li>Refactored helper logic for purchased inputs into a dedicated helper file (<code>inputs_helpers.R</code>) to improve modularity and testability.</li>
+<li>Improved internal consistency of boundary handling across emission modules.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="tests-0-1-3">Tests<a class="anchor" aria-label="anchor" href="#tests-0-1-3"></a></h3>
+<ul><li>Extended and updated unit tests to reflect clarified unit conventions.</li>
+<li>Ensured integration tests cover full farm-level workflows using annual emissions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-0-1-3">Minor improvements<a class="anchor" aria-label="anchor" href="#minor-improvements-0-1-3"></a></h3>
+<ul><li>Improved error messages and validation for emission factor inputs.</li>
+<li>Minor code clean-up and formatting improvements.</li>
+</ul><hr></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

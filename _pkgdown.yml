@@ -6,16 +6,18 @@ template:
 articles:
   - title: "Get started"
     contents:
-      - "00 - Get started with cowfootR"
+      - get-started
+
   - title: "Core workflows"
     contents:
-      - "01 - Introduction to Dairy Life Cycle Assessment"
-      - "02 - Single Farm Analysis (cowfootR)"
-      - "03 - IPCC Methodology Tiers cowfootR"
+      - introduction-lca
+      - single-farm-analysis
+      - ipcc-tiers
+
   - title: "Reference"
     contents:
-      - "04 - Complete Parameter Reference Guide"
-      - "workflow"
+      - parameter-reference
+      - workflow
 
 reference:
   - title: "System boundaries and benchmarking"
