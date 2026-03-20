@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/juanmarcosmoreno-arch/cowfootR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/juanmarcosmoreno-arch/cowfootR/blob/v0.1.3/DESCRIPTION)
 
 Moreno J (2026). *cowfootR: Dairy Farm Carbon Footprint Assessment*. R
 package version 0.1.3,

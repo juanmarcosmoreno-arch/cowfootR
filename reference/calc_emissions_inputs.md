@@ -391,7 +391,7 @@ calc_emissions_inputs(conc_kg = 1000, fert_n_kg = 200, region = "EU")
 #> [1] "IDF 2022; generic LCI sources"
 #> 
 #> $date
-#> [1] "2026-03-12"
+#> [1] "2026-03-20"
 #> 
 
 # With uncertainty analysis
@@ -678,6 +678,6 @@ calc_emissions_inputs(feed_corn_kg = 2000, region = "US", include_uncertainty = 
 #> [1] "IDF 2022; generic LCI sources"
 #> 
 #> $date
-#> [1] "2026-03-12"
+#> [1] "2026-03-20"
 #> 
 ```
