@@ -16,6 +16,7 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/juanmarcosmoreno-arch/cowfootR/graph/badge.svg)](https://app.codecov.io/gh/juanmarcosmoreno-arch/cowfootR)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19135408.svg)](https://doi.org/10.5281/zenodo.19135408)
 <!-- badges: end -->
 
 ## Overview
